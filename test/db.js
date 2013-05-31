@@ -1,14 +1,14 @@
 var db = require('../lib/db');
 
 db.init(function () {
-	/*db.insertItem('article', {
+	db.insertItem('article', {
 		title: 'test1',
 		content: 'test-content1'
 	}, function (err, results) {
 		console.log('insert1: \n', err, results);
 
 		db.selectItem('article', {title: 'test2'}, function(err, results){
-			console.log('select: \n', err, results);
+			console.log('select1: \n', err, results);
 			db.deleteItem('article', {
 				title: 'test2'
 			}, function(err, results){
@@ -21,16 +21,23 @@ db.init(function () {
 				});
 			});
 		});
-	});*/
-	for (var i = 10; i >= 0; i--) {
-		db.insertItem('article', {
-			title: 'test' + i,
-			content: 'test-content'
-		}, function(err, results){
-			if(err){
-				console.log("!");
-			}
+	});
+
+	db.insertItems('article', [{title: 'item1'},{title: 'item2'}], function(err, results){
+		if(err){
+			console.log(err);
+		}
+		db.selectItem('article', {}, function(err, results){
+			console.log('select2: \n', err, results);
+
+			db.deleteItem('article', null, function(err, results){
+				if(err){
+					console.log(err);
+				}
+				process.exit();
+			});
 		});
-	}
+	});
+	
 });
 

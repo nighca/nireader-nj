@@ -4,6 +4,13 @@ exports = module.exports = {
         port: 3306,
         user: 'root',
         password: '',
-        name: 'nireader'
+        database: 'nireader'
+	},
+	tables: {
+	    'article': {
+	        title : 'string',
+	        content : 'text',
+	        url : 'string'
+	    }
 	}
 };
