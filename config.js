@@ -5,12 +5,5 @@ exports = module.exports = {
         user: 'root',
         password: '',
         database: 'nireader'
-	},
-	tables: {
-	    'article': {
-	        title : 'string',
-	        content : 'text',
-	        url : 'string'
-	    }
 	}
 };
