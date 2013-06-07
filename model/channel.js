@@ -116,6 +116,10 @@ var selectChannels = function(options, callback){
         }
         var channels = [];
         var notFinished = 0;
+        if(results.length <= 0){
+            callback && callback(null, []);
+            return;
+        }
         for (var i = 0, l = results.length; i < l; i++) {
             notFinished++;
             var channel = new Channel(results[i]);
