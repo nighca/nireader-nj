@@ -95,6 +95,11 @@ var formatVal = function(val){
 };
 
 var insertItem = function(pool, table, obj, callback) {
+    if(obj.id){
+        callback && callback('Can not be saved (id assign failed).', null);
+        return;
+    }
+
     var query = 'INSERT INTO ' + table + ' ';
     var names = [], values = [];
     for(var name in obj){
@@ -124,6 +129,35 @@ var insertItem = function(pool, table, obj, callback) {
             query += ')';
         }
     }
+
+    doQuery(pool, query, callback);
+};
+
+var updateItem = function(pool, table, obj, callback) {
+    if(!obj.id){
+        callback && callback('Can not be updated (id needed).', null);
+        return;
+    }
+
+    var query = 'UPDATE ' + table + ' item SET ';
+    var names = [], values = [];
+    for(var name in obj){
+        if(obj.hasOwnProperty(name) && obj[name]!==null && tables[table][name]){
+            names.push(name);
+            values.push(formatVal(obj[name]));
+        }
+    }
+
+    var i,  len = names.length;
+    for (i = 0; i < len; i++) {
+        if(i === 0){
+        }else{
+            query += ', ';
+        }
+        query += names[i] + ' = ' + values[i];
+    }
+
+    query += ' WHERE item.id = ' + obj.id;
 
     doQuery(pool, query, callback);
 };
@@ -201,6 +235,7 @@ exports.doQuery = doQuery;
 exports.createTable = createTable;
 exports.insertItem = insertItem;
 exports.insertItems = insertItems;
+exports.updateItem = updateItem;
 exports.selectItem = selectItem;
 exports.deleteItem = deleteItem;
 exports.initDB = initDB;

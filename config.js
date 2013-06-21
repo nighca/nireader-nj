@@ -5,5 +5,8 @@ exports = module.exports = {
         user: 'root',
         password: '',
         database: 'nireader'
+	},
+	feed: {
+		interval: 3600
 	}
 };

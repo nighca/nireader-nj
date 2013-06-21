@@ -1,6 +1,6 @@
-var Item = require('../model/item');
-var Channel = require('../model/channel');
-var log = require('../lib/log');
+var Item = require('../src/model/item');
+var Channel = require('../src/model/channel');
+var log = require('../src/lib/log');
 
 var item = Item.create({
     title: 'test item',
@@ -15,6 +15,7 @@ var item = Item.create({
 var channel = Channel.create({
     title: 'test channel',
     link: 'http://log.nighca.me',
+    source: 'http://log.nighca.me/feed/',
     description: 'for test',
 
     language : 'Chinese',
@@ -25,18 +26,31 @@ var channel = Channel.create({
     webMaster : 'nighca@live.cn'
 });
 
-channel.items.push(item);
+/*channel.save(function(){
+    item.source = channel.id;
+    item.save(function(){
+        Item.select({}, function (err, results) {
+            console.log(err);
+            console.log(results);
+        });
+        Channel.select({}, function (err, results) {
+            console.log(err);
+            console.log(results);
+        });
+        channel.getItems(function(err, items){
+            console.log(err, items);
+            channel.cleanItems(function(err, result){
+                channel.remove();
+            });
+        });
+    });
+});*/
 
 channel.save(function(){
-    Item.select({}, function (err, results) {
-        console.log(err);
-        console.log(results);
+    channel.fetch(function(err, channel){
+        if(err){
+            console.error(err);
+        }
+        console.log("!", channel);
     });
-    Channel.select({}, function (err, results) {
-        console.log(err);
-        console.log(results);
-        for (var i = 0; i < results.length; i++) {
-            results[i].remove();
-        };
-    });
-});
+})

@@ -3,12 +3,16 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node src/nireader.js"
   },
   "dependencies": {
     "express": "3.2.5",
     "jade": "*",
     "ejs": "*",
-    "mysql": "*"
+    "feedparser": "*",
+    "mysql": "*",
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.1.1",
+    "grunt-contrib-nodeunit": "~0.1.2"
   }
 }

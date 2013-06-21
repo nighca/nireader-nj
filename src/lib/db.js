@@ -1,5 +1,5 @@
 var db = require("./mysql");
-var config = require("../config");
+var config = require("../../config");
 
 var DBConfig = config.db;
 var initialTables = config.tables;
@@ -42,6 +42,7 @@ initDB();
 
 exports.initTable = initTable;
 exports.insertItem = wrapFunc(db.insertItem, db);
+exports.updateItem = wrapFunc(db.updateItem, db);
 exports.insertItems = wrapFunc(db.insertItems, db);
 exports.selectItem = wrapFunc(db.selectItem, db);
 exports.deleteItem = wrapFunc(db.deleteItem, db);

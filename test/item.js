@@ -1,4 +1,4 @@
-var Item = require('../model/item');
+var Item = require('../src/model/item');
 
 var item = Item.create({
     title: 'test item',
@@ -11,10 +11,13 @@ var item = Item.create({
 });
 
 item.save(function(){
-    Item.select({}, function (err, results) {
-        console.log(err);
-        console.log(results);
-        item.remove();
-        process.exit();
+    item.title += ' update!';
+    item.save(function(){
+        Item.select({}, function (err, results) {
+            console.log(err);
+            console.log(results);
+            item.remove();
+            process.exit();
+        });
     });
 });
