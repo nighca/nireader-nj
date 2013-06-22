@@ -41,7 +41,7 @@ var createItemFromFeed = function(item, source){
         pubDate: item.pubDate || item.pubdate,
         source: source
     });
-    console.log(item);//-------------------------------------------
+    //console.log("Create Item From Feed: " + item.title);//---------------------
     return item;
 };
 

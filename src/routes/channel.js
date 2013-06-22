@@ -1,7 +1,20 @@
-/*
- * channel ops.
- */
 var Channel = require('../model/channel');
+var feed = require('../lib/feed');
+
+var createWithUrl = function (source, callback) {
+    feed.getMetaRemote(source, function (err, meta) {
+        if(err){
+            callback(err);
+        }
+
+        var channel = Channel.createFromMeta(meta);
+        channel.save(function(){
+            channel.fetch();
+        });
+
+        callback(null, channel);
+    });
+};
 
 exports.get = function(req, res){
     //res.send('get!');
@@ -15,5 +28,16 @@ exports.get = function(req, res){
 };
 
 exports.add = function(req, res){
-    res.send('add!');
+    if(!req.body.url){
+        res.send("no url!");
+        return;
+    }
+    
+    createWithUrl(req.body.url, function(err, channel){
+        if(!err){
+            res.send("ok");
+        }else{
+            res.send(err);
+        }
+    });
 };

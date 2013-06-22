@@ -1,0 +1,16 @@
+extends global
+
+append scripts
+    script(src='/javascripts/listSrc.js')
+
+append stylesheets
+    link(rel='stylesheet', href='/stylesheets/listSrc.css')
+
+block content
+    ul.channel-list
+        each channel in channels
+            li
+                h4= channel.title
+                ul.item-list
+                    each item in channel.items
+                        li= item.title

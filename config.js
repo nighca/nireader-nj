@@ -7,6 +7,9 @@ exports = module.exports = {
         database: 'nireader'
 	},
 	feed: {
-		interval: 3600
+	},
+	task: {
+		fetchInterval: 1000*60*60*24,
+		tryFetchTimes: 5
 	}
 };

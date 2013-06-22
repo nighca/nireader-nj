@@ -126,9 +126,12 @@ Channel.prototype.updateFromMeta = function(meta){
     channel.category = meta.category || channel.category;
     channel.generator = meta.generator || channel.generator;
     channel.webMaster = meta.webMaster || channel.webMaster;
+
+    return channel;
 };
 Channel.prototype.fetch = function(callback) {
     var channel = this;
+    console.log("Channel fetch: " + channel.title);//---------------------------------
     if(!channel.source){
         callback && callback("no source assigned.")
         return;
@@ -149,22 +152,24 @@ Channel.prototype.fetch = function(callback) {
         var notFinished = 0;
         for (var i = 0, l = items.length; i < l; i++) {
             item = items[i];
+            console.log("Get Item: " + item.title);//---------------------
             if(useItem(item, channel)){
                 notFinished++;
+                console.log("Use Item: " + item.title);//---------------------
                 Item.createFromFeed(item, channel.id).save(function(err){
                     if(err){
                         console.error(err);
                     }
                     notFinished--;
                     if(!notFinished){
-                        channel.updateFromMeta(result.meta);
+                        channel.updateFromMeta(result.meta).save();
                         callback && callback(null, channel);
                     }
                 });
             }
         }
         if(!notFinished){
-            channel.updateFromMeta(result.meta);
+            channel.updateFromMeta(result.meta).save();
             callback && callback(null, channel);
         }
     });
