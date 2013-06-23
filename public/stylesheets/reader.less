@@ -1,27 +1,30 @@
+.content{
+}
+
 .left-block, .right-block{
+	position: absolute;
+	top: 0;
 	width: 50px;
 	height: 100%;
 	background-color: #f0f0f0;
 }
 
 .left-block{
-	float: left;
+	left: 0;
 }
 .right-block{
-	float: right;
+	right: 0;
 }
 
 .middle-block{
 	position: relative;
+	height: 100%;
+	margin: 0 50px;
 	.top-block{
 		width: 100%;
 		height: 50px;
-
-		background-color: #ccc;
 	}
 	.center-block{
 		min-height: 100px;
-
-		background-color: #333;
 	}
 }

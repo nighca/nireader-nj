@@ -233,4 +233,4 @@ ul.icons li .icon-large:before,ul.icons li .icon-large:before{vertical-align:ini
 .icon-paste:before{content:"\f0ea";}
 .icon-user-md:before{content:"\f200";}
 html,body{width:100%;height:100%;}
-.content{position:relative;height:100%;}
+#content{position:relative;height:100%;}

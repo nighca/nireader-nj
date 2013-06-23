@@ -27,11 +27,11 @@ var parse = function(stream, callback){
         callback(null, cnt);
     };
 
-    stream.pipe(new FeedParser(options))
-        .on('error', dealError)
-        .on('meta', dealMeta)
-        .on('article', dealArticle)
-        .on('end', dealEnd);
+    var parser = stream.pipe(new FeedParser(options));
+    parser.on('error', dealError);
+    parser.on('meta', dealMeta);
+    parser.on('article', dealArticle);
+    parser.on('end', dealEnd);
 };
 
 var parseRemote = function(url, callback){

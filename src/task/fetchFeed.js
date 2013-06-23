@@ -1,4 +1,3 @@
-var feed = require('../lib/feed');
 var Channel = require('../model/channel');
 
 var config = require('../../config').task;
