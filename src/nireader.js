@@ -5,6 +5,7 @@
 var express = require('express');
 var routes = require('./routes');
 var list = require('./routes/list');
+var item = require('./routes/item');
 var channel = require('./routes/channel');
 var http = require('http');
 var path = require('path');
@@ -35,8 +36,9 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/list', list.index);
 
-app.get('/channel/get', channel.get);
-app.post('/channel/add', channel.add);
+app.get('/channel/:cid/item/:iid', item.get);
+app.get('/channel/:cid', channel.get);
+app.post('/channel/', channel.add);
 
 http.createServer(app).listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port'));

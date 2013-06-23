@@ -1,0 +1,48 @@
+/* font */
+@font-face {
+    font-family: 'TeXGyre';
+    src: url('../font/texgyreadventor-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* my style */
+
+.transparent(@p){
+    -moz-opacity: @p;
+    -khtml-opacity: @p; 
+    opacity: @p;
+}
+
+.transition-duration(@duration: .5s){
+    -webkit-transition-duration: @duration;
+    -moz-transition-duration: @duration;
+    -o-transition-duration: @duration;
+    transition-duration: @duration;
+}
+
+.left{
+    float: left;
+}
+.right{
+    float: right;
+}
+
+.align-left{
+    text-align: left;
+}
+.align-right{
+    text-align: right;
+}
+.align-center{
+    text-align: center;
+}
+
+.hidden {
+    display:none;
+}
+.inline-block{
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+}

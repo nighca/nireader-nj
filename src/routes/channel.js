@@ -16,20 +16,24 @@ var createWithUrl = function (source, callback) {
     });
 };
 
+//get
 exports.get = function(req, res){
-    //res.send('get!');
-    Channel.select({}, function (err, results) {
-        console.log(err, results);
-        res.json({
-            err: err,
-            data: results
-        });
+    Channel.select({id: req.params.cid}, function (err, channels) {
+        var status = 200;
+        if(err){
+            status = 500;
+        }else if(channels.length === 0){
+            status = 404;
+        }
+        res.json(status, channels);
     });
 };
 
+
+//post
 exports.add = function(req, res){
     if(!req.body.url){
-        res.send("no url!");
+        res.send(500);
         return;
     }
     

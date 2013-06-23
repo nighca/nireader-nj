@@ -1,0 +1,20 @@
+extends global
+
+append scripts
+    script(src='/javascripts/reader.js')
+
+append stylesheets
+    link(rel='stylesheet', href='/stylesheets/reader.css')
+
+block content
+    .left-block
+        block leftBlock
+    .middle-block
+        .top-block
+            block topBlock
+        .center-block
+            block centerBlock
+        .bottom-block
+            block bottomBlock
+    .right-block
+        block rightBlock
