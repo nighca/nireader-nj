@@ -7,14 +7,9 @@ append stylesheets
     link(rel='stylesheet', href='/stylesheets/reader.css')
 
 block content
-    .left-block
-        block leftBlock
+    block leftBlock
     .middle-block
-        .top-block
-            block topBlock
-        .center-block
-            block centerBlock
-        .bottom-block
-            block bottomBlock
-    .right-block
-        block rightBlock
+        block topBlock
+        block centerBlock
+        block bottomBlock
+    block rightBlock

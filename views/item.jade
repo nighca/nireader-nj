@@ -1,4 +1,18 @@
 extends reader
 
+block leftBlock
+    a.left-block(href='/channel/'+item.source+'/item/'+(item.id-1))
+        i.icon-caret-left
+
+block topBlock
+    a.top-block(href='/channel/'+item.source)
+        i.icon-caret-up
+
 block centerBlock
-	div= item.content
+    .center-block
+        h3.title= item.title
+        .article!= item.content
+
+block rightBlock
+    a.right-block(href='/channel/'+item.source+'/item/'+(item.id+1))
+        i.icon-caret-right

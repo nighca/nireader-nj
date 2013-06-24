@@ -1,15 +1,23 @@
 var FeedParser = require('feedparser');
 var request = require('request');
 var fs = require('fs');
+var StringDecoder = require('string_decoder').StringDecoder;
 
 var log = require('./log');
 
 var options = require("../../config").feed;
 
+var encodeMap = {
+    'UTF-8': 'utf8',
+    'default': 'utf8'
+};
+
 var parse = function(stream, callback){
     var cnt = {
         items: []
     };
+
+    var code, decoder;
 
     var dealError = function(error){
         callback && callback(error);
@@ -17,9 +25,16 @@ var parse = function(stream, callback){
 
     var dealMeta = function(meta){
         cnt.meta = meta;
+        code = meta['#xml']['encoding'];
+        decoder = new StringDecoder(encodeMap[code] || encodeMap['default']);
     };
 
     var dealArticle = function(article){
+        article.content = (article.content && article.content['#']) || (article['content:encoded'] && article['content:encoded']['#']);
+        if(decoder){
+            article.content = decoder.write(article.content);
+        }
+
         cnt.items.push(article);
     };
 
@@ -35,15 +50,21 @@ var parse = function(stream, callback){
 };
 
 var parseRemote = function(url, callback){
-    parse(request(url), callback);
+    var stream = request(url);
+    stream.on('error', callback);
+    parse(stream, callback);
 };
 
 var parseLocal = function(path, callback){
-    parse(fs.createReadStream(path), callback);
+    var stream = fs.createReadStream(path);
+    stream.on('error', callback);
+    parse(stream, callback);
 };
 
 var getMetaRemote = function(url, callback){
-    var parser = request(url).pipe(new FeedParser(options));
+    var stream = request(url);
+    stream.on('error', callback);
+    var parser = stream.pipe(new FeedParser(options));
     parser.on('error', function(err){
         callback(err);
     });
@@ -54,7 +75,9 @@ var getMetaRemote = function(url, callback){
 
 var getItemsRemote = function(url, callback){
     var items = [];
-    var parser = request(url).pipe(new FeedParser(options));
+    var stream = request(url);
+    stream.on('error', callback);
+    var parser = stream.pipe(new FeedParser(options));
     parser.on('error', function(err){
         callback(err);
     });

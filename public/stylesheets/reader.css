@@ -1,6 +1,17 @@
 
-.left-block,.right-block{position:absolute;top:0;width:50px;height:100%;background-color:#f0f0f0;}
+::-webkit-scrollbar{width:8px;height:8px;}
+::-webkit-scrollbar-thumb:vertical,::-webkit-scrollbar-thumb:horizontal{background-color:rgba(200, 200, 200, 0.4);cursor:pointer;}::-webkit-scrollbar-thumb:vertical:hover,::-webkit-scrollbar-thumb:horizontal:hover{background-color:rgba(200, 200, 200, 0.8);}
+.left-block,.right-block{position:absolute;top:0;width:50px;height:100%;}.left-block i,.right-block i{position:absolute;top:50%;height:40px;line-height:40px;margin-top:-20px;}
+.left-block,.right-block,.top-block{display:block;text-decoration:none;font-size:36px;text-align:center;color:rgba(100, 100, 100, 0);}
+.left-block:hover,.right-block:hover,.top-block:hover{color:#530f74;}
 .left-block{left:0;}
-.right-block{right:0;}
-.middle-block{position:relative;height:100%;margin:0 50px;}.middle-block .top-block{width:100%;height:50px;}
-.middle-block .center-block{min-height:100px;}
+.right-block{right:0;width:100px;}
+.middle-block{position:relative;height:100%;margin-left:50px;margin-right:100px;}.middle-block .top-block{position:absolute;top:0;width:100%;height:50px;}
+.middle-block .center-block{height:100%;overflow-y:scroll;}.middle-block .center-block::-webkit-scrollbar-button:vertical{height:40px;}
+.middle-block .center-block::-webkit-scrollbar-thumb:vertical{background-color:rgba(200, 200, 200, 0.2);}.middle-block .center-block::-webkit-scrollbar-thumb:vertical:hover{background-color:rgba(200, 200, 200, 0.4);}
+.title,.article{color:#333;}
+.title{margin:40px 40px 30px 24px;padding-left:8px;height:26px;line-height:28px;border-left:8px solid #530f74;font-weight:bold;font-size:22px;}
+.article{margin:20px 400px 40px 40px;}.article p{margin-bottom:0.6em;}
+.article a{color:#530f74;}
+.article pre{padding:2px;margin-bottom:0.6em;overflow-x:scroll;background-color:#333;color:#f9f9f9;border-left:4px solid #530f74;}.article pre::-webkit-scrollbar{width:4px;height:4px;}
+.article pre::-webkit-scrollbar-thumb:horizontal{background-color:rgba(150, 150, 150, 0.4);cursor:pointer;}.article pre::-webkit-scrollbar-thumb:horizontal:hover{background-color:rgba(150, 150, 150, 0.8);}

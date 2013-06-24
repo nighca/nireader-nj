@@ -4,6 +4,7 @@ exports = module.exports = {
         port: 3306,
         user: 'root',
         password: '',
+        charset: 'UTF8_GENERAL_CI',
         database: 'nireader'
 	},
 	feed: {

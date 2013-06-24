@@ -37,7 +37,6 @@ var fetchFeedOnce = function(callback){
 };
 
 var fetchFeed = function(times){
-	console.log("Fetch: " + times);
 	if(times > 0){
 		times--;
 		fetchFeedOnce(function(err){

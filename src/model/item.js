@@ -37,7 +37,7 @@ var createItemFromFeed = function(item, source){
         link: item.link,
         description: item.description,
         author: item.author,
-        content: (item.content && item.content['#']) || (item['content:encoded'] && item['content:encoded']['#']),
+        content: item.content,
         pubDate: item.pubDate || item.pubdate,
         source: source
     });
