@@ -1,5 +1,7 @@
 var Channel = require('../model/channel');
+var Item = require('../model/item');
 var feed = require('../lib/feed');
+var getDay = require('../lib/date').getDay;
 
 var createWithUrl = function (source, callback) {
     feed.getMetaRemote(source, function (err, meta) {
@@ -26,7 +28,21 @@ exports.get = function(req, res){
         }else if(channels.length === 0){
             status = 404;
         }
-        res.json(status, channels);
+
+        var channel = channels[0];
+        Item.select({source:channel.id}, function(err, items){
+            if(err){
+                res.send(err);
+                return;
+            }
+
+            for (var i = 0, l = items.length; i < l; i++) {
+                items[i].pubDate = getDay(items[i].pubDate, "-");
+            };
+
+            channel.items = items;
+            res.render('channel', { title: 'channel', channel: channel });
+        });
     });
 };
 

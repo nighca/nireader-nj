@@ -1,5 +1,4 @@
-#content{
-}
+@import "define.less";
 
 @themeColor: rgba(83, 15, 116, 1);
 
@@ -17,59 +16,83 @@
 }
 
 .left-block, .right-block{
-    position: absolute;
     top: 0;
-    width: 50px;
+    width: 42px;
     height: 100%;
 
     i{
         position: absolute;
         top: 50%;
+        left: 50%;
         height: 40px;
         line-height: 40px;
         margin-top: -20px;
+        margin-left: -6px;
+    }
+
+    &:active{
+        i{
+            margin-top: -19px;
+        }
     }
 }
 
 .left-block, .right-block, .top-block{
+    position: absolute;
     display: block;
 
     text-decoration: none;
     font-size: 36px;
     text-align: center;
     color: rgba(100,100,100,0);
-    i{
 
-    }
+    z-index: 100;
+    
+    .transition-duration(0.5s);
 
     &:hover{
         color: @themeColor;
         //background-color: rgba(150,150,150,0.4);
     }
+    &:active{
+        color: darken(@themeColor, 10%);
+    }
 }
 
 .left-block{
-    left: 0;
+    left: 8px;
 }
 .right-block{
-    right: 0;
-    width: 100px;
+    right: 8px;
+    width: 92px;
 }
 
 .middle-block{
     position: relative;
     height: 100%;
-    margin-left: 50px;
-    margin-right: 100px;
+    //margin-left: 50px;
+    //margin-right: 100px;
 
     .top-block{
-        position: absolute;
         top: 0;
         width: 100%;
         height: 50px;
+        
+        &:hover{
+            background-color: lighten(fade(@themeColor, 10%), 20%);
+            //box-shadow: 0 0 3px fade(@themeColor, 60%);
+            box-shadow: inset 0 1px 1px fade(@themeColor, 40%);
+        }
+        &:active{
+            i{
+                margin-top: 1px;
+            }
+        }
     }
     .center-block{
         height: 100%;
+        padding-left: 50px;
+        padding-right: 100px;
         overflow-y: scroll;
         
         &::-webkit-scrollbar-button:vertical {
@@ -84,7 +107,7 @@
     }
 }
 
-.title, .article{
+.title, .main-content{
     color: #333;
 }
 
@@ -98,7 +121,7 @@
     font-weight: bold;
     font-size: 22px;
 }
-.article{
+.main-content{
     margin: 20px 400px 40px 40px;
 
     p{
@@ -133,6 +156,40 @@
 
             &:hover{
                 background-color: rgba(150, 150, 150, 0.8);
+            }
+        }
+    }
+
+    ul{
+        margin-bottom: 0.6em;
+        li{
+            margin-bottom: 0.4em;
+        }
+    }
+}
+
+.item-list{
+    li{
+        a{  
+            display: block;
+            padding: 2px 2px 2px 8px;
+            margin-left: -16px;
+            border-left: 8px solid transparent;
+            text-decoration: none;
+            color: #333;
+
+            .transition-duration(0.3s);
+
+            &:hover{
+                border-left: 8px solid @themeColor;
+
+                color: @themeColor;
+            }
+
+            .pubdate{
+                float: right;
+                
+                font-size: 0.8em;
             }
         }
     }

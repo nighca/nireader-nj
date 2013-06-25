@@ -11,7 +11,7 @@ block topBlock
 block centerBlock
     .center-block
         h3.title= item.title
-        .article!= item.content
+        .main-content!= item.content
 
 block rightBlock
     a.right-block(href='/channel/'+item.source+'/item/'+(item.id+1))
