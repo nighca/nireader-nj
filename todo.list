@@ -1,4 +1,5 @@
 cleanChannel, cleanSubsriptions
 
-//user & subscription test
+channel, item ==> ifExist
 
+password ==> MD5?

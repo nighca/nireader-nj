@@ -32,7 +32,6 @@ if ('development' == app.get('env')) {
 
 var route;
 for (var i = 0; i < routes.length; i++) {
-	console.log(route, routes);
 	route = routes[i];
 	app[route.type](route.path, route.handler);
 };

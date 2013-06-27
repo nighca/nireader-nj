@@ -1,0 +1,24 @@
+extends reader
+
+block leftBlock
+    a.left-block(href='/user/'+(user.id-1))
+        i.icon-caret-left
+
+block topBlock
+    a.top-block(href='/home/')
+        i.icon-caret-up
+
+block centerBlock
+    .center-block
+        h3.title= user.name
+        .main-content
+            ul.item-list
+                each channel in user.channels
+                    li
+                        a(href='/channel/'+channel.id)= channel.title
+                            span.pubdate= channel.pubDate
+
+
+block rightBlock
+    a.right-block(href='/user/'+(user.id+1))
+        i.icon-caret-right

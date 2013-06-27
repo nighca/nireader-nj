@@ -6,7 +6,8 @@ var tableName = 'user';
 
 db.initTable(tableName, {
     name : 'string',
-    avatar : 'string',
+    mail : 'string',
+    password : 'longstring',
     description : 'text'
 }, function(err, result){
     if(err){
@@ -15,8 +16,10 @@ db.initTable(tableName, {
 });
 
 function User (options) {
+    this.id = options.id || null; 
     this.name = options.name || "anonymous"; 
-    this.avatar = options.avatar || null; 
+    this.mail = options.mail || null; 
+    this.password = options.password || null; 
     this.description = options.description || null; 
 }
 
@@ -52,6 +55,40 @@ var selectUser = function(options, callback){
 var removeUser = function(options, callback){
     db.deleteItem(tableName, options, callback);
 };
+
+var ifExist = function(user, callback){
+    selectUser({name: user.name}, function(err, users){
+        if(err){
+            callback && callback(err);
+            return;
+        }
+        if(users.length>0){
+            callback && callback('already exist');
+            return;
+        }
+        callback && callback(null);
+    });
+};
+
+var ifRight = function(name, password, callback){
+    selectUser({name: name}, function(err, users){
+        if(err){
+            callback && callback(err);
+            return;
+        }
+        if(users.length===0){
+            callback && callback('no such user');
+            return;
+        }
+        var user = users[0];
+        if(user.password !== password){
+            callback && callback('password wrong');
+            return;
+        }
+        callback(null, user);
+    });
+};
+
 
 User.prototype.save = function(callback) {
     var user = this;
@@ -130,6 +167,8 @@ User.prototype.cleanSubscriptions = function(callback) {
     db.deleteItem('subscriptions', {subscriber: user.id}, callback);
 };
 
+exports.ifExist = ifExist;
+exports.ifRight = ifRight;
 exports.select = selectUser;
 exports.create = createUser;
 exports.update = updateUser;

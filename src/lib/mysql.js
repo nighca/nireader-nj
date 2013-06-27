@@ -81,6 +81,9 @@ Date.prototype.dbFormat = function() {
 var formatVal = function(val){
     //console.log(val);//------------------------------
     var temp = val;
+    if(val === null || val === undefined){
+        return null;
+    }
     if(val.dbFormat){
         temp = val.dbFormat();
     }else{

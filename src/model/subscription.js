@@ -14,6 +14,7 @@ db.initTable(tableName, {
 });
 
 function Subscription (options) {
+    this.id = options.id || null; 
     this.subscriber = options.subscriber || null; 
     this.subscribee = options.subscribee || null; 
     this.description = options.description || null; 
