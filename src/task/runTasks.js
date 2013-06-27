@@ -1,3 +1,3 @@
 var fetchFeed = require('./fetchFeed');
 
-fetchFeed.run();
+//fetchFeed.run();

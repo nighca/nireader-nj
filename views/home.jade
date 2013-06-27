@@ -7,4 +7,9 @@ append stylesheets
     link(rel='stylesheet', href='/stylesheets/home.css')
 
 block content
-    h3 This is home
+    h3.title= user.name
+        .main-content
+            ul.channel-list
+                each channel in user.channels
+                    li
+                        a(href='/channel/'+channel.id)= channel.title

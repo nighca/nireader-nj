@@ -3,12 +3,9 @@
  */
 
 var express = require('express');
-var routes = require('./routes');
-var list = require('./routes/list');
-var item = require('./routes/item');
-var channel = require('./routes/channel');
 var http = require('http');
 var path = require('path');
+var routes = require('./router').routes;
 
 var db = require('./lib/db');
 
@@ -25,7 +22,7 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use(app.router);
+app.use(app.routes);
 app.use(express.static(path.join(__dirname, '../public')));
 
 // development only
@@ -33,12 +30,12 @@ if ('development' == app.get('env')) {
     app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
-app.get('/list', list.index);
-
-app.get('/channel/:cid/item/:iid', item.get);
-app.get('/channel/:cid', channel.get);
-app.post('/channel/', channel.add);
+var route;
+for (var i = 0; i < routes.length; i++) {
+	console.log(route, routes);
+	route = routes[i];
+	app[route.type](route.path, route.handler);
+};
 
 http.createServer(app).listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port'));
