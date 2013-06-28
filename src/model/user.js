@@ -147,7 +147,9 @@ User.prototype.getChannels = function(callback) {
                 }
             });
         };
-        
+        if(!notFinished){
+            callback(null, channels);
+        }
     });
 };
 

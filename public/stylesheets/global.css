@@ -232,5 +232,5 @@ ul.icons li .icon-large:before,ul.icons li .icon-large:before{vertical-align:ini
 .icon-umbrella:before{content:"\f0e9";}
 .icon-paste:before{content:"\f0ea";}
 .icon-user-md:before{content:"\f200";}
-html,body{width:100%;height:100%;}
+html,body{width:100%;height:100%;font-family:"Helvetica Neue",Helvetica,arial,"Microsoft YaHei";}
 #content{position:relative;height:100%;}

@@ -7,9 +7,11 @@ append stylesheets
     link(rel='stylesheet', href='/stylesheets/home.css')
 
 block content
-    h3.title= user.name
-        .main-content
-            ul.channel-list
-                each channel in user.channels
-                    li
-                        a(href='/channel/'+channel.id)= channel.title
+    #title-block
+        h3.top-title NIREADER
+        h3.second-title JUST
+        h3.second-title ANOTHER
+        h3.second-title RSS READER
+
+        p.ops
+            a.op(href='/signin') SIGN IN
