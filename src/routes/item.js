@@ -4,13 +4,13 @@ var Item = require('../model/item');
 exports.get = function(req, res){
     Item.select({id: req.params.iid}, function (err, items) {
     	var item = items[0];
-        var status = 200;
         if(err){
-            status = 500;
+            res.send(500, {error: err});
+            return;
         }else if(items.length === 0){
-            status = 404;
+            res.send(404);
+            return;
         }
-        //res.json(status, item);
         res.render('item', {title: 'item', item: item});
     });
 };

@@ -4,11 +4,12 @@ var User = require('../model/user');
 exports.index = function(req, res){
     if(req.session.uid){
         User.select({id:req.session.uid}, function(err, users){
-            var status = 200;
             if(err){
-                status = 500;
+                res.send(500, {error: err});
+                return;
             }else if(users.length === 0){
-                status = 404;
+                res.send(404);
+                return;
             }
 
             var user = users[0];

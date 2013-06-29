@@ -21,7 +21,7 @@ var doQuery = function (pool, query, callback) {
             return;
         }
         query = query + ';';
-        //console.log('$: ', query);//-------------------------------
+        console.log('$: ', query);//-------------------------------
         connection.query(query, function(err, results){
             connection.end();
             if(callback){
@@ -185,22 +185,27 @@ var insertItems = function(pool, table, objs, callback){
 
 var selectItem = function(pool, table, obj, callback){
     var query = 'SELECT * FROM ' + table ;
-    var names = [], values = [];
-    for(var name in obj){
-        if(obj.hasOwnProperty(name)){
-            names.push(name);
-            values.push(formatVal(obj[name]));
-        }
-    }
 
-    var i,  len = names.length;
-    for (i = 0; i < len; i++) {
-        if(i === 0){
-            query += ' WHERE ';
-        }else{
-            query += ' AND ';
+    if(typeof obj === 'string'){
+        query += ' WHERE ' + obj;
+    }else{
+        var names = [], values = [];
+        for(var name in obj){
+            if(obj.hasOwnProperty(name) && obj[name] !== undefined && obj[name] !== null){
+                names.push(name);
+                values.push(formatVal(obj[name]));
+            }
         }
-        query += names[i] + '=' + values[i];
+
+        var i,  len = names.length;
+        for (i = 0; i < len; i++) {
+            if(i === 0){
+                query += ' WHERE ';
+            }else{
+                query += ' AND ';
+            }
+            query += names[i] + '=' + values[i];
+        }
     }
 
     doQuery(pool, query, callback);

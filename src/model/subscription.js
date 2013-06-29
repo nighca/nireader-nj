@@ -53,6 +53,23 @@ var removeSubscription = function(options, callback){
     db.deleteItem(tableName, options, callback);
 };
 
+var ifExist = function(subscription, callback){
+    selectSubscription({
+        subscriber: subscription.subscriber,
+        subscribee: subscription.subscribee
+    }, function(err, subscriptions){
+        if(err){
+            callback && callback(err);
+            return;
+        }
+        if(subscriptions.length>0){
+            callback && callback('already exist');
+            return;
+        }
+        callback && callback(null);
+    });
+};
+
 Subscription.prototype.save = function(callback) {
     var subscription = this;
     if(subscription.id){
@@ -104,6 +121,7 @@ Subscription.prototype.cleanChannel = function(callback) {
     //db.deleteItem('channel', {id: subscription.subscribee}, callback);
 };
 
+exports.ifExist = ifExist;
 exports.select = selectSubscription;
 exports.create = createSubscription;
 exports.update = updateSubscription;

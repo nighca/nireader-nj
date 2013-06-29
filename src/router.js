@@ -31,7 +31,7 @@ var route;
 var authHandler = function(handler){
 	return function (req, res) {
 		if(!req.session.uid){
-			res.redirect('/signin?goto='+req.url);
+			res.redirect('/signin?target='+encodeURIComponent(req.url));
 			return;
 		}
 		handler(req, res);

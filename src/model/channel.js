@@ -98,6 +98,20 @@ var getAllChannel = function(callback){
     }
 };
 
+var ifExist = function(channel, callback){
+    selectChannel({source: channel.source}, function(err, channels){
+        if(err){
+            callback && callback(err);
+            return;
+        }
+        if(channels.length>0){
+            callback && callback('already exist');
+            return;
+        }
+        callback && callback(null);
+    });
+};
+
 var removeChannel = function(options, callback){
     db.deleteItem(tableName, options, callback);
 };
@@ -215,6 +229,7 @@ Channel.prototype.cleanItems = function(callback) {
     db.deleteItem('item', {source: channel.id}, callback);
 };
 
+exports.ifExist = ifExist;
 exports.select = selectChannel;
 exports.getAll = getAllChannel;
 exports.create = createChannel;

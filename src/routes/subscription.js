@@ -3,14 +3,15 @@ var Subscription = require('../model/subscription');
 //get
 exports.get = function(req, res){
     Subscription.select({id: req.params.sid}, function (err, subscriptions) {
-        var status = 200;
         if(err){
-            status = 500;
+            res.send(500, {error: err});
+            return;
         }else if(subscriptions.length === 0){
-            status = 404;
+            res.send(404);
+            return;
         }
 
-        res.send(status, subscriptions);
+        res.send(subscriptions);
     });
 };
 
@@ -22,7 +23,7 @@ exports.add = function(req, res){
         description = req.body.description;
 
     if(!(subscriber && subscribee)){
-        res.send(500);
+        res.send(500, {error: 'no subscriber or subscribee'});
         return;
     }
     
@@ -44,7 +45,7 @@ exports.remove = function(req, res){
         subscribee = req.body.subscribee;
 
     if(!(subscriber && subscribee)){
-        res.send(500);
+        res.send(500, {error: 'no subscriber or subscribee'});
         return;
     }
     

@@ -21,12 +21,18 @@ var createWithUrl = function (source, callback) {
 
 //get
 exports.get = function(req, res){
-    Channel.select({id: req.params.cid}, function (err, channels) {
-        var status = 200;
+    if(req.session.uid){
+
+    }else{}
+    var cid = parseInt(req.params.cid, 10);
+    var query = 'id>=' + (cid-1) + ' AND ' + 'id<=' + (cid+1);
+    Channel.select({id: cid}, function (err, channels) {
         if(err){
-            status = 500;
+            res.send(500, {error: err});
+            return;
         }else if(channels.length === 0){
-            status = 404;
+            res.send(404);
+            return;
         }
 
         var channel = channels[0];
@@ -50,7 +56,7 @@ exports.get = function(req, res){
 //post
 exports.add = function(req, res){
     if(!req.body.url){
-        res.send(500);
+        res.send(500, {error: 'no url'});
         return;
     }
     

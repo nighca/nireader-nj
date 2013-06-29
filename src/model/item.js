@@ -74,6 +74,20 @@ var removeItem = function(options, callback){
     db.deleteItem(tableName, options, callback);
 };
 
+var ifExist = function(item, callback){
+    selectItem({link: item.link}, function(err, items){
+        if(err){
+            callback && callback(err);
+            return;
+        }
+        if(items.length>0){
+            callback && callback('already exist');
+            return;
+        }
+        callback && callback(null);
+    });
+};
+
 Item.prototype.save = function(callback) {
     var item = this;
     if(item.id){
@@ -92,6 +106,7 @@ Item.prototype.remove = function(callback) {
     removeItem({id: item.id}, callback);
 };
 
+exports.ifExist = ifExist;
 exports.select = selectItem;
 exports.create = createItem;
 exports.createFromFeed = createItemFromFeed;
