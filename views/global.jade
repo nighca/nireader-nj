@@ -8,6 +8,8 @@ html
         block stylesheets
             link(rel='stylesheet', href='/stylesheets/global.css')
     body
+        if user
+            span#user-info(data-uid=user.id)
         #header
         #content
             block content

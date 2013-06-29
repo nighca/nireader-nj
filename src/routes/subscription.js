@@ -38,3 +38,23 @@ exports.add = function(req, res){
         });
     });
 };
+
+exports.remove = function(req, res){
+    var subscriber = req.body.subscriber,
+        subscribee = req.body.subscribee;
+
+    if(!(subscriber && subscribee)){
+        res.send(500);
+        return;
+    }
+    
+    Subscription.remove({
+        subscriber: subscriber,
+        subscribee: subscribee
+    }, function(err, result){
+        res.json({
+            err: err,
+            result: result
+        });
+    });
+};

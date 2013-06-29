@@ -23,7 +23,8 @@ var routes = [
 	['post', '/user/', user.add],
 
 	['get', '/subscription/:sid', subscription.get],
-	['post', '/subscription/', subscription.add]
+	['post', '/subscribe/', subscription.add],
+	['post', '/unsubscribe/', subscription.remove]
 ];
 
 var route;

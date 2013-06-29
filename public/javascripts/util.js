@@ -17,6 +17,10 @@ var getNavigator = function() {
     return browser;
 };
 
+var refresh = function(){
+    window.location.reload();
+};
+
 var format = function(num, hex, units, dec) {
     num = num || 0;
     dec = dec || 0;
@@ -68,7 +72,7 @@ var doRequest = function(type, data, url, callback, repeat) {
         type: type,
         dataType: "json",
         success: function(res) {
-            callback(res.err, res.data);
+            callback(res.err, res.result);
         },
         error: function(err) {
             if (repeat === true) {

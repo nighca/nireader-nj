@@ -12,20 +12,27 @@ block centerBlock
     .center-block
         h3.title= user.name
         .main-content
-            .cnt-block
-                h4.sub-title MY SUBSCRIPTION
-                ul.item-list
-                    each channel in user.channels || []
-                        li
-                            a(href='/channel/'+channel.id)= channel.title
-                                span.pubdate= channel.pubDate
-            .cnt-block
-                h4.sub-title ALL CHANNELS
-                ul.item-list
-                    each channel in channels || []
-                        li
-                            a(href='/channel/'+channel.id)= channel.title
-                                span.pubdate= channel.pubDate
+            if user.channels
+                #subscribed-channels.cnt-block
+                    h4.sub-title MY SUBSCRIPTION
+                    if user.channels.length > 0
+                        ul.item-list
+                            each channel in user.channels
+                                li(data-cid=channel.id)
+                                    a(href='/channel/'+channel.id)= channel.title
+                                        span.pubdate= channel.pubDate
+                                    span.unsubscribe -
+                    else
+                        span none
+            if channels
+                #all-channels.cnt-block
+                    h4.sub-title ALL CHANNELS
+                    ul.item-list
+                        each channel in channels
+                            li(data-cid=channel.id)
+                                a(href='/channel/'+channel.id)= channel.title
+                                    span.pubdate= channel.pubDate
+                                span.subscribe +
 
 
 block rightBlock

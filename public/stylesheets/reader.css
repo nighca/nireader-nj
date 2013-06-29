@@ -28,5 +28,6 @@
 .main-content ul{margin-bottom:0.6em;}.main-content ul li{margin-bottom:0.4em;}
 .cnt-block{margin-bottom:1em;}
 .sub-title{font-size:28px;line-height:1em;color:#a8a8a8;}
-.item-list li a{display:block;padding:2px 2px 2px 8px;margin-left:-16px;border-left:8px solid transparent;text-decoration:none;color:#333;-webkit-transition-duration:0.3s;-moz-transition-duration:0.3s;-o-transition-duration:0.3s;transition-duration:0.3s;}.item-list li a:hover{border-left:8px solid #530f74;color:#530f74;}
-.item-list li a .pubdate{float:right;font-size:0.8em;}
+.item-list li a{display:inline-block;*display:inline;*zoom:1;padding:2px 2px 2px 8px;margin-left:-16px;border-left:8px solid transparent;text-decoration:none;color:#333;-webkit-transition-duration:0.3s;-moz-transition-duration:0.3s;-o-transition-duration:0.3s;transition-duration:0.3s;}.item-list li a:hover{border-left:8px solid #530f74;color:#530f74;}
+.item-list li .pubdate{float:right;font-size:0.8em;color:#a8a8a8;}
+.item-list li .subscribe,.item-list li .unsubscribe{display:inline-block;*display:inline;*zoom:1;width:1em;padding:2px;text-align:center;font-weight:bold;font-size:14px;cursor:pointer;color:#a8a8a8;}.item-list li .subscribe:hover,.item-list li .unsubscribe:hover{color:#333;}

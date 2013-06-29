@@ -20,8 +20,7 @@ exports.check = function(req, res){
             res.send(err);
             return;
         }
-        req.session.cookie.maxAge = 300000;
         req.session.uid = user.id;
-        res.send(user);
+        res.redirect('/');
     });
 };
