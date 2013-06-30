@@ -14,6 +14,7 @@ var routes = [
 	['post', '/signin', signin.check, true],
 
 	['get', '/list', list.index],
+	['get', '/list/item', list.item],
 
 	['get', '/channel/:cid/item/:iid', item.get],
 	['get', '/channel/:cid', channel.get],

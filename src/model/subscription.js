@@ -134,6 +134,7 @@ Subscription.prototype.cleanChannel = function(callback) {
     //db.deleteItem('channel', {id: subscription.subscribee}, callback);
 };
 
+exports.tableName = tableName;
 exports.ifExist = ifExist;
 exports.select = selectSubscription;
 exports.create = createSubscription;

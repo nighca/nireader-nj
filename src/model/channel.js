@@ -229,6 +229,7 @@ Channel.prototype.cleanItems = function(callback) {
     db.deleteItem('item', {source: channel.id}, callback);
 };
 
+exports.tableName = tableName;
 exports.ifExist = ifExist;
 exports.select = selectChannel;
 exports.select = selectChannel;

@@ -1,18 +1,22 @@
 extends reader
 
 block leftBlock
-    a.left-block(href='/channel/'+item.source+'/item/'+(item.id-1))
+    a#left-link.left-block(data-async-link=true)
         i.icon-caret-left
 
 block topBlock
-    a.top-block(href='/channel/'+item.source)
+    a#top-link.top-block(href='/channel/'+item.source)
         i.icon-caret-up
 
 block centerBlock
     .center-block
-        h3.title= item.title
-        .main-content!= item.content
+        h3#item-title.title= item.title
+        p#item-date.date= item.pubDate
+        #item-content.main-content!= item.content
 
 block rightBlock
-    a.right-block(href='/channel/'+item.source+'/item/'+(item.id+1))
+    a#right-link.right-block(data-async-link=true)
         i.icon-caret-right
+
+append scripts
+    script(src='/javascripts/item.js')

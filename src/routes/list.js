@@ -1,3 +1,5 @@
+var db = require('../lib/db');
+
 var Channel = require('../model/channel');
 var Item = require('../model/item');
 
@@ -26,4 +28,25 @@ exports.index = function(req, res){
             res.render('listSrc', { title: 'listSrc', channels: channels });
         });
     });
+};
+
+exports.item = function(req, res){
+    var query;
+    var callback = function (err, results) {
+        res.json({
+            //query: query,
+            error: err,
+            result: results
+        });
+    };
+
+    if(req.query.cid){
+        query = 'SELECT id, title, pubDate, source FROM ' + 
+            Item.tableName + 
+            ' WHERE source = ' + 
+            req.query.cid;
+    }else{
+        query = 'SELECT id, title, pubDate, source FROM ' + Item.tableName;
+    }
+    db.doQuery(query, callback);
 };

@@ -106,6 +106,7 @@ Item.prototype.remove = function(callback) {
     removeItem({id: item.id}, callback);
 };
 
+exports.tableName = tableName;
 exports.ifExist = ifExist;
 exports.select = selectItem;
 exports.create = createItem;

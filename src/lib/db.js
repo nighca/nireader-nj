@@ -26,14 +26,16 @@ var initTable = function(name, struct, callback){
 
 var wrapFunc = function(func, _this){
     _this = _this || this;
-    var wrapper =  function(table, obj, callback){
+    var wrapper =  function(){
         if(!pool){
             if(callback){
                 callback('No db connection.');
             }
             return;
         }
-        func.call(_this, pool, table, obj, callback);
+        var args = [pool];
+        //func.call(_this, pool, table, obj, callback);
+        func.apply(_this, args.concat(Array.prototype.slice.call(arguments,0)));
     };
     return wrapper;
 };
@@ -46,3 +48,4 @@ exports.updateItem = wrapFunc(db.updateItem, db);
 exports.insertItems = wrapFunc(db.insertItems, db);
 exports.selectItem = wrapFunc(db.selectItem, db);
 exports.deleteItem = wrapFunc(db.deleteItem, db);
+exports.doQuery = wrapFunc(db.doQuery, db);

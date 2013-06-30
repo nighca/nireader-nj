@@ -34,7 +34,7 @@ exports.add = function(req, res){
     });
     subscription.save(function(err, subscription){
         res.json({
-            err: err,
+            error: err,
             result: subscription
         });
     });
@@ -54,7 +54,7 @@ exports.remove = function(req, res){
         subscribee: subscribee
     }, function(err, result){
         res.json({
-            err: err,
+            error: err,
             result: result
         });
     });

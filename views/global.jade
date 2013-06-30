@@ -2,7 +2,7 @@
 html
     head
         title= title
-        block scripts
+        block libs
             script(src='/lib/jquery-2.0.2.min.js')
             script(src='/javascripts/util.js')
         block stylesheets
@@ -15,3 +15,5 @@ html
             block content
                 p no content
         #footer
+            block scripts
+                script(src='/javascripts/global.js')

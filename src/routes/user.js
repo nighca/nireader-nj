@@ -45,7 +45,7 @@ exports.add = function(req, res){
     });
     user.save(function(err, user){
         res.json({
-            err: err,
+            error: err,
             result: user
         });
     });

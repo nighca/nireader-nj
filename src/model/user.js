@@ -197,6 +197,7 @@ User.prototype.cleanSubscriptions = function(callback) {
     db.deleteItem('subscriptions', {subscriber: user.id}, callback);
 };
 
+exports.tableName = tableName;
 exports.ifExist = ifExist;
 exports.ifRight = ifRight;
 exports.select = selectUser;
