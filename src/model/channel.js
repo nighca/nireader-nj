@@ -231,6 +231,7 @@ Channel.prototype.cleanItems = function(callback) {
 
 exports.ifExist = ifExist;
 exports.select = selectChannel;
+exports.select = selectChannel;
 exports.getAll = getAllChannel;
 exports.create = createChannel;
 exports.createFromMeta = createChannelFromMeta;

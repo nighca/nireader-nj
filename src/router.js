@@ -7,7 +7,7 @@ var user = require('./routes/user');
 var subscription = require('./routes/subscription');
 
 var routes = [
-	//type, path, handler, isPublic
+	//method, path, handler, isPublic
 	['get', '/', routes.index, true],
 
 	['get', '/signin', signin.page, true],
@@ -19,6 +19,8 @@ var routes = [
 	['get', '/channel/:cid', channel.get],
 	['post', '/channel/', channel.add],
 
+	['get', '/user/:uid/channel/:cid/item/:iid', item.get],
+	['get', '/user/:uid/channel/:cid', channel.userGet],
 	['get', '/user/:uid', user.get],
 	['post', '/user/', user.add],
 
@@ -41,7 +43,7 @@ for (var i = 0, l = routes.length; i < l; i++) {
 	route = routes[i];
 	var handler = route[3] ? route[2] : authHandler(route[2]);
 	routes[i] = {
-		type: route[0],
+		method: route[0],
 		path: route[1],
 		handler: handler
 	};

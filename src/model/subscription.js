@@ -1,10 +1,12 @@
 var db = require('../lib/db');
 var Channel = require('./channel');
+var Item = require('./item');
 
 var tableName = 'subscription';
 
 db.initTable(tableName, {
     description : 'text',
+    subscribeDate : 'time',
     subscriber : 'number',
     subscribee : 'number'
 }, function(err, result){
@@ -15,6 +17,7 @@ db.initTable(tableName, {
 
 function Subscription (options) {
     this.id = options.id || null; 
+    this.subscribeDate = new Date();
     this.subscriber = options.subscriber || null; 
     this.subscribee = options.subscribee || null; 
     this.description = options.description || null; 
@@ -99,16 +102,26 @@ Subscription.prototype.remove = function(callback) {
 
 Subscription.prototype.getChannel = function(callback) {
     var subscription = this;
-    if(!subscription.subscribee){
-        callback && callback('subscribee not assigned.');
-        return;
-    }
-    db.selectItem('channel', {id: subscription.subscribee}, function(err, results){
-        var channel;
-        if(!err){
-            channel = Channel.create(results[0]);
+    Channel.select({id: subscription.subscribee}, function(err, channels){
+        if(err){
+            callback && callback(err);
+            return;
+        }else if(channels.length === 0){
+            callback && callback('no such channel');
+            return;
         }
-        callback && callback(err, channel);
+        callback && callback(null, channels[0]);
+    });
+};
+
+Subscription.prototype.getItems = function(callback) {
+    var subscription = this;
+    Item.select({source: subscription.subscribee}, function(err, items){
+        if(err){
+            callback && callback(err);
+            return;
+        }
+        callback && callback(err, items);
     });
 };
 

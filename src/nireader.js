@@ -35,7 +35,7 @@ if ('development' == app.get('env')) {
 var route;
 for (var i = 0; i < routes.length; i++) {
 	route = routes[i];
-	app[route.type](route.path, route.handler);
+	app[route.method](route.path, route.handler);
 };
 
 http.createServer(app).listen(app.get('port'), function(){

@@ -126,16 +126,16 @@ User.prototype.getSubscriptions = function(callback) {
 };
 
 User.prototype.getChannels = function(callback) {
-    this.getSubscriptions(function(err, results){
+    this.getSubscriptions(function(err, subscriptions){
         if(err){
             callback(err, null);
             return;
         }
         var notFinished = 0;
         var subscription, channels = [];
-        for (var i = 0, len = results.length; i < len; i++) {
+        for (var i = 0, len = subscriptions.length; i < len; i++) {
             notFinished++;
-            results[i].getChannel(function(err, channel){
+            subscriptions[i].getChannel(function(err, channel){
                 channels.push(channel);
                 notFinished--;
 
@@ -149,6 +149,34 @@ User.prototype.getChannels = function(callback) {
         };
         if(!notFinished){
             callback(null, channels);
+        }
+    });
+};
+
+User.prototype.getItems = function(callback) {
+    this.getSubscriptions(function(err, subscriptions){
+        if(err){
+            callback(err, null);
+            return;
+        }
+        var notFinished = 0;
+        var items = [];
+        for (var i = 0, len = subscriptions.length; i < len; i++) {
+            notFinished++;
+            subscriptions[i].getItems(function(err, results){
+                items.concat(results);
+                notFinished--;
+
+                if(err){
+                    callback(err);
+                }
+                if(!notFinished){
+                    callback(null, items);
+                }
+            });
+        };
+        if(!notFinished){
+            callback(null, items);
         }
     });
 };

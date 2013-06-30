@@ -19,7 +19,7 @@
 .center-block{height:100%;overflow-y:scroll;}.center-block::-webkit-scrollbar-button:vertical{height:40px;}
 .center-block::-webkit-scrollbar-thumb:vertical{background-color:rgba(200, 200, 200, 0.2);}.center-block::-webkit-scrollbar-thumb:vertical:hover{background-color:rgba(200, 200, 200, 0.4);}
 .title,.main-content{color:#333;}
-.title{margin:40px 40px 30px 24px;padding-left:8px;height:1.2em;line-height:1.2em;border-left:8px solid #530f74;font-weight:bold;font-size:40px;}
+.title{margin:40px 40px 30px 24px;padding-left:8px;line-height:1.2em;border-left:8px solid #530f74;font-weight:bold;font-size:40px;}
 .main-content{margin:20px 40% 40px 40px;}.main-content h1,.main-content h2,.main-content h3,.main-content h4,.main-content h5,.main-content h6{margin-top:0.8em;margin-bottom:0.6em;}
 .main-content p{margin-bottom:0.6em;}
 .main-content a{color:#530f74;}

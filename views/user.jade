@@ -19,7 +19,7 @@ block centerBlock
                         ul.item-list
                             each channel in user.channels
                                 li(data-cid=channel.id)
-                                    a(href='/channel/'+channel.id)= channel.title
+                                    a(href='/user/'+user.id+'/channel/'+channel.id)= channel.title
                                         span.pubdate= channel.pubDate
                                     span.unsubscribe -
                     else
