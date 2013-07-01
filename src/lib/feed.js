@@ -22,7 +22,7 @@ var parse = function(stream, callback){
     var dealError = function(error){
         callback && callback(error);
     };
-
+    
     var dealMeta = function(meta){
         cnt.meta = meta;
         code = meta['#xml']['encoding'];
@@ -30,7 +30,11 @@ var parse = function(stream, callback){
     };
 
     var dealArticle = function(article){
-        article.content = (article.content && article.content['#']) || (article['content:encoded'] && article['content:encoded']['#']);
+        article.content = (article.content && article.content['#']) || 
+            (article['content:encoded'] && article['content:encoded']['#']) || 
+            article.description || 
+            article.summary || 
+            '';
         if(decoder){
             article.content = decoder.write(article.content);
         }

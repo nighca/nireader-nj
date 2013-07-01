@@ -25,3 +25,9 @@ exports.check = function(req, res){
         res.redirect(target);
     });
 };
+
+exports.out = function(req, res){
+    req.session = null;
+    res.clearCookie('connect.sid');
+    res.redirect('/');
+};

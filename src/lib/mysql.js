@@ -183,7 +183,7 @@ var insertItems = function(pool, table, objs, callback){
     }
 };
 
-var makeQuery = function(query, obj){
+var makeQuery = function(query, obj, sort){
     if(typeof obj === 'string'){
         query += ' WHERE ' + obj;
     }else{
@@ -206,13 +206,22 @@ var makeQuery = function(query, obj){
         }
     }
 
+    if(sort){
+        var order = sort.order;
+        var descrease = sort.descrease;
+        query += ' ORDER BY ' + order;
+        if(descrease){
+            query += ' DESC';
+        }
+    }
+
     return query;
 };
 
-var selectItem = function(pool, table, obj, callback){
+var selectItem = function(pool, table, obj, callback, sort){
     var query = 'SELECT * FROM ' + table ;
 
-    doQuery(pool, makeQuery(query, obj), callback);
+    doQuery(pool, makeQuery(query, obj, sort), callback);
 };
 
 var deleteItem = function(pool, table, obj, callback){

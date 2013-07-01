@@ -10,7 +10,8 @@ exports = module.exports = {
 	feed: {
 	},
 	task: {
-		fetchInterval: 1000*60*60*24,
+		//fetchInterval: 1000*60*60*24,
+		fetchInterval: 1000*60*10,
 		tryFetchTimes: 5
 	}
 };

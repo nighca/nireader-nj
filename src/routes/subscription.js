@@ -1,4 +1,5 @@
 var Subscription = require('../model/subscription');
+var createChannelWithUrl = require('./channel').createWithUrl;
 
 //get
 exports.get = function(req, res){
@@ -36,6 +37,36 @@ exports.add = function(req, res){
         res.json({
             error: err,
             result: subscription
+        });
+    });
+};
+
+exports.addWithUrl = function(req, res){
+    var subscriber = req.body.subscriber,
+        url = req.body.url,
+        description = req.body.description;
+
+    if(!(subscriber && url)){
+        res.send(500, {error: 'no subscriber or url'});
+        return;
+    }
+
+    createChannelWithUrl(url, function(err, channel){
+        if(err){
+            res.send(500, {error: err});
+            return;
+        }
+
+        var subscription = Subscription.create({
+            subscriber: subscriber,
+            subscribee: channel.id,
+            description: description
+        });
+        subscription.save(function(err, subscription){
+            res.json({
+                error: err,
+                result: subscription
+            });
         });
     });
 };

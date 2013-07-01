@@ -21,12 +21,12 @@ exports.index = function(req, res){
                 user.channels = channels;
 
                 Channel.getAll(function(err, all){
-                    res.render('user', { title: 'home', user: user, channels: all });
+                    res.render('home', { title: 'home', user: user, channels: all });
                 });
             });
         });
     }else{
-        res.render('home', {title: 'home'});
+        res.render('index', {title: 'home'});
     }
     
     

@@ -12,14 +12,15 @@ var createWithUrl = function (source, callback) {
             return;
         }
 
-        var channel = Channel.createFromMeta(meta);
+        var channel = Channel.createFromMeta(meta, source);
         channel.save(function(){
             channel.fetch();
+            callback(null, channel);
         });
-
-        callback(null, channel);
     });
 };
+
+exports.createWithUrl = createWithUrl;
 
 //get
 exports.get = function(req, res){

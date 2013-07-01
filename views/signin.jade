@@ -1,9 +1,13 @@
 extends global
 
+append stylesheets
+    link(rel='stylesheet', href='/stylesheets/signin.css')
+
 block content
-	form(action='', method='post')
-		if target
-			input(type='hidden', name='target', value=target)
-		input(type='text', name='username')
-		input(type='password', name='password')
-		button(type='submit') signin
+    form.signin-block(action='', method='post')
+        if target
+            input(type='hidden', name='target', value=target)
+        input(type='text', name='username', placeholder='USERNAME')
+        input(type='password', name='password', placeholder='PASSWORD')
+        button(type='submit')
+            i.icon-ok

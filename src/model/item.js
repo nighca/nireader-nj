@@ -58,7 +58,7 @@ var saveItem = function(item, callback){
     });
 };
 
-var selectItem = function(options, callback){
+var selectItem = function(options, callback, sort){
     db.selectItem(tableName, options, function(err, results){
         var items = [];
         if(!err){
@@ -67,7 +67,7 @@ var selectItem = function(options, callback){
             };
         }
         callback(err, items);
-    });
+    }, sort);
 };
 
 var removeItem = function(options, callback){

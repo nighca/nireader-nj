@@ -38,16 +38,32 @@ function Channel (options) {
     this.webMaster = options.webMaster || null;
 }
 
+var all;
+var refreshAll = function(){
+    selectChannel({}, function(err, channels){
+        if(!err){
+            all = channels;
+        }
+    });
+};
+refreshAll();
+function getAllChannel(callback){
+    if(!all){
+        selectChannel({}, callback);
+    }else{
+        callback(null, all);
+    }
+};
 
-var createChannel = function(options){
+function createChannel(options){
     return new Channel(options);
 };
 
-var createChannelFromMeta = function(meta){
+function createChannelFromMeta(meta, xmlurl){
     return createChannel({
         title : meta.title,
         link : meta.link,
-        source: meta.xmlurl || meta.xmlUrl,
+        source: meta.xmlurl || meta.xmlUrl || xmlurl,
         description : meta.description,
 
         language : meta.language,
@@ -59,20 +75,24 @@ var createChannelFromMeta = function(meta){
     });
 };
 
-var updateChannel = function(channel, callback){
-    db.updateItem(tableName, channel, callback);
-};
-
-var saveChannel = function(channel, callback){
-    db.insertItem(tableName, channel, function(err, result){
-        if(!err){
-            channel.id = result.insertId;
-        }
+function updateChannel(channel, callback){
+    db.updateItem(tableName, channel, function(err, result){
+        refreshAll();
         callback && callback(err, channel);
     });
 };
 
-var selectChannel = function(options, callback){
+function saveChannel(channel, callback){
+    db.insertItem(tableName, channel, function(err, result){
+        if(!err){
+            channel.id = result.insertId;
+        }
+        refreshAll();
+        callback && callback(err, channel);
+    });
+};
+
+function selectChannel(options, callback, sort){
     db.selectItem(tableName, options, function(err, results){
         var channels = [];
         if(!err){
@@ -81,24 +101,10 @@ var selectChannel = function(options, callback){
             };
         }
         callback(err, channels);
-    });
+    }, sort);
 };
 
-var all;
-selectChannel({}, function(err, channels){
-    if(!err){
-        all = channels;
-    }
-});
-var getAllChannel = function(callback){
-    if(!all){
-        selectChannel({}, callback);
-    }else{
-        callback(null, all);
-    }
-};
-
-var ifExist = function(channel, callback){
+function ifExist(channel, callback){
     selectChannel({source: channel.source}, function(err, channels){
         if(err){
             callback && callback(err);
@@ -112,8 +118,11 @@ var ifExist = function(channel, callback){
     });
 };
 
-var removeChannel = function(options, callback){
-    db.deleteItem(tableName, options, callback);
+function removeChannel(options, callback){
+    db.deleteItem(tableName, options, function(err, result){
+        refreshAll();
+        callback && callback(err, channel);
+    });
 };
 
 Channel.prototype.save = function(callback) {
@@ -205,19 +214,15 @@ Channel.prototype.fetch = function(callback) {
 
 Channel.prototype.getItems = function(callback) {
     var channel = this;
+    var sort = {
+        order: 'pubDate',
+        descrease: true
+    };
     if(!channel.id){
         callback && callback('ID not assigned.');
         return;
     }
-    db.selectItem('item', {source: channel.id}, function(err, results){
-        var items = [];
-        if(!err){
-            for (var i = 0, l = results.length; i < l; i++) {
-                items.push(Item.create(results[i]));
-            }
-        }
-        callback && callback(err, items);
-    });
+    Item.select({source: channel.id}, callback, sort);
 };
 
 Channel.prototype.cleanItems = function(callback) {
@@ -226,7 +231,7 @@ Channel.prototype.cleanItems = function(callback) {
         callback && callback('ID not assigned.');
         return;
     }
-    db.deleteItem('item', {source: channel.id}, callback);
+    Item.remove({source: channel.id}, callback);
 };
 
 exports.tableName = tableName;

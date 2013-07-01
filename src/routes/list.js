@@ -40,13 +40,28 @@ exports.item = function(req, res){
         });
     };
 
+    var paramPattern = /^[\d\w]+$/;
+    if((req.query.cid && !paramPattern.test(req.query.cid)) || 
+        (req.query.order && !paramPattern.test(req.query.order))){
+        res.json({
+            error: 'wrong param'
+        });
+        return;
+    }
+
     if(req.query.cid){
+        var order = req.query.order || 'pubDate DESC';
         query = 'SELECT id, title, pubDate, source FROM ' + 
             Item.tableName + 
             ' WHERE source = ' + 
-            req.query.cid;
+            req.query.cid + 
+            ' ORDER BY ' + 
+            order;
     }else{
-        query = 'SELECT id, title, pubDate, source FROM ' + Item.tableName;
+        query = 'SELECT id, title, pubDate, source FROM ' + 
+            Item.tableName + 
+            ' ORDER BY ' + 
+            order;
     }
     db.doQuery(query, callback);
 };

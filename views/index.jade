@@ -1,0 +1,23 @@
+extends global
+
+append scripts
+    script(src='/javascripts/index.js')
+
+append stylesheets
+    link(rel='stylesheet', href='/stylesheets/index.css')
+
+block content
+    #title-block
+        h3.top-title NIREADER
+        h3.second-title JUST
+        h3.second-title ANOTHER
+        h3.second-title RSS READER
+
+        p.ops
+            a#signin.op(href='/signin') SIGN IN
+        #signin-block.signin-block
+            form(action='/signin', method='post')
+                input(type='text', name='username', placeholder='USERNAME')
+                input(type='password', name='password', placeholder='PASSWORD')
+                button(type='submit')
+                    i.icon-ok

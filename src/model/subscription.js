@@ -40,7 +40,7 @@ var saveSubscription = function(subscription, callback){
     });
 };
 
-var selectSubscription = function(options, callback){
+var selectSubscription = function(options, callback, sort){
     db.selectItem(tableName, options, function(err, results){
         var subscriptions = [];
         if(!err){
@@ -49,7 +49,7 @@ var selectSubscription = function(options, callback){
             };
         }
         callback(err, subscriptions);
-    });
+    }, sort);
 };
 
 var removeSubscription = function(options, callback){

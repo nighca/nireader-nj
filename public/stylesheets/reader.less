@@ -1,7 +1,5 @@
 @import "define.less";
 
-@themeColor: rgba(83, 15, 116, 1);
-
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -131,7 +129,7 @@
 
     border-left: 8px solid @themeColor;
     font-weight: bold;
-    font-size: 40px;
+    font-size: 36px;
 }
 .date{
     position: relative;
@@ -142,6 +140,9 @@
 .main-content{
     position: relative;
     margin: 20px 40% 40px 40px;
+
+    line-height: 1.6em;
+    font-size: 14px;
 
     h1,h2,h3,h4,h5,h6{
         margin-top: 0.8em;
@@ -169,6 +170,10 @@
         background-color: #333;
         color: #f9f9f9;
         border-left: 4px solid @themeColor;
+        
+        line-height: 1.4em;
+        font-family: Monaco, Consolas, 'Andale Mono', 'DejaVu Sans Mono', monospace;
+        font-size: 0.8em;
 
         &::-webkit-scrollbar {
             width: 4px;
@@ -197,7 +202,7 @@
 }
 
 .sub-title{
-    font-size: 28px;
+    font-size: 24px;
     line-height: 1em;
     color: #a8a8a8;
 }

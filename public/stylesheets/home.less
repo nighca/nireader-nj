@@ -1,37 +1,16 @@
-@import "define.less";
-
-#title-block{
+.side-op{
+	display: none;
 	position: absolute;
-	left: 10%;
-	top: 15%;
-	width: 60%;
+	left: -27px;
+
+	&.add-feed{
+		top: 0px;
+	}
 }
 
-.top-title, .second-title{
-	font-size: 60px;
-	line-height: 60px;
-}
-
-.top-title{
-	font-weight: bold;
-}
-
-.second-title{
-	color: #a8a8a8;
-}
-
-.ops{
-	margin-top: 40px;
-
-	.op{
-		font-size: 24px;
-		text-decoration: none;
-		color: #a8a8a8;
-
-		.transition-duration();
-
-		&:hover{
-			color: #000;
-		}
+.add-feed-block{
+	//display: none;
+	input{
+		margin-right: 10px;
 	}
 }

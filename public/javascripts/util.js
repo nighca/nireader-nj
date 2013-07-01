@@ -1,5 +1,5 @@
 var $ = $ || (function() {
-    console.log("Load jquery fails!");
+    console.error("Load jquery fails!");
     return null;
 }());
 
@@ -107,7 +107,7 @@ var getData = function(data, url, callback, repeat) {
 };
 
 var dealError = function(){
-    console.log.apply(console, arguments);
+    console.error.apply(console, arguments);
 };
 
 var parseDate = function(date){

@@ -40,7 +40,7 @@ var saveUser = function(user, callback){
     });
 };
 
-var selectUser = function(options, callback){
+var selectUser = function(options, callback, sort){
     db.selectItem(tableName, options, function(err, results){
         var users = [];
         if(!err){
@@ -49,7 +49,7 @@ var selectUser = function(options, callback){
             };
         }
         callback(err, users);
-    });
+    }, sort);
 };
 
 var removeUser = function(options, callback){
@@ -114,7 +114,7 @@ User.prototype.getSubscriptions = function(callback) {
         callback && callback('ID not assigned.');
         return;
     }
-    db.selectItem('subscription', {subscriber: user.id}, function(err, results){
+    Subscription.select({subscriber: user.id}, function(err, results){
         var subscriptions = [];
         if(!err){
             for (var i = 0, l = results.length; i < l; i++) {
@@ -194,7 +194,7 @@ User.prototype.cleanSubscriptions = function(callback) {
             };
         }
     });
-    db.deleteItem('subscriptions', {subscriber: user.id}, callback);
+    Subscription.remove({subscriber: user.id}, callback);
 };
 
 exports.tableName = tableName;
