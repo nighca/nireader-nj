@@ -118,6 +118,19 @@ var parseDate = function(date){
     return date;
 };
 
+var getDayObj = function(t){
+    if(!t){
+        t = new Date();
+    }
+
+    return {
+        y: t.getFullYear(),
+        m: t.getMonth() + 1,
+        d: t.getDate(),
+        value: t.valueOf()
+    };
+};
+
 //--------------------------------------- add-on funcs -----------------------------------------
 
 if ( !Array.prototype.forEach ) {

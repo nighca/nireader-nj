@@ -20,7 +20,8 @@
 .center-block::-webkit-scrollbar-thumb:vertical{background-color:rgba(200, 200, 200, 0.2);}.center-block::-webkit-scrollbar-thumb:vertical:hover{background-color:rgba(200, 200, 200, 0.4);}
 .title,.main-content{color:#333;}
 .title{position:relative;margin:40px 40px 20px 24px;padding-left:8px;line-height:1.2em;border-left:8px solid #530f74;font-weight:bold;font-size:36px;}
-.date{position:relative;margin:0 40px 20px 40px;font-size:14px;color:#a8a8a8;}
+.info{position:relative;margin:0 40px 20px 40px;font-size:14px;color:#a8a8a8;}.info .date{margin-right:40px;}
+.info a{text-decoration:none;color:inherit;-webkit-transition-duration:0.5s;-moz-transition-duration:0.5s;-o-transition-duration:0.5s;transition-duration:0.5s;}.info a:hover{color:#530f74;}
 .main-content{position:relative;margin:20px 40% 40px 40px;line-height:1.6em;font-size:14px;}.main-content h1,.main-content h2,.main-content h3,.main-content h4,.main-content h5,.main-content h6{margin-top:0.8em;margin-bottom:0.6em;}
 .main-content p{margin-bottom:0.6em;}
 .main-content a{color:#530f74;}

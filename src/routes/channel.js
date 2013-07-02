@@ -54,7 +54,7 @@ exports.get = function(req, res){
             }
 
             for (var i = 0, l = items.length; i < l; i++) {
-                items[i].pubDate = getDay(items[i].pubDate, "-");
+                items[i].date = items[i].pubDate.toLocaleTimeString() + ' ' + items[i].pubDate.toLocaleDateString();
             };
 
             channel.items = items;
@@ -95,7 +95,7 @@ exports.userGet = function(req, res){
             }
 
             for (var i = 0, l = items.length; i < l; i++) {
-                items[i].pubDate = getDay(items[i].pubDate, "-");
+                items[i].date = items[i].pubDate.toLocaleTimeString() + ' ' + items[i].pubDate.toLocaleDateString();
             };
 
             channel.items = items;

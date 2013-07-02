@@ -18,6 +18,7 @@ exports.get = function(req, res){
                     result: item
                 });
             }else{
+                item.date = item.pubDate.toLocaleTimeString() + ' ' + item.pubDate.toLocaleDateString();
                 res.render('item', {title: item.title, item: item});
             }
         });

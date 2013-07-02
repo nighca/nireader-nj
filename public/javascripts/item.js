@@ -1,7 +1,9 @@
 var leftLink = $('#left-link');
 var rightLink = $('#right-link');
 var itemTitle = $('#item-title');
+var itemInfo = $('#item-info');
 var itemDate = $('#item-date');
+var itemLink = $('#item-link');
 var itemContent = $('#item-content');
 
 var state = {};
@@ -33,6 +35,7 @@ var itemManager = (function(){
 			}
 			getData('/channel/' + item.source + '/item/' + item.id, function(err, item){
 				if(!err){
+					item.pubDate = new Date(item.pubDate);
 					items[item.id] = item;
 				}
 				callback && callback(err, item);
@@ -145,14 +148,16 @@ $(function () {
 		}
 	};
 
-	itemDate.doCheckout = function(cnt, direction){
+	itemInfo.doCheckout = function(cnt, direction){
 		direction = direction || 'left';
 		switch(direction){
 			case 'left': this.delay(40).animate({
 					left: '100%',
 					opacity: '0'
 				}, 300, function(){
-					$(this).text(cnt).animate({
+					itemDate.text(cnt.date);
+					itemLink.attr('href',cnt.link);
+					$(this).animate({
 						left: '-100%'
 					}, 0).delay(40).animate({
 						left: '0',
@@ -164,7 +169,9 @@ $(function () {
 					left: '-100%',
 					opacity: '0'
 				}, 300, function(){
-					$(this).text(cnt).animate({
+					itemDate.text(cnt.date);
+					itemLink.attr('href',cnt.link);
+					$(this).animate({
 						left: '100%'
 					}, 0).delay(40).animate({
 						left: '0',
@@ -183,6 +190,7 @@ $(function () {
 					left: '100%',
 					opacity: '0'
 				}, 300, function(){
+					$('.center-block').scrollTop(0);
 					$(this).html(cnt).animate({
 						left: '-100%'
 					}, 0).delay(80).animate({
@@ -195,6 +203,7 @@ $(function () {
 					left: '-100%',
 					opacity: '0'
 				}, 300, function(){
+					$('.center-block').scrollTop(0);
 					$(this).html(cnt).animate({
 						left: '100%'
 					}, 0).delay(80).animate({
@@ -209,12 +218,15 @@ $(function () {
 
 	var showItem = function(item, callback){
 		var direction = state.curr.pos > item.pos ? 'left' : 'right';
-		console.log(state.curr.pos, item.pos);//----------------------------
+		//console.log(state.curr.pos, item.pos);//----------------------------
 
 		$('title').text(item.title);
 
 		itemTitle.doCheckout(item.title, direction);
-		itemDate.doCheckout(item.pubDate, direction);
+		itemInfo.doCheckout({
+			date: item.pubDate.toLocaleTimeString() + ' ' + item.pubDate.toLocaleDateString(),
+			link: item.link
+		}, direction);
 
 		if(item.content){
 			itemContent.doCheckout(item.content, direction);
@@ -231,8 +243,6 @@ $(function () {
 				callback && callback();
 			});
 		}
-
-		$('.center-block').scrollTop(0);
 	};
 
 	var checkout = function(item, callback){
