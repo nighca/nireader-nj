@@ -18,7 +18,6 @@ var replaceState = function(s){
 	s = s || state;
 	var title = s.curr ? s.curr.title : '>_<';
 	var url = s.curr ? s.curr.id+"" : '';
-	//console.log('replace: ', title, url);//-------------------------
 	history.replaceState(s, title, url);
 };
 

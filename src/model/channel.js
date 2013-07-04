@@ -24,15 +24,15 @@ db.initTable(tableName, {
 });
 
 function Channel (options) {
-    this.id = options.id || null; 
-    this.title = options.title || null; 
-    this.link = options.link || null; 
-    this.source = options.source || null; 
-    this.description = options.description || null; 
+    this.id = options.id || null;
+    this.title = options.title || null;
+    this.link = options.link || null;
+    this.source = options.source || null;
+    this.description = options.description || null;
 
-    this.language = options.language || null; 
-    this.copyright = options.copyright || null; 
-    this.lastFetchDate = options.lastFetchDate || null; 
+    this.language = options.language || null;
+    this.copyright = options.copyright || null;
+    this.lastFetchDate = options.lastFetchDate || null;
     this.category = options.category || null;
     this.generator = options.generator || null;
     this.webMaster = options.webMaster || null;
@@ -168,7 +168,7 @@ Channel.prototype.updateFromMeta = function(meta){
 };
 Channel.prototype.fetch = function(callback) {
     var channel = this;
-    console.log("Channel fetch: " + channel.title);//---------------------------------
+    //console.log("Channel fetch: " + channel.title);//---------------------------------
     if(!channel.source){
         callback && callback("no source assigned.")
         return;
@@ -189,10 +189,10 @@ Channel.prototype.fetch = function(callback) {
         var notFinished = 0;
         for (var i = 0, l = items.length; i < l; i++) {
             item = items[i];
-            console.log("Get Item: " + item.title);//---------------------
+            //console.log("Get Item: " + item.title);//---------------------
             if(useItem(item, channel)){
                 notFinished++;
-                console.log("Use Item: " + item.title);//---------------------
+                //console.log("Use Item: " + item.title);//---------------------
                 Item.createFromFeed(item, channel.id).save(function(err){
                     if(err){
                         console.error(err);
