@@ -23,7 +23,7 @@ var refresh = function(){
 
 var getFromLocation = function(name){
     var pattern = new RegExp('/' + name + '\\/([\\d\\w]+)(\\/|$)');
-    return pattern.exec(location.pathname)[1];
+    return (pattern.exec(location.pathname) && pattern.exec(location.pathname)[1]) || null;
 };
 
 var format = function(num, hex, units, dec) {
