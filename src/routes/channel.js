@@ -24,29 +24,16 @@ exports.createWithUrl = createWithUrl;
 
 //get
 exports.get = function(req, res){
-    var dealChannels = function (err, channels) {
+    Channel.select({id: req.params.cid}, function(err, channels){
         if(err){
             res.send(500, {error: err});
             return;
-        }
-
-        var cid = parseInt(req.params.cid, 10);
-        var prev, channel, next;
-
-        for (var i = 0; i < channels.length; i++) {
-            if(channels[i].id === cid){
-                channel = channels[i];
-                prev = channels[i - 1];
-                next = channels[i + 1];
-                break;
-            }
-        };
-
-        if(!channel){
+        }else if(channels.length === 0 || !channels[0]){
             res.send(404);
             return;
         }
 
+        var channel = channels[0];
         channel.getItems(function(err, items){
             if(err){
                 res.send(err);
@@ -55,13 +42,12 @@ exports.get = function(req, res){
 
             for (var i = 0, l = items.length; i < l; i++) {
                 items[i].date = format(items[i].pubDate);
-            };
+            }
 
             channel.items = items;
-            res.render('channel', { title: 'channel', channel: channel, prev: prev, next: next });
+            res.render('channel', { title: 'channel', channel: channel});
         });
-    };
-    Channel.getAll(dealChannels);
+    });
 };
 
 exports.userGet = function(req, res){

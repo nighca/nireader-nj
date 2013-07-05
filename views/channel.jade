@@ -1,12 +1,11 @@
 extends reader
 
 block leftBlock
-    if prev
-        a.left-block(href='/channel/'+prev.id)
-            i.icon-caret-left
+    a#left-link.left-block(data-async-link=true)
+        i.icon-caret-left
 
 block topBlock
-    a.top-block(href='/')
+    a#top-link.top-block(href='/')
         i.icon-caret-up
 
 block centerBlock
@@ -21,6 +20,5 @@ block centerBlock
 
 
 block rightBlock
-    if next
-        a.right-block(href='/channel/'+next.id)
-            i.icon-caret-right
+    a#right-link.right-block(data-async-link=true)
+        i.icon-caret-right
