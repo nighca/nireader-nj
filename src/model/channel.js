@@ -93,6 +93,10 @@ function saveChannel(channel, callback){
 };
 
 function selectChannel(options, callback, sort){
+    sort = sort || {
+        order: 'title',
+        descrease: false
+    };
     db.selectItem(tableName, options, function(err, results){
         var channels = [];
         if(!err){

@@ -59,6 +59,10 @@ var saveItem = function(item, callback){
 };
 
 var selectItem = function(options, callback, sort){
+    sort = sort || {
+        order: 'pubDate',
+        descrease: true
+    };
     db.selectItem(tableName, options, function(err, results){
         var items = [];
         if(!err){
