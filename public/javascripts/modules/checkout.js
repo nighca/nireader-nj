@@ -1,49 +1,11 @@
-var leftLink = $('#left-link');
-var rightLink = $('#right-link');
-var itemTitle = $('#item-title');
-var itemInfo = $('#item-info');
-var itemDate = $('#item-date');
-var itemLink = $('#item-link');
-var itemContent = $('#item-content');
-
 var state = {};
 var pushState = function(s){
     s = s || state;
     var title = s.curr ? s.curr.title : '>_<';
-    var url = s.curr ? s.curr.id+"" : '';
+    var url = s.curr ? s.curr.id+'' : '';
     //console.log('push: ', title, url);//-------------------------
     history.pushState(s, title, url);
 };
-var replaceState = function(s){
-    s = s || state;
-    var title = s.curr ? s.curr.title : '>_<';
-    var url = s.curr ? s.curr.id+"" : '';
-    history.replaceState(s, title, url);
-};
-
-var itemManager = (function(){
-    var items = {};
-    return {
-        get: function(item, callback){
-            if(!item){
-                return;
-            }
-            if(items[item.id]){
-                callback && callback(null, items[item.id]);
-                return;
-            }
-            getData('/channel/' + item.source + '/item/' + item.id, function(err, item){
-                if(!err){
-                    item.pubDate = new Date(item.pubDate);
-                    items[item.id] = item;
-                }
-                callback && callback(err, item);
-            });
-        }
-    };
-})();
-
-var getItem = itemManager.get;
 
 var init = function(){
     if(!state.cid){
