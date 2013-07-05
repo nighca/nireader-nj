@@ -1,4 +1,5 @@
 var Item = require('../model/item');
+var format = require('../lib/date').format;
 
 //get
 exports.get = function(req, res){
@@ -18,9 +19,8 @@ exports.get = function(req, res){
                     result: item
                 });
             }else{
-                item.date = item.pubDate.toLocaleTimeString() + ' ' + item.pubDate.toLocaleDateString();
+                item.date = format(item.pubDate);
                 res.render('item', {title: item.title, item: item});
             }
         });
-    
 };

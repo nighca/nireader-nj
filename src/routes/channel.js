@@ -3,7 +3,7 @@ var Channel = require('../model/channel');
 var Item = require('../model/item');
 var Subscription = require('../model/subscription');
 var feed = require('../lib/feed');
-var getDay = require('../lib/date').getDay;
+var format = require('../lib/date').format;
 
 var createWithUrl = function (source, callback) {
     feed.getMetaRemote(source, function (err, meta) {
@@ -54,7 +54,7 @@ exports.get = function(req, res){
             }
 
             for (var i = 0, l = items.length; i < l; i++) {
-                items[i].date = items[i].pubDate.toLocaleTimeString() + ' ' + items[i].pubDate.toLocaleDateString();
+                items[i].date = format(items[i].pubDate);
             };
 
             channel.items = items;
@@ -95,7 +95,7 @@ exports.userGet = function(req, res){
             }
 
             for (var i = 0, l = items.length; i < l; i++) {
-                items[i].date = items[i].pubDate.toLocaleTimeString() + ' ' + items[i].pubDate.toLocaleDateString();
+                items[i].date = format(items[i].pubDate);
             };
 
             channel.items = items;

@@ -35,8 +35,13 @@ var getDay = function(t, sep){
     return dateFormat(t.y,t.m,t.d, sep);
 };
 
+var timeFormat = function(t){
+    return t && (t.toLocaleTimeString() + t.toLocaleDateString());
+};
+
 exports.getDayObj = getDayObj;
 exports.dateFormat = dateFormat;
 exports.getYear = getYear;
 exports.getMonth = getMonth;
 exports.getDay = getDay;
+exports.format = timeFormat;
