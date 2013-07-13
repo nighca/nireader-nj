@@ -64,6 +64,7 @@
 
 .left-block{
     left: 0px;
+    cursor: w-resize;
 
     &:hover{
         .hint-light(left);
@@ -72,12 +73,12 @@
 .right-block{
     right: 0px;
     width: 100px;
+    cursor: e-resize;
 
     &:hover{
         .hint-light(right);
     }
 }
-
 .middle-block{
     position: relative;
     height: 100%;
@@ -89,6 +90,7 @@
     top: 0;
     width: 100%;
     height: 50px;
+    cursor: n-resize;
     
     &:hover{
         .hint-light(top);

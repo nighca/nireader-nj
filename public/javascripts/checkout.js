@@ -12,6 +12,7 @@ var pushState = function(s){
     var title = s.curr ? s.curr.title : '>_<';
     var url = s.curr ? s.curr.id+"" : '';
     //console.log('push: ', title, url);//-------------------------
+    console.log(s);//---------------------------------------
     history.pushState(s, title, url);
 };
 var replaceState = function(s){
@@ -47,17 +48,12 @@ var getItem = itemManager.get;
 
 var init = function(){
     if(!state.cid){
-        state.cid = parseInt(getFromLocation('channel'), 10);
+        state.cid = parseInt(getFromPathname('channel'), 10);
     }
     if(!state.iid){
-        state.iid = parseInt(getFromLocation('item'), 10);
+        state.iid = parseInt(getFromPathname('item'), 10);
     }
     getData({cid: state.cid}, '/list/item', function (err, items) {
-        /*items.sort(function(a,b){
-            a.pubDate = parseDate(a.pubDate);
-            b.pubDate = parseDate(b.pubDate);
-            return a.pubDate < b.pubDate;
-        });*/
         if(err){
             dealError('Get item list: ', err);
             return;
@@ -254,14 +250,15 @@ $(function () {
 
         state.iid = item.id;
         state.curr = item;
-        pushState();
         init();
+        pushState();
     };
 
     window.onpopstate = function(e){
         if(!e.state){
             return;
         }
+        console.log(e.state);//------------------------------------
         showItem(e.state.curr);
         state = e.state;
         init();

@@ -21,9 +21,37 @@ var refresh = function(){
     window.location.reload();
 };
 
-var getFromLocation = function(name){
+var getFromPathname = function(name, pathname){
     var pattern = new RegExp('/' + name + '\\/([\\d\\w]+)(\\/|$)');
-    return (pattern.exec(location.pathname) && pattern.exec(location.pathname)[1]) || null;
+    pathname = pathname || location.pathname;
+    return (pattern.exec(pathname) && pattern.exec(pathname)[1]) || null;
+};
+
+var formatUrl = function(url){
+    if(!url){
+        return null;
+    }
+    var removeBeforeSlash = function(url){
+        var p = url.indexOf("://");
+        if(p<0){
+            return url;
+        }
+        url = url.slice(p+3);
+        p = url.indexOf("/");
+        if(p<0){
+            return "/";
+        }
+        return url.slice(p);
+    };
+    var addPath = function(url){
+        if(!url.indexOf('/')){
+            return url;
+        }
+        return location.pathname.replace(/([\w\d\_]*)$/, url);
+    };
+    url = removeBeforeSlash(url);
+    url = addPath(url);
+    return url;
 };
 
 var format = function(num, hex, units, dec) {
@@ -73,6 +101,7 @@ var doRequest = function(type, data, url, callback, repeat) {
         repeat = callback;
         callback = url;
         url = data;
+        data = null;
     }
     if (!callback) {
         callback = function() {};

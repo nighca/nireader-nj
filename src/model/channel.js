@@ -32,6 +32,7 @@ function Channel (options) {
 
     this.language = options.language || null;
     this.copyright = options.copyright || null;
+    this.pubDate = options.pubDate || null;
     this.lastFetchDate = options.lastFetchDate || null;
     this.category = options.category || null;
     this.generator = options.generator || null;

@@ -45,7 +45,16 @@ exports.get = function(req, res){
             }
 
             channel.items = items;
-            res.render('channel', { title: 'channel', channel: channel});
+
+            if(req.get('isAjax')){
+                res.json({
+                    error: err,
+                    result: channel
+                });
+            }else{
+                channel.date = format(channel.pubDate);
+                res.render('item', { title: channel.title, item: channel});
+            }
         });
     });
 };
@@ -74,6 +83,7 @@ exports.userGet = function(req, res){
             return;
         }
 
+
         channel.getItems(function(err, items){
             if(err){
                 res.send(err);
@@ -85,7 +95,15 @@ exports.userGet = function(req, res){
             };
 
             channel.items = items;
-            res.render('channel', { title: 'channel', channel: channel, prev: prev, next: next });
+            if(req.get('isAjax')){
+                res.json({
+                    error: err,
+                    result: channel
+                });
+            }else{
+                channel.date = format(channel.pubDate);
+                res.render('item', { title: channel.title, item: channel});
+            }
         });
     };
 
