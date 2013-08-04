@@ -5,7 +5,7 @@ var StringDecoder = require('string_decoder').StringDecoder;
 
 var log = require('./log');
 
-var options = require("../../config").feed;
+var options = require("../../config.json").feed;
 
 var encodeMap = {
     'UTF-8': 'utf8',

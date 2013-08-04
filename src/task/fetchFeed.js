@@ -1,6 +1,6 @@
 var Channel = require('../model/channel');
 
-var config = require('../../config').task;
+var config = require('../../config.json').task;
 
 var forEach = function(arr, func){
 	if(!arr.length) return;

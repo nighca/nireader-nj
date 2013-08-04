@@ -1,5 +1,5 @@
 var db = require("./mysql");
-var config = require("../../config");
+var config = require("../../config.json");
 
 var DBConfig = config.db;
 var initialTables = config.tables;
