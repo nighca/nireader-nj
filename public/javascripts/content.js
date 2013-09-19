@@ -190,3 +190,8 @@ Channel.prototype.render = function(wrapper, callback){
         callback && callback(err);
     });
 };
+
+Content.types = {
+    item: Item,
+    channel: Channel
+};
