@@ -1,0 +1,17 @@
+extends global
+
+append stylesheets
+    link(rel='stylesheet', href='/stylesheets/reader.css')
+
+block content
+    block leftBlock
+    block rightBlock
+    block topBlock
+    .middle-block
+        block centerBlock
+            p HOME
+        block bottomBlock
+
+append scripts
+    script
+        seajs.use("/javascripts/page/reader");

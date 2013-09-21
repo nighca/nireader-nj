@@ -26,7 +26,7 @@ exports.index = function(req, res){
             });
         });
     }else{
-        res.render('index', {title: 'home'});
+        res.render('entrance', {title: 'home'});
     }
     
     
