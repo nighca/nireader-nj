@@ -14,7 +14,8 @@ StateManager.prototype.init = function() {
         if(!e.state){
             return;
         }
-        manager.checkout(e.state.curr);
+        var Cnt = Content.types[e.state.curr.type];
+        manager.checkout(new Cnt(e.state.curr.obj));
     };
 
     manager.bindEvent();
