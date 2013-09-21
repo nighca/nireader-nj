@@ -1,9 +1,9 @@
-var home = require('./route/home');
-var signin = require('./route/signin');
-var signout = require('./route/signout');
-var item = require('./route/item');
-var channel = require('./route/channel');
-var subscription = require('./route/subscription');
+var home = require('./route/home'),
+    signin = require('./route/signin'),
+    signout = require('./route/signout'),
+    item = require('./route/item'),
+    channel = require('./route/channel'),
+    subscription = require('./route/subscription');
 
 var routes = [
     //method, path, handler, isPublic, devOnly
@@ -11,25 +11,11 @@ var routes = [
 
     ['get', '/signin', signin.get, true],
     ['get', '/signout', signout.get, false],
-    ['post', '/signin', signin.post, true]/*,
+    ['post', '/signin', signin.post, true],
 
-    ['get', '/list', list.index, false],
-    ['get', '/list/item', list.item, false],
-    ['get', '/list/channel', list.channel, false],
-
-    ['get', '/channel/:cid/item/:iid', item.get, false],
+    ['get', '/item/:iid', item.get, false],
     ['get', '/channel/:cid', channel.get, false],
-    ['post', '/channel/', channel.add, false],
-
-    ['get', '/user/:uid/channel/:cid/item/:iid', item.get, false],
-    ['get', '/user/:uid/channel/:cid', channel.userGet, false],
-    ['get', '/user/:uid', user.get, false, true],
-    ['post', '/user/', user.add, true, true],
-
-    ['get', '/subscription/:sid', subscription.get, false],
-    ['post', '/subscribe/url/', subscription.addWithUrl, false],
-    ['post', '/subscribe/', subscription.add, false],
-    ['post', '/unsubscribe/', subscription.remove, false]*/
+    ['post', '/channel/', channel.add, false]
 ];
 
 var route;
