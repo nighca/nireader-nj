@@ -1,86 +1,14 @@
 define(function(require, exports, module) {
-    var createContent = require('./createContent');
-    var resource = require('../kit/resource');
-    var URL = require('../kit/url');
 
     var StateManager = function(opt){
-        this.state = null
+        this.state = null;
+        this.handlers = {};
 
         this.init();
     }
 
-    var createContentWithUrl = function(url, callback){
-        url = URL.format(url);
-        var type = URL.getType(url);
-        if(!type){
-            callback('Wrong url');
-        }
-
-        resource.get(url, function(err, resource){
-            if(!err){
-                var content = createContent({
-                    url: url,
-                    data: resource[0],
-                    type: type,
-                    title: 'test title'
-                });
-                callback(null, content);
-            }else{
-                callback(err);
-            }
-        });
-    };
-
     StateManager.prototype.init = function(){
-        var manager = this;
-
-        manager.bindEvent();
-
-        createContentWithUrl(location.href, function(err, content){
-            if(!err){
-                manager.checkout(content);
-            }else{
-                console.warn(err);
-            }
-        });
-    };
-
-    StateManager.prototype.pushState = function(state){
-        state = state || this.state;
-        var title = state.title;
-        var url = state.url;
-        $('title').text(title);
-        history.pushState(state, title, url);
-    };
-
-    StateManager.prototype.render = function(callback){
-        $('body').html(this.state.render());
-        callback();
-    };
-
-    StateManager.prototype.preload = function(){
-        $('[data-link-async]').each(function(i, link){
-            link = $(link);
-            var preload = link.attr('data-link-preload');
-            var url = link.attr('href');
-            if(preload == "true" && url){
-            }
-        });
-    };
-
-    StateManager.prototype.checkout = function(target, callback){
-        var manager = this;
-
-        if(!target){
-            callback && callback();
-            return;
-        }
-
-        manager.state = target;
-        manager.render(function(){
-            callback && callback();
-            manager.preload();
-        });
+        this.bindEvent();
     };
 
     StateManager.prototype.bindEvent = function(){
@@ -88,21 +16,53 @@ define(function(require, exports, module) {
 
         $('body').delegate('[data-link-async]', 'click', function(e){
             e.preventDefault();
-            createContentWithUrl(url, function(err, content){
-                manager.checkout(content, function(){
-                    manager.pushState();
-                });
+
+            var url = formatUrl($(this).attr('href'));
+            manager.checkout({
+                url: url,
+                title: 'Loading'
             });
         });
 
-        window.onpopstate = function(e){
+        window.onpopstate = function(e){content
             if(!e.state){
                 return;
             }
 
-            manager.checkout(createContent(e.state));
+            manager.checkout(e.state);
         };
     };
+
+    StateManager.prototype.pushState = function(state){
+        history.pushState(null, this.state.title, this.state.url);
+    };
+
+    StateManager.prototype.checkout = function(target, callback){
+        var manager = this;
+
+        manager.state = target;
+        manager.pushState();
+
+        this.trigger('checkout', manager.state);
+    };
+
+    StateManager.prototype.on = function(event, handler){
+        this.handlers[event] = this.handlers[event] || [];
+        this.handlers[event].push(handler);
+    };
+
+    StateManager.prototype.trigger = function(event){
+        var list = this.handlers[event],
+            args = arguments.slice(1);
+        for (var i = 0, l = list.length; i < l; i++) {
+            try{
+                list[i].apply(this, args);
+            }catch(e){
+                console.warn(e);
+            }
+        };
+        this.handlers[event] = null;
+    };    
 
     module.exports = new StateManager();
 });
