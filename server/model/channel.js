@@ -3,8 +3,7 @@ var feed = require('../lib/feed');
 var Item = require('./item');
 
 var tableName = 'channel';
-
-db.initTable(tableName, {
+var struct = {
     title : 'string',
     link : 'longstring',
     source : 'longstring',
@@ -17,7 +16,9 @@ db.initTable(tableName, {
     category : 'string',
     generator : 'string',
     webMaster : 'string'
-}, function(err, result){
+};
+
+db.initTable(tableName, struct, function(err, result){
     if(err){
         console.log('INIT TABLE ' + tableName, err);
     }
@@ -38,23 +39,6 @@ function Channel (options) {
     this.generator = options.generator || null;
     this.webMaster = options.webMaster || null;
 }
-
-var all;
-var refreshAll = function(){
-    selectChannel({}, function(err, channels){
-        if(!err){
-            all = channels;
-        }
-    });
-};
-refreshAll();
-function getAllChannel(callback){
-    if(!all){
-        selectChannel({}, callback);
-    }else{
-        callback(null, all);
-    }
-};
 
 function createChannel(options){
     return new Channel(options);
@@ -78,7 +62,6 @@ function createChannelFromMeta(meta, xmlurl){
 
 function updateChannel(channel, callback){
     db.updateItem(tableName, channel, function(err, result){
-        refreshAll();
         callback && callback(err, channel);
     });
 };
@@ -88,7 +71,6 @@ function saveChannel(channel, callback){
         if(!err){
             channel.id = result.insertId;
         }
-        refreshAll();
         callback && callback(err, channel);
     });
 };
@@ -125,7 +107,6 @@ function ifExist(channel, callback){
 
 function removeChannel(options, callback){
     db.deleteItem(tableName, options, function(err, result){
-        refreshAll();
         callback && callback(err, channel);
     });
 };
@@ -240,10 +221,9 @@ Channel.prototype.cleanItems = function(callback) {
 };
 
 exports.tableName = tableName;
+exports.struct = struct;
 exports.ifExist = ifExist;
 exports.select = selectChannel;
-exports.select = selectChannel;
-exports.getAll = getAllChannel;
 exports.create = createChannel;
 exports.createFromMeta = createChannelFromMeta;
 exports.update = updateChannel;

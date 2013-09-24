@@ -1,5 +1,5 @@
 define(function(require, exports, module) {
-    var render = require('../template/channel');
+    //var render = require('../template/channel');
 
     var Channel = function(opt){
         this.url = opt.url;

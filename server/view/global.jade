@@ -7,14 +7,14 @@ html
             script(src='/javascripts/lib/jquery-2.0.2.min.js')
             script(src='/javascripts/lib/type.min.js')
             script(src='/javascripts/lib/template.min.js')
-            //script(src='/javascripts/util.js')
+            script(src='/javascripts/lib/kit.js')
         block stylesheets
             link(rel='stylesheet', href='/stylesheets/global.css')
     body
         if user
             span#user-info(data-uid=user.id)
         #header
-        #content
+        #body
             block content
                 p no content
         #footer

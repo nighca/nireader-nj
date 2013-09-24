@@ -1,5 +1,5 @@
-var Channel = require('../model/channel');
-var feed = require('../lib/feed');
+var Channel = require('../../model/channel');
+var feed = require('../../lib/feed');
 
 var createWithUrl = function (source, callback) {
     feed.getMetaRemote(source, function (err, meta) {
@@ -16,9 +16,24 @@ var createWithUrl = function (source, callback) {
     });
 };
 
-//get
 exports.get = function(req, res){
-    Channel.select({id: req.params.cid}, function(err, channels){
+    var opt = {};
+    if(req.query.id){
+        opt.id = req.query.id;
+    }
+    for(var name in Channel.struct){
+        if(Channel.struct.hasOwnProperty(name) && req.query[name] !== null && req.query[name] !== undefined){
+            opt[name] = decodeURI(req.query[name]);
+        }
+    }
+    var sort = req.query.ORDER ? {
+        order: decodeURI(req.query.ORDER),
+        descrease: req.query.DESCREASE
+    } : null;
+
+    console.log(opt, sort);//-------------------------------
+
+    Channel.select(opt, function(err, channels){
         if(err){
             res.send(500, {err: err});
             return;
@@ -27,18 +42,13 @@ exports.get = function(req, res){
             return;
         }
 
-        if(req.get('isAjax')){
-            res.json({
-                err: err,
-                data: channels
-            });
-        }else{
-            res.render('reader', {title: 'channel'});
-        }
-    });
+        res.json({
+            err: err,
+            data: channels
+        });
+    }, sort);
 };
 
-//post
 exports.add = function(req, res){
     if(!req.body.url){
         res.send(500, {err: 'missing params'});
@@ -50,4 +60,8 @@ exports.add = function(req, res){
             err: err
         });
     });
+};
+
+exports.remove = function(req, res){
+    res.send(404);
 };

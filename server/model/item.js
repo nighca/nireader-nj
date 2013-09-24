@@ -1,8 +1,7 @@
 var db = require('../lib/data');
 
 var tableName = 'item';
-
-db.initTable(tableName, {
+var struct = {
     title : 'string',
     link : 'longstring',
     description : 'text',
@@ -10,7 +9,9 @@ db.initTable(tableName, {
     content : 'longtext',
     pubDate : 'time',
     source : 'number'
-}, function(err, result){
+};
+
+db.initTable(tableName, struct, function(err, result){
     if(err){
         console.log('INIT TABLE ' + tableName, err);
     }
@@ -111,6 +112,7 @@ Item.prototype.remove = function(callback) {
 };
 
 exports.tableName = tableName;
+exports.struct = struct;
 exports.ifExist = ifExist;
 exports.select = selectItem;
 exports.create = createItem;

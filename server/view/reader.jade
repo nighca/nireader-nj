@@ -4,14 +4,18 @@ append stylesheets
     link(rel='stylesheet', href='/stylesheets/reader.css')
 
 block content
-    block leftBlock
-    block rightBlock
-    block topBlock
+    a#left-link.left-block(data-link-async="true", data-link-preload="true")
+        i.icon-caret-left
+    a#right-link.right-block(data-link-async="true", data-link-preload="true", href="/channel/2")
+        i.icon-caret-right
+    a#top-link.top-block(data-link-async="true", data-link-preload="false")
+        i.icon-caret-up
     .middle-block
-        block centerBlock
-            p HOME
-        block bottomBlock
+        .center-block
+            h3#title.title TITLE
+            p#info.info INFO
+            #content.main-content CONTENT
 
 append scripts
-    script
+    script.
         seajs.use("/javascripts/page/reader");

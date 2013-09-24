@@ -1,7 +1,7 @@
 define(function(require, exports, module) {
+    var formatUrl = require('../kit/url').format;
 
     var StateManager = function(opt){
-        this.state = null;
         this.handlers = {};
 
         this.init();
@@ -18,32 +18,26 @@ define(function(require, exports, module) {
             e.preventDefault();
 
             var url = formatUrl($(this).attr('href'));
-            manager.checkout({
+            manager.pushState({
                 url: url,
                 title: 'Loading'
             });
+            manager.checkout();
         });
 
-        window.onpopstate = function(e){content
-            if(!e.state){
-                return;
-            }
-
-            manager.checkout(e.state);
+        window.onpopstate = function(e){
+            manager.checkout();
         };
     };
 
     StateManager.prototype.pushState = function(state){
-        history.pushState(null, this.state.title, this.state.url);
+        history.pushState(state, state.title, state.url);
     };
 
     StateManager.prototype.checkout = function(target, callback){
         var manager = this;
 
-        manager.state = target;
-        manager.pushState();
-
-        this.trigger('checkout', manager.state);
+        this.trigger('checkout');
     };
 
     StateManager.prototype.on = function(event, handler){
@@ -53,15 +47,17 @@ define(function(require, exports, module) {
 
     StateManager.prototype.trigger = function(event){
         var list = this.handlers[event],
-            args = arguments.slice(1);
-        for (var i = 0, l = list.length; i < l; i++) {
-            try{
-                list[i].apply(this, args);
-            }catch(e){
-                console.warn(e);
+            args = Array.prototype.slice.call(arguments, 1);
+        if(list){
+            for (var i = 0, l = list.length; i < l; i++) {
+                try{
+                    list[i].apply(this, args);
+                }catch(e){
+                    console.warn(e);
+                    console.log(e.stack);
+                }
             }
-        };
-        this.handlers[event] = null;
+        }
     };    
 
     module.exports = new StateManager();

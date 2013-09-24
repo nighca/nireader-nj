@@ -3,13 +3,14 @@ var Channel = require('./channel');
 var Subscription = require('./subscription');
 
 var tableName = 'user';
-
-db.initTable(tableName, {
+var struct = {
     name : 'string',
     mail : 'string',
     password : 'longstring',
     description : 'text'
-}, function(err, result){
+};
+
+db.initTable(tableName, struct, function(err, result){
     if(err){
         console.log('INIT TABLE ' + tableName, err);
     }
@@ -198,6 +199,7 @@ User.prototype.cleanSubscriptions = function(callback) {
 };
 
 exports.tableName = tableName;
+exports.struct = struct;
 exports.ifExist = ifExist;
 exports.ifRight = ifRight;
 exports.select = selectUser;
