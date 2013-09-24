@@ -10,16 +10,20 @@ exports.get = function(req, res){
 
     var opt = {
         id: req.session.uid
-    };
-    for(var name in Subscription.struct){
-        if(Subscription.struct.hasOwnProperty(name) && req.query[name] !== null && req.query[name] !== undefined){
-            opt[name] = decodeURI(req.query[name]);
+    }, sort;
+    if(req.query.opt){
+        for(var name in Subscription.struct){
+            if(Subscription.struct.hasOwnProperty(name) && req.query.opt[name] !== null && req.query.opt[name] !== undefined){
+                opt[name] = decodeURI(req.query.opt[name]);
+            }
         }
     }
-    var sort = req.query.ORDER ? {
-        order: decodeURI(req.query.ORDER),
-        descrease: req.query.DESCREASE
-    } : null;
+    if(req.query.sort){
+        sort = {
+            order: req.query.sort.order ? decodeURI(req.query.sort.order) : null,
+            descrease: req.query.sort.descrease
+        };
+    }
 
     console.log(opt, sort);//-------------------------------
 

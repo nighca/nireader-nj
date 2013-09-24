@@ -1,19 +1,23 @@
 var Item = require('../../model/item');
 
 exports.get = function(req, res){
-    var opt = {};
-    if(req.query.id){
-        opt.id = req.query.id;
-    }
-    for(var name in Item.struct){
-        if(Item.struct.hasOwnProperty(name) && req.query[name] !== null && req.query[name] !== undefined){
-            opt[name] = decodeURI(req.query[name]);
+    var opt = {}, sort;
+    if(req.query.opt){
+        if(req.query.opt.id){
+            opt.id = req.query.opt.id;
+        }
+        for(var name in Item.struct){
+            if(Item.struct.hasOwnProperty(name) && req.query.opt[name] !== null && req.query.opt[name] !== undefined){
+                opt[name] = decodeURI(req.query.opt[name]);
+            }
         }
     }
-    var sort = req.query.ORDER ? {
-        order: decodeURI(req.query.ORDER),
-        descrease: req.query.DESCREASE
-    } : null;
+    if(req.query.sort){
+        sort = {
+            order: req.query.sort.order ? decodeURI(req.query.sort.order) : null,
+            descrease: req.query.sort.descrease
+        };
+    }
 
     console.log(opt, sort);//-------------------------------
 
