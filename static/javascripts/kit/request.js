@@ -9,9 +9,6 @@ define(function(require, exports, module){
             url = data;
             data = null;
         }
-        if (!callback) {
-            callback = function() {};
-        }
         $.ajax(url, {
             data: data,
             type: type,
@@ -20,7 +17,7 @@ define(function(require, exports, module){
                 isAjax: true
             },
             success: function(res) {
-                callback(res.err, res.data);
+                callback && callback(res.err, res.data);
             },
             error: function(err) {
                 if (repeat === true) {
@@ -29,7 +26,7 @@ define(function(require, exports, module){
                 if (typeof repeat === "number" && repeat > 0) {
                     doRequest(type, data, url, callback, --repeat);
                 }else{
-                    callback(err, null);
+                    callback && callback(err, null);
                 }
             }
         });

@@ -7,7 +7,7 @@ define(function(require, exports, module){
 	};
 
 	var createContent = function(opt){
-		var type = opt.type || URL.getType(opt.url);
+		var type = opt.type || URL.parse(opt.url).type;
 		var Content = Contents[type];
 		return Content ? new Content(opt) : null;
 	};

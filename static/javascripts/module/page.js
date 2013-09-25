@@ -1,5 +1,6 @@
 define(function(require, exports, module){
     var createContent = require('./createContent');
+    var URL = require('../kit/url');
 
     var page = {
         wrapper: $('#body')
@@ -20,7 +21,7 @@ define(function(require, exports, module){
 
     page.init = function(){
         this.getUrl();
-        thus.initContent();
+        this.initContent();
     };
 
     page.clean = function(){

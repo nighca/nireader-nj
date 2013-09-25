@@ -12,7 +12,7 @@ define(function(require, exports, module){
         return url.slice(p);
     };
 
-    var addPath = function(url){
+    var concatWithCurrentPath = function(url){
         if(!url.indexOf('/')){
             return url;
         }
@@ -25,15 +25,27 @@ define(function(require, exports, module){
         }
         
         url = removeBeforeSlash(url);
-        url = addPath(url);
+        url = concatWithCurrentPath(url);
         return url;
     };
 
-    var getType = function(url){
-        var pattern = /([^\/]+)\/[^\/]*$/;
+    /*var getType = function(url){
+        var pattern = /([^\/]+)\/[^\/]+$/;
         return pattern.test(url) ? pattern.exec(url)[1] : null;
+    };*/
+
+    var parseUrl = function(url){
+        var pattern = /([^\/]+)\/([^\/]+)$/;
+        return pattern.test(url) ? {
+            type: pattern.exec(url)[1],
+            id: parseInt(pattern.exec(url)[2], 10)
+        } : {
+            type: null,
+            id: null
+        };
     };
 
     exports.format = formatUrl;
-    exports.getType = getType;
+    //exports.getType = getType;
+    exports.parse = parseUrl;
 });
