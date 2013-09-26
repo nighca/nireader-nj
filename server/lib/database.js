@@ -215,6 +215,8 @@ var makeQuery = function(query, obj, sort, limit){
     }
 
     if(limit && limit.from && limit.num){
+        limit.from = limit.from > 0 ? limit.from : 0;
+        limit.num = limit.num > 0 ? limit.num : 0;
         query += ' LIMIT ' + limit.from + ', ' + limit.num;
     }
 

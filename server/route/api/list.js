@@ -19,7 +19,7 @@ var getSQLQuery = function(query, model){
     if(query.sort && query.sort.order){
         sort = {
             order: decodeURI(query.sort.order),
-            descrease: query.sort.descrease
+            descrease: query.sort.descrease && query.sort.descrease !== 'false'
         };
     }
     if(query.limit){

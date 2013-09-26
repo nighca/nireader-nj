@@ -1,5 +1,6 @@
 define(function(require, exports, module) {
-    var itemListTmpl =
+    var template = require('../template');
+    var tmpl =
         '<ul class="item-list">' +
             '<%for(i = 0; i < items.length; i ++) {%>' +
                 '<li>' +
@@ -7,11 +8,11 @@ define(function(require, exports, module) {
                         '<%=items[i].title%>' +
                     '</a>' +
                     '<span class="pubdate">' +
-                        '<%=items[i].pubDate%>' +
+                        '<%=formatTime(items[i].pubDate)%>' +
                     '</span>' +
                 '</li>' +
             '<%}%>' +
         '</ul>';
 
-    module.exports = template.compile(itemListTmpl);
+    module.exports = template.compile(tmpl);
 });
