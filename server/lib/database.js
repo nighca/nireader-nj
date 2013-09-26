@@ -182,7 +182,7 @@ var insertItems = function(pool, table, objs, callback){
     }
 };
 
-var makeQuery = function(query, obj, sort){
+var makeQuery = function(query, obj, sort, limit){
     if(typeof obj === 'string'){
         query += ' WHERE ' + obj;
     }else{
@@ -214,6 +214,10 @@ var makeQuery = function(query, obj, sort){
         }
     }
 
+    if(limit && limit.from && limit.num){
+        query += ' LIMIT ' + limit.from + ', ' + limit.num;
+    }
+
     return query;
 };
 
@@ -234,6 +238,7 @@ var initDB = function(config){
     return pool;
 };
 
+exports.makeQuery = makeQuery;
 exports.doQuery = doQuery;
 exports.createTable = createTable;
 exports.insertItem = insertItem;

@@ -10,6 +10,7 @@ var apis = {
     item: require('./route/api/item'),
     subscription: require('./route/api/subscription'),
     user: require('./route/api/user'),
+    list: require('./route/api/list'),
     auth: require('./route/api/auth')
 };
 
@@ -28,8 +29,12 @@ var routes = [
     ['get', '/api/user', apis.user.get, false, true],
 
     //method, path, handler, needAuth, devOnly
-    ['post', '/api/signin', apis.auth.in, false, true],
-    ['get', '/api/signout', apis.auth.out, false, true]
+    ['post', '/api/signin', apis.auth.in],
+    ['get', '/api/signout', apis.auth.out],
+
+    //method, path, handler, needAuth, devOnly
+    ['get', '/api/list/item', apis.list.item],
+    ['get', '/api/list/channel', apis.list.channel]
 ];
 
 
