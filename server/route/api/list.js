@@ -66,9 +66,6 @@ exports.item = function(req, res){
         if(err){
             res.send(500, {err: err});
             return;
-        }else if(items.length === 0 || !items[0]){
-            res.send(404);
-            return;
         }
 
         res.json({
@@ -84,9 +81,6 @@ exports.channel = function(req, res){
     doQuery(sql, function(err, items){
         if(err){
             res.send(500, {err: err});
-            return;
-        }else if(items.length === 0 || !items[0]){
-            res.send(404);
             return;
         }
 
