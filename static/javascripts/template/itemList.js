@@ -1,17 +1,17 @@
 define(function(require, exports, module) {
-    var channelTmpl =
+    var itemListTmpl =
         '<ul class="item-list">' +
-            '<%for(i = 0; i < list.length; i ++) {%>' +
+            '<%for(i = 0; i < items.length; i ++) {%>' +
                 '<li>' +
-                    '<a data-link-async="true" data-link-preload="true" href="/channel/<%=channel.id%>/item/<%=list[i].id%>">' +
-                        '<%=list[i].title%>' +
+                    '<a data-link-async="true" data-link-preload="true" href="/item/<%=items[i].id%>">' +
+                        '<%=items[i].title%>' +
                     '</a>' +
                     '<span class="pubdate">' +
-                        '<%=list[i].date%>' +
+                        '<%=items[i].pubDate%>' +
                     '</span>' +
                 '</li>' +
             '<%}%>' +
         '</ul>';
 
-    module.exports = template.compile(channelTmpl);
+    module.exports = template.compile(itemListTmpl);
 });
