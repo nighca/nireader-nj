@@ -3,9 +3,9 @@ define(function(require, exports, module) {
     var pagePath = require('../interface/index').page;
     var URL = require('../kit/url');
 
-    var makeChannelTitle = require('../template/channel/title');
-    var makeChannelInfo = require('../template/channel/info');
-    var makeItemList = require('../template/channel/itemList');
+    var genChannelTitle = require('../template/channel/title');
+    var genChannelInfo = require('../template/channel/info');
+    var genItemList = require('../template/channel/itemList');
 
     var Channel = function(opt){
         this.url = opt.url;
@@ -19,12 +19,23 @@ define(function(require, exports, module) {
         this.getItemListByPage(1);
         this.getChannelInfo();
         this.getNeighbourInfo();
+
+        this.bindEvent();
+        //this.doms.wrapper.fadeIn(100);
     };
 
     Channel.prototype.bindEvent = function(){};
 
     Channel.prototype.clean = function(){
-        this.doms.content.html('');
+        /*this.doms.content.html('');
+        this.doms.title.html('');
+        this.doms.info.html('');*/
+        this.doms.sideContent.html('');
+        this.doms.sideBlock.hide();
+        this.doms.leftLink.attr('href', '');
+        this.doms.rightLink.attr('href', '');
+        this.doms.topLink.attr('href', '');
+        //this.doms.wrapper.fadeOut(100);
     };
 
     Channel.prototype.prepareInfo = function(){
@@ -36,9 +47,12 @@ define(function(require, exports, module) {
 
         _this.doms = {
             wrapper: _this.wrapper,
+            middleBlock: _this.wrapper.find('#middle-block'),
             title: _this.wrapper.find('#title'),
             info: _this.wrapper.find('#info'),
             content: _this.wrapper.find('#content'),
+            sideBlock: _this.wrapper.find('#side-block'),
+            sideContent: _this.wrapper.find('#side-content'),
             leftLink: _this.wrapper.find('#left-link'),
             rightLink: _this.wrapper.find('#right-link'),
             topLink: _this.wrapper.find('#top-link')
@@ -78,15 +92,14 @@ define(function(require, exports, module) {
     Channel.prototype.getNeighbourInfo = function(){
         var _this = this;
         resource.list('channel', null, {
-            from: _this.data.id - 2,
-            num: 3
+            from: 0
         }, function(err, channels){
             if(err || channels.length < 1){
                 console.error(err || 'Get aside channel info fail.');
                 return;
             }
 
-            var pos = 1;
+            var pos = -1;
             for (var i = 0, l = channels.length; i < l; i++) {
                 if(parseInt(channels[i].id, 10) === _this.data.id){
                     pos = i;
@@ -94,23 +107,10 @@ define(function(require, exports, module) {
                 }
             }
 
-            var neighbours = {};
-            switch(pos){
-            case 0:
-                neighbours.next = channels[1];
-                break;
-            case 1:
-                neighbours.prev = channels[0];
-                neighbours.next = channels[2];
-                break;
-            case 2:
-                neighbours.prev = channels[1];
-                break;
-            default:
-                break;
-            }
-
-            _this.dealNeighbourInfo(neighbours);
+            _this.dealNeighbourInfo({
+                prev: channels[pos-1],
+                next: channels[pos+1]
+            });
         });
     };
     Channel.prototype.dealNeighbourInfo = function(neighbours){
@@ -145,12 +145,51 @@ define(function(require, exports, module) {
     };
 
     Channel.prototype.renderChannelInfo = function(data){
-        this.doms.title.html(makeChannelTitle(data));
-        this.doms.info.html(makeChannelInfo(data));
+        this.doms.title.html(genChannelTitle(data));
+        this.doms.info.html(genChannelInfo(data));
     };
 
     Channel.prototype.renderItemList = function(data){
-        this.doms.content.html(makeItemList(data));
+        var _this = this;
+        _this.doms.content.html(genItemList(data));
+        var timer;
+        _this.doms.content.find('.item').on('mouseenter', function(){
+            if(timer){
+                timer = clearTimeout(timer);
+            }
+
+            var $this = $(this);
+            var iid = $this.attr('data-id');
+            var top = $this.offset().top + _this.doms.middleBlock.scrollTop();
+            _this.doms.sideContent
+                .text('...');
+            _this.doms.sideBlock
+                .attr('data-iid', iid)
+                .animate({
+                    'top': top
+                }, 100)
+                .show();
+            resource.get('item', {
+                id: iid
+            }, function(err, items){
+                if(_this.doms.sideBlock.attr('data-iid') != iid){
+                    return;
+                }
+                if(err){
+                    _this.doms.sideContent.text(JSON.stringify(err));
+                    return;
+                }
+                if(items.length < 1){
+                    _this.doms.sideContent.text('Get item info failed.');
+                    return;
+                }
+                _this.doms.sideContent.html(items[0].content);
+            });
+        }).on('mouseleave', function(){
+            timer = setTimeout(function(){
+                _this.doms.sideBlock.hide();
+            }, 300);
+        });
     };
 
     module.exports = Channel;

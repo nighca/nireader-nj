@@ -10,11 +10,20 @@ block content
         i.icon-caret-right
     a#top-link.top-block(data-link-async="true", data-link-preload="false")
         i.icon-caret-up
-    .middle-block
+    #middle-block.middle-block
         .center-block
             h3#title.title ...
             p#info.info 
-            #content.main-content 
+            #content.main-content
+        #side-block.side-block
+            #side-content.side-content
+            i.rectangle
+
+        ul.middle-footer-links
+                li
+                    a(href="https://github.com/nighca/nireader-nj", target="_blank") repository
+                li
+                    a(href="http://nighca.me", target="_blank") me
 
 append scripts
     script.

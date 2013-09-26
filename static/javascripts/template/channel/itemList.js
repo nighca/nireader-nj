@@ -3,7 +3,7 @@ define(function(require, exports, module) {
     var tmpl =
         '<ul class="item-list">' +
             '<%for(i = 0; i < items.length; i ++) {%>' +
-                '<li>' +
+                '<li class="item" data-id="<%=items[i].id%>">' +
                     '<a data-link-async="true" data-link-preload="true" href="/item/<%=items[i].id%>">' +
                         '<%=items[i].title%>' +
                     '</a>' +

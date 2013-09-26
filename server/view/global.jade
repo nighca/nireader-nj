@@ -13,9 +13,9 @@ html
     body
         if user
             span#user-info(data-uid=user.id)
-        #header
-        #body
+        #header.header
+        #body.body
             block content
                 p no content
-        #footer
-            block scripts
+        #footer.footer
+        block scripts

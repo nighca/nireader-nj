@@ -3,7 +3,8 @@ define(function(require, exports, module){
     var URL = require('../kit/url');
 
     var page = {
-        wrapper: $('#body')
+        wrapper: $('#body'),
+        middleBlock: $('#middle-block')
     }
 
     page.getUrl = function(){
@@ -22,6 +23,9 @@ define(function(require, exports, module){
     page.init = function(){
         this.getUrl();
         this.initContent();
+        this.middleBlock.animate({
+            'scrollTop' : 0
+        }, 300);
     };
 
     page.clean = function(){
