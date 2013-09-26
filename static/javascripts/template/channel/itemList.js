@@ -8,7 +8,7 @@ define(function(require, exports, module) {
                         '<%=items[i].title%>' +
                     '</a>' +
                     '<span class="pubdate">' +
-                        '<%=formatTime(items[i].pubDate)%>' +
+                        '<%=formatTime(items[i].pubDate, " ")%>' +
                     '</span>' +
                 '</li>' +
             '<%}%>' +

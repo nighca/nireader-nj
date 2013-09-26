@@ -16,7 +16,18 @@ define(function(require, exports, module) {
         }
     };
 
+    var page = {
+        home: '/',
+        channel: function(id){
+            return '/channel/' + id;
+        },
+        item: function(id){
+            return '/item/' + id;
+        }
+    };
+
     module.exports = {
-        resource: resource
+        resource: resource,
+        page: page
     };
 });

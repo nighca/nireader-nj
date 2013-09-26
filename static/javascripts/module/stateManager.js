@@ -17,7 +17,12 @@ define(function(require, exports, module) {
         $('body').delegate('[data-link-async]', 'click', function(e){
             e.preventDefault();
 
-            var url = formatUrl($(this).attr('href'));
+            var link = $(this);
+            if(link.attr('disabled')){
+                return false;
+            }
+
+            var url = formatUrl(link.attr('href'));
             manager.pushState({
                 url: url,
                 title: 'Loading'

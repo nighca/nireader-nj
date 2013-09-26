@@ -1,5 +1,6 @@
 define(function(require, exports, module) {
     var resource = require('../kit/resource');
+    var pagePath = require('../interface/index').page;
     var URL = require('../kit/url');
 
     var makeChannelTitle = require('../template/channel/title');
@@ -113,13 +114,26 @@ define(function(require, exports, module) {
         });
     };
     Channel.prototype.dealNeighbourInfo = function(neighbours){
+        this.doms.topLink
+            .attr('href', pagePath.home)
+            .attr('title', 'Home');
         if(neighbours.prev){
-            this.doms.leftLink.attr('href', neighbours.prev.id);
-            this.doms.leftLink.attr('title', neighbours.prev.title);
+            this.doms.leftLink
+                .attr('href', pagePath.channel(neighbours.prev.id))
+                .attr('title', neighbours.prev.title)
+                .show();
+        }else{
+            this.doms.leftLink
+                .hide();
         }
         if(neighbours.next){
-            this.doms.rightLink.attr('href', neighbours.next.id);
-            this.doms.rightLink.attr('title', neighbours.next.title);
+            this.doms.rightLink
+                .attr('href', pagePath.channel(neighbours.next.id))
+                .attr('title', neighbours.next.title)
+                .show();
+        }else{
+            this.doms.rightLink
+                .hide();
         }
     };
 
