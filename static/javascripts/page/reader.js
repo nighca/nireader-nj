@@ -20,6 +20,9 @@ define(function(require, exports, module) {
     keypress.register(27, function(e){
         if(globalFloater.css('display') === 'none'){
             globalFloater.show();
+            globalInput.val('').focus();
+            globalTip.hide();
+            globalResult.hide();
         }else{
             globalFloater.hide();
         }
