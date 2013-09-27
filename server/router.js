@@ -26,7 +26,7 @@ var routes = [
     ['get', '/api/item', apis.item.get],
     ['get', '/api/subscription', apis.subscription.get],
 
-    ['get', '/api/user', apis.user.get, false, true],
+    ['get', '/api/user', apis.user.get, true],
 
     //method, path, handler, needAuth, devOnly
     ['post', '/api/signin', apis.auth.in],

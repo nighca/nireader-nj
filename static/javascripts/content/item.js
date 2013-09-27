@@ -3,6 +3,7 @@ define(function(require, exports, module) {
     var pagePath = require('../interface/index').page;
     var URL = require('../kit/url');
 
+    var genLoadingIcon = require('../template/common/loadingIcon');
     var genItemTitle = require('../template/item/title');
     var genItemInfo = require('../template/item/info');
     var genItemContent = require('../template/item/content');
@@ -30,9 +31,9 @@ define(function(require, exports, module) {
     Item.prototype.bindEvent = function(){};
 
     Item.prototype.clean = function(){
-        /*this.doms.content.html('');
+        this.doms.content.html(genLoadingIcon());
         this.doms.title.html('');
-        this.doms.info.html('');*/
+        this.doms.info.html('');
         this.doms.leftLink.attr('href', '');
         this.doms.rightLink.attr('href', '');
         this.doms.topLink.attr('href', '');
