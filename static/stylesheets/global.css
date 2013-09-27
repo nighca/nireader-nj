@@ -429,3 +429,7 @@ input[type="text"].large,input[type="password"].large,div[contentEditable="true"
 input[type="text"]:focus,input[type="password"]:focus,div[contentEditable="true"]:focus,button:focus,input[type="text"].active,input[type="password"].active,div[contentEditable="true"].active,button.active{outline:none}
 button{color:#a8a8a8;background:none}button:hover{color:#333}
 select{border-style:none;border:1px solid #530f74;border-top:1px solid #b4b4b4;background:none;background-color:#fff;color:#585858;font-size:12px}select:focus{outline:none;border-color:#530f74}
+.floater{position:fixed;width:100%;height:100%;top:0;left:0;display:none;background:rgba(0,0,0,0.2)}.floater .global-input{position:absolute;top:20%;left:50%;margin-top:-21px;margin-left:-308px;width:600px;height:24px;background-color:#f0f0f0}
+.floater .global-result{position:absolute;top:20%;left:50%;margin-top:29px;margin-left:-308px}.floater .global-result .results,.floater .global-result .tips{width:600px;background-color:#f0f0f0}
+.floater .global-result .results{padding:9px 8px}.floater .global-result .results .result{display:block;padding:4px 0;margin-bottom:2px;line-height:14px;font-size:12px}
+.floater .global-result .tips{padding:4px 8px;margin-bottom:4px}.floater .global-result .tips .tip{display:block;padding:2px 0;margin-bottom:2px;line-height:12px;font-size:12px;color:#888}

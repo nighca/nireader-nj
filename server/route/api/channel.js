@@ -1,18 +1,19 @@
 var Channel = require('../../model/channel');
 var feed = require('../../lib/feed');
 
-var createWithUrl = function (source, callback) {
-    feed.getMetaRemote(source, function (err, meta) {
-        if(err){
-            callback(err);
-            return;
-        }
+var createChannelFromMeta = function(meta, xmlurl){
+    return Channel.create({
+        title : meta.title,
+        link : meta.link,
+        source: meta.xmlurl || meta.xmlUrl || xmlurl,
+        description : meta.description,
 
-        var channel = Channel.createFromMeta(meta, source);
-        channel.save(function(){
-            channel.fetch();
-            callback(null, channel);
-        });
+        language : meta.language,
+        copyright : meta.copyright,
+        pubDate : meta.pubDate || meta.pubdate,
+        category : meta.category,
+        generator : meta.generator,
+        webMaster : meta.webMaster
     });
 };
 
@@ -53,15 +54,38 @@ exports.get = function(req, res){
     }, sort);
 };
 
-exports.add = function(req, res){
+exports.create = function(req, res){
     if(!req.body.url){
         res.send(500, {err: 'missing params'});
         return;
     }
     
-    createWithUrl(req.body.url, function(err, channel){
+    feed.getMetaRemote(req.body.url, function (err, meta) {
+        if(err){
+            res.send(500, {err: err});
+            return;
+        }
+
+        var channel = createChannelFromMeta(meta, req.body.url);
         res.json({
-            err: err
+            err: err,
+            data: channel
+        });
+    });
+};
+
+exports.save = function(req, res){
+    if(!req.body.channel){
+        res.send(500, {err: 'missing params'});
+        return;
+    }
+    
+    var channel = Channel.create(req.body.channel);
+    channel.save(function(err, channel){
+        channel.fetch();
+        res.json({
+            err: err,
+            data: channel
         });
     });
 };

@@ -1,13 +1,6 @@
 var Subscription = require('../../model/subscription');
 
 exports.get = function(req, res){
-    if(!req.session.uid){
-        res.json({
-            err: 'need auth'
-        });
-        return;
-    }
-
     var opt = {
         id: req.session.uid
     }, sort;
@@ -41,4 +34,24 @@ exports.get = function(req, res){
             data: subscriptions
         });
     }, sort);
+};
+
+exports.add = function(req, res){
+    if(!req.body.subscribee){
+        res.send(500, {err: 'missing params'});
+        return;
+    }
+
+    var opt = {
+        subscriber: req.session.uid,
+        subscribee: req.body.subscribee,
+        description: req.body.description
+    };
+    
+    Subscription.create(opt).save(function(err, subscription){
+        res.json({
+            err: err,
+            data: subscription
+        });
+    });
 };

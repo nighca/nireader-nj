@@ -44,22 +44,6 @@ function createChannel(options){
     return new Channel(options);
 };
 
-function createChannelFromMeta(meta, xmlurl){
-    return createChannel({
-        title : meta.title,
-        link : meta.link,
-        source: meta.xmlurl || meta.xmlUrl || xmlurl,
-        description : meta.description,
-
-        language : meta.language,
-        copyright : meta.copyright,
-        pubDate : meta.pubDate || meta.pubdate,
-        category : meta.category,
-        generator : meta.generator,
-        webMaster : meta.webMaster
-    });
-};
-
 function updateChannel(channel, callback){
     db.updateItem(tableName, channel, function(err, result){
         callback && callback(err, channel);
@@ -225,7 +209,6 @@ exports.struct = struct;
 exports.ifExist = ifExist;
 exports.select = selectChannel;
 exports.create = createChannel;
-exports.createFromMeta = createChannelFromMeta;
 exports.update = updateChannel;
 exports.remove = removeChannel;
 exports.save = saveChannel;

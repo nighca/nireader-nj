@@ -2,7 +2,9 @@ define(function(require, exports, module) {
     var resource = {
         channel: {
             get: '/api/channel',
-            list: '/api/list/channel'
+            list: '/api/list/channel',
+            create: '/api/channel/create',
+            save: '/api/channel/save'
         },
         item: {
             get: '/api/item',
@@ -10,7 +12,8 @@ define(function(require, exports, module) {
         },
         subscription: {
             get: '/api/subscription',
-            list: '/api/list/subscription'
+            list: '/api/list/subscription',
+            add: '/api/subscription/add'
         },
         user: {
             get: '/api/user'

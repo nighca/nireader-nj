@@ -23,8 +23,12 @@ var routes = [
 
     //method, path, handler, needAuth, devOnly
     ['get', '/api/channel', apis.channel.get],
+    ['post', '/api/channel/create', apis.channel.create],
+    ['post', '/api/channel/save', apis.channel.save],
+
     ['get', '/api/item', apis.item.get],
-    ['get', '/api/subscription', apis.subscription.get],
+    ['get', '/api/subscription', apis.subscription.get, true],
+    ['post', '/api/subscription/add', apis.subscription.add, true],
 
     ['get', '/api/user', apis.user.get, true],
 
@@ -48,7 +52,13 @@ var needAuth = function(handler){
     return function (req, res) {
         //req.session.uid = 1; //-------------------------------------
         if(!req.session.uid){
-            res.redirect('/signin?target='+encodeURIComponent(req.url));
+            if(req.get('isAjax')){
+                res.json({
+                    err: 'need auth.'
+                });
+            }else{
+                res.redirect('/signin?target='+encodeURIComponent(req.url));
+            }
             return;
         }
         handler(req, res);

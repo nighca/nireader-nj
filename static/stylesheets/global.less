@@ -5,76 +5,144 @@
 // ------------------------------------------------------------------
 
 html, body{
-	width: 100%;
-	height: 100%;
+    width: 100%;
+    height: 100%;
 
-	font-family: "Helvetica Neue", Helvetica, arial, "Microsoft YaHei";
+    font-family: "Helvetica Neue", Helvetica, arial, "Microsoft YaHei";
 }
 
 button, *{
-	font-family: arial, "Microsoft YaHei";
+    font-family: arial, "Microsoft YaHei";
 }
 
 input{
-	&:focus{
-		outline: none;
-	}
+    &:focus{
+        outline: none;
+    }
 }
 
 button{
-	cursor: pointer;
+    cursor: pointer;
 }
 
 
 input[type="text"], input[type="password"], div[contentEditable="true"], button{
-	padding: 9px 8px;
-	margin: 0;
+    padding: 9px 8px;
+    margin: 0;
 
-	&:-moz-placeholder { color:#a8a8a8;  }
-	&::-moz-input-placeholder { color:#a8a8a8;  }
-	&::-webkit-input-placeholder { color:#a8a8a8; }
+    &:-moz-placeholder { color:#a8a8a8;  }
+    &::-moz-input-placeholder { color:#a8a8a8;  }
+    &::-webkit-input-placeholder { color:#a8a8a8; }
 
-	&.small{
-		width: 60px;
-		padding: 5px 8px;
-	}
+    &.small{
+        width: 60px;
+        padding: 5px 8px;
+    }
 
-	&.large{
-		width: 320px;
-	}
+    &.large{
+        width: 320px;
+    }
 
-	font-size: 14px;
-	font-family: arial,"Microsoft YaHei",helvetica,sans-serif;
-	border-style: none;
-	background: none;
-	background-color: #f0f0f0;
+    font-size: 14px;
+    font-family: arial,"Microsoft YaHei",helvetica,sans-serif;
+    border-style: none;
+    background: none;
+    background-color: #f0f0f0;
 
-	&:focus, &.active{
-		outline: none;
-	}
+    &:focus, &.active{
+        outline: none;
+    }
 
-	//border: 1px solid @themeColor;
+    //border: 1px solid @themeColor;
 }
 
 button{
-	color: #a8a8a8;
-	background: none;
-	&:hover{
-		color: #333;
-	}
+    color: #a8a8a8;
+    background: none;
+    &:hover{
+        color: #333;
+    }
 }
 
 select{
-	border-style: none;
-	border: 1px solid @themeColor;
-	border-top: 1px solid rgb(180,180,180);
-	background: none;
-	background-color: #fff;
-	color: rgb(88,88,88);
-	font-size: 12px;
+    border-style: none;
+    border: 1px solid @themeColor;
+    border-top: 1px solid rgb(180,180,180);
+    background: none;
+    background-color: #fff;
+    color: rgb(88,88,88);
+    font-size: 12px;
 
-	&:focus{
-		outline: none;
-		border-color: @themeColor;
-	}
+    &:focus{
+        outline: none;
+        border-color: @themeColor;
+    }
+}
+
+.floater{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: none;
+
+    background: rgba(0,0,0,0.2);
+
+    @inputHeight: 24px;
+    @inputWidth: 600px;
+
+    @resultWidth: 600px;
+
+    @paddingy: 9px;
+    @paddingx: 8px;
+
+    .global-input{
+        position: absolute;
+        top: 20%;
+        left: 50%;
+        margin-top: -(@inputHeight/2 + @paddingy);
+        margin-left: -(@inputWidth/2 + @paddingx);
+        width: @inputWidth;
+        height: @inputHeight;
+
+        background-color: #f0f0f0;
+    }
+
+    .global-result{
+        position: absolute;
+        top: 20%;
+        left: 50%;
+        margin-top: @inputHeight/2 + @paddingy + 8;
+        margin-left: -(@resultWidth/2 + @paddingx);
+
+        .results, .tips{
+            width: @resultWidth;
+            background-color: #f0f0f0;
+        }
+
+        .results{
+            padding: @paddingy @paddingx;
+            .result{
+                display: block;
+                padding: 4px 0;
+                margin-bottom: 2px;
+                line-height: 14px;
+                font-size: 12px;
+            }
+        }
+        .tips{
+            padding: 4px @paddingx;
+            margin-bottom: 4px;
+            .tip{
+                display: block;
+                padding: 2px 0;
+                margin-bottom: 2px;
+                line-height: 12px;
+                font-size: 12px;
+                color: #888;
+            }
+        }
+
+    }
 }
