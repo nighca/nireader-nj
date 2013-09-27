@@ -31,9 +31,9 @@ define(function(require, exports, module) {
     Item.prototype.bindEvent = function(){};
 
     Item.prototype.clean = function(){
-        this.doms.content.html(genLoadingIcon());
+        /*this.doms.content.html('');
         this.doms.title.html('');
-        this.doms.info.html('');
+        this.doms.info.html('');*/
         this.doms.leftLink.attr('href', '');
         this.doms.rightLink.attr('href', '');
         this.doms.topLink.attr('href', '');

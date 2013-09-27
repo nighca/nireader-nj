@@ -26,9 +26,9 @@ define(function(require, exports, module) {
     Home.prototype.bindEvent = function(){};
 
     Home.prototype.clean = function(){
-        this.doms.content.html('');
+        /*this.doms.content.html('');
         this.doms.title.html('');
-        this.doms.info.html('');
+        this.doms.info.html('');*/
         this.doms.sideContent.html('');
         this.doms.sideBlock.clearQueue().stop().hide();
         this.doms.leftLink.attr('href', '').show();
