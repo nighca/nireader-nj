@@ -9,7 +9,8 @@ define(function(require, exports, module) {
             list: '/api/list/item'
         },
         subscription: {
-            get: '/api/subscription'
+            get: '/api/subscription',
+            list: '/api/list/subscription'
         },
         user: {
             get: '/api/user'

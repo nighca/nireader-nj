@@ -21,7 +21,6 @@ define(function(require, exports, module) {
         this.getNeighbourInfo();
 
         this.bindEvent();
-        //this.doms.wrapper.fadeIn(100);
     };
 
     Channel.prototype.bindEvent = function(){};
@@ -31,11 +30,10 @@ define(function(require, exports, module) {
         this.doms.title.html('');
         this.doms.info.html('');*/
         this.doms.sideContent.html('');
-        this.doms.sideBlock.hide();
+        this.doms.sideBlock.clearQueue().stop().hide();
         this.doms.leftLink.attr('href', '');
         this.doms.rightLink.attr('href', '');
         this.doms.topLink.attr('href', '');
-        //this.doms.wrapper.fadeOut(100);
     };
 
     Channel.prototype.prepareInfo = function(){
@@ -149,6 +147,31 @@ define(function(require, exports, module) {
         this.doms.info.html(genChannelInfo(data));
     };
 
+    Channel.prototype.sideBlockLoading = function(){
+        this.doms.sideBlock.addClass('loading');
+    };
+
+    Channel.prototype.sideBlockLoad = function(cnt){
+        this.doms.sideBlock.removeClass('loading');
+        this.doms.sideContent.html(cnt);
+    };
+
+    Channel.prototype.sideBlockGoto = function(li){
+        var top = li.offset().top + this.doms.middleBlock.scrollTop();
+        var originTop = parseInt(this.doms.sideBlock.css('top'), 10);
+        this.doms.sideBlock
+            .stop()
+            .clearQueue()
+            .show()
+            .delay(200)
+            .animate({
+                'top': (top * 6 - originTop)/5
+            }, 100)
+            .animate({
+                'top': top
+            }, 50);
+    };
+
     Channel.prototype.renderItemList = function(data){
         var _this = this;
         _this.doms.content.html(genItemList(data));
@@ -160,15 +183,10 @@ define(function(require, exports, module) {
 
             var $this = $(this);
             var iid = $this.attr('data-id');
-            var top = $this.offset().top + _this.doms.middleBlock.scrollTop();
-            _this.doms.sideContent
-                .text('...');
-            _this.doms.sideBlock
-                .attr('data-iid', iid)
-                .animate({
-                    'top': top
-                }, 100)
-                .show();
+            _this.doms.sideBlock.attr('data-iid', iid)
+            _this.sideBlockGoto($this);
+            _this.sideBlockLoading();
+
             resource.get('item', {
                 id: iid
             }, function(err, items){
@@ -176,19 +194,20 @@ define(function(require, exports, module) {
                     return;
                 }
                 if(err){
-                    _this.doms.sideContent.text(JSON.stringify(err));
+                    _this.sideBlockLoad(JSON.stringify(err));
                     return;
                 }
                 if(items.length < 1){
-                    _this.doms.sideContent.text('Get item info failed.');
+                    _this.sideBlockLoad('Get item info failed.');
                     return;
                 }
-                _this.doms.sideContent.html(items[0].content);
+                _this.sideBlockLoad(items[0].content);
             });
-        }).on('mouseleave', function(){
+        });
+        _this.doms.content.on('mouseleave', function(){
             timer = setTimeout(function(){
                 _this.doms.sideBlock.hide();
-            }, 300);
+            }, 200);
         });
     };
 

@@ -25,7 +25,6 @@ define(function(require, exports, module) {
         });
 
         _this.bindEvent();
-        //this.doms.wrapper.fadeIn(100);
     };
 
     Item.prototype.bindEvent = function(){};
@@ -37,7 +36,6 @@ define(function(require, exports, module) {
         this.doms.leftLink.attr('href', '');
         this.doms.rightLink.attr('href', '');
         this.doms.topLink.attr('href', '');
-        //this.doms.wrapper.fadeOut(100);
     };
 
     Item.prototype.prepareInfo = function(){

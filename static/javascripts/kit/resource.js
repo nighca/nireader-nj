@@ -8,6 +8,7 @@ define(function(require, exports, module){
     var getUrl = {
         item: resourceIF.item.get,
         channel: resourceIF.channel.get,
+        user: resourceIF.user.get
     };
     var getSort = {
         item: {
@@ -16,6 +17,10 @@ define(function(require, exports, module){
         },
         channel: {
             order: 'id',
+            descrease: false
+        },
+        user: {
+            order: 'name',
             descrease: false
         }
     };
@@ -43,10 +48,18 @@ define(function(require, exports, module){
     var listUrl = {
         item: resourceIF.item.list,
         channel: resourceIF.channel.list,
+        subscription: resourceIF.subscription.list
     };
     var listFields = {
         item: ['id', 'pubDate', 'title', 'source'],
-        channel: ['id', 'pubDate', 'title']
+        channel: ['id', 'pubDate', 'title'],
+        subscription: [
+            'channel.id', 
+            'channel.pubDate', 
+            'channel.title', 
+            'channel.description', 
+            'channel.generator'
+        ]
     };
     var listSort = {
         item: {
@@ -56,11 +69,16 @@ define(function(require, exports, module){
         channel: {
             order: 'id',
             descrease: false
+        },
+        subscription: {
+            order: 'channel.id',
+            descrease: false
         }
     };
     var listNumInPage = {
         item: 20,
-        channel: 20
+        channel: 20,
+        subscription: 20
     };
 
     var listResource = function(type, opt, page, callback, sort, fields){

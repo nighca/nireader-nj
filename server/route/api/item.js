@@ -19,7 +19,7 @@ exports.get = function(req, res){
         };
     }
 
-    console.log(opt, sort);//-------------------------------
+    //console.log(opt, sort);//-------------------------------
 
     Item.select(opt, function(err, items){
         if(err){

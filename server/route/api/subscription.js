@@ -25,7 +25,7 @@ exports.get = function(req, res){
         };
     }
 
-    console.log(opt, sort);//-------------------------------
+    //console.log(opt, sort);//-------------------------------
 
     Subscription.select(opt, function(err, subscriptions){
         if(err){

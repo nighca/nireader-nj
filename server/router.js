@@ -34,7 +34,8 @@ var routes = [
 
     //method, path, handler, needAuth, devOnly
     ['get', '/api/list/item', apis.list.item],
-    ['get', '/api/list/channel', apis.list.channel]
+    ['get', '/api/list/channel', apis.list.channel],
+    ['get', '/api/list/subscription', apis.list.subscription, true]
 ];
 
 
@@ -45,6 +46,7 @@ var notFound = function(req, res){
 };
 var needAuth = function(handler){
     return function (req, res) {
+        //req.session.uid = 1; //-------------------------------------
         if(!req.session.uid){
             res.redirect('/signin?target='+encodeURIComponent(req.url));
             return;

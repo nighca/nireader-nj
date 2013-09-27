@@ -35,7 +35,7 @@ exports.get = function(req, res){
         };
     }
 
-    console.log(opt, sort);//-------------------------------
+    //console.log(opt, sort);//-------------------------------
 
     Channel.select(opt, function(err, channels){
         if(err){
