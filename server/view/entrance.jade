@@ -13,7 +13,7 @@ block content
         p.ops
             a#signin.op(href='/signin') SIGN IN
         #signin-block.signin-block
-            form(action='/signin', method='post')
+            form(action='/api/signin', method='post')
                 input(type='text', name='username', placeholder='USERNAME')
                 input(type='password', name='password', placeholder='PASSWORD')
                 button(type='submit')

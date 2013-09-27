@@ -4,7 +4,7 @@ append stylesheets
     link(rel='stylesheet', href='/stylesheets/signin.css')
 
 block content
-    form.signin-block(action='', method='post')
+    form.signin-block(action='/api/signin', method='post')
         if target
             input(type='hidden', name='target', value=target)
         input(type='text', name='username', placeholder='USERNAME')
