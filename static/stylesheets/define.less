@@ -16,6 +16,21 @@
     opacity: @p;
 }
 
+.scale(@n){
+    -webkit-transform: scale(@n);
+    -moz-transform: scale(@n);
+    -o-transform: scale(@n);
+}
+
+.blur{
+    @r: 3px;
+    -webkit-filter: blur(@r);
+    -moz-filter: blur(@r);
+    -o-filter: blur(@r);
+    -ms-filter: blur(@r);
+    filter: blur(@r);
+}
+
 .transition-duration(@duration: .5s){
     -webkit-transition-duration: @duration;
     -moz-transition-duration: @duration;

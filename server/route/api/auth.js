@@ -16,10 +16,11 @@ exports.in = function(req, res){
         }
         //req.session.cookie.maxAge = 300000;
         req.session.uid = user.id;
+        user.password = null;
         res.json({
             err: null,
             data: {
-                success: true
+                user: user
             }
         });
     });

@@ -1,4 +1,5 @@
 var Channel = require('../../model/channel');
+var Subscription = require('../../model/subscription');
 var feed = require('../../lib/feed');
 
 var createChannelFromMeta = function(meta, xmlurl){
@@ -47,10 +48,26 @@ exports.get = function(req, res){
             return;
         }
 
-        res.json({
-            err: err,
-            data: channels
-        });
+        var channel = channels[0];
+        if(req.session.uid){
+            Subscription.ifExist({
+                subscriber: req.session.uid,
+                subscribee: channel.id
+            }, function(err, exist){
+                if(!err && exist){
+                    channel.subscribed = true;
+                }
+                res.json({
+                    err: err,
+                    data: channel
+                });
+            });
+        }else{
+            res.json({
+                err: err,
+                data: channel
+            });
+        }
     }, sort);
 };
 
@@ -59,17 +76,26 @@ exports.create = function(req, res){
         res.send(500, {err: 'missing params'});
         return;
     }
-    
-    feed.getMetaRemote(req.body.url, function (err, meta) {
-        if(err){
-            res.send(500, {err: err});
+
+    Channel.ifExist(req.body.url, function(err, channel){
+        if(err || channel){
+            res.json({
+                err: err,
+                data: channel
+            });
             return;
         }
+        feed.getMetaRemote(req.body.url, function (err, meta) {
+            if(err){
+                res.send(500, {err: err});
+                return;
+            }
 
-        var channel = createChannelFromMeta(meta, req.body.url);
-        res.json({
-            err: err,
-            data: channel
+            var channel = createChannelFromMeta(meta, req.body.url);
+            res.json({
+                err: err,
+                data: channel
+            });
         });
     });
 };

@@ -1,11 +1,15 @@
 define(function(require, exports, module) {
     var resource = require('../kit/resource');
     var pagePath = require('../interface/index').page;
+    var eventList = require('../kit/eventList').create('content/home');
+    var addEvent = eventList.add;
 
     var genHomeTitle = require('../template/home/title');
     var genHomeInfo = require('../template/home/info');
     var genSubscriptionList = require('../template/home/subscriptionList');
+    var genRecommendList = require('../template/home/recommendList');
     var genChannelInfo = require('../template/home/channelInfo');
+    var genLoadingIcon = require('../template/common/loadingIcon');
 
     var Home = function(opt){
         this.url = opt.url;
@@ -16,7 +20,10 @@ define(function(require, exports, module) {
 
     Home.prototype.init = function(){
         this.prepareInfo();
+        this.initDoms();
+
         this.getSubscriptionListByPage(1);
+        this.getRecommendList();
         this.getUserInfo();
         this.dealLinks();
 
@@ -26,6 +33,7 @@ define(function(require, exports, module) {
     Home.prototype.bindEvent = function(){};
 
     Home.prototype.clean = function(){
+        eventList.clean();
         /*this.doms.content.html('');
         this.doms.title.html('');
         this.doms.info.html('');*/
@@ -54,17 +62,103 @@ define(function(require, exports, module) {
             rightLink: _this.wrapper.find('#right-link'),
             topLink: _this.wrapper.find('#top-link')
         };
+
+        _this.sideBlock = _this.genSideBlock();
+    };
+
+    Home.prototype.initDoms = function(){
+        //this.doms.content.html(genLoadingIcon());
+    };
+
+    Home.prototype.genSideBlock = function(){
+        var _this = this;
+        var hideTimer,
+            middleBlock = _this.doms.middleBlock,
+            sideBlock = _this.doms.sideBlock,
+            sideContent = _this.doms.sideContent;
+
+        var loading = function(){
+            sideBlock.addClass('loading');
+        };
+        var load = function(cnt){
+            sideBlock.removeClass('loading');
+            sideContent.html(cnt);
+        };
+        var position = function(li){
+            var top = li.offset().top + middleBlock.scrollTop();
+            var originTop = parseInt(sideBlock.css('top'), 10);
+            sideBlock
+                .stop()
+                .clearQueue()
+                .show()
+                .delay(200)
+                .animate({
+                    'top': (top * 6 - originTop)/5
+                }, 100)
+                .animate({
+                    'top': top
+                }, 50);
+        };
+        var hide = function(){
+            hideTimer = setTimeout(function(){
+                sideBlock.hide();
+            }, 200);
+        };
+        var stopHide = function(){
+            if(hideTimer){
+                hideTimer = clearTimeout(hideTimer);
+            }
+        };
+
+        var getInfoAndRender = function(){
+            stopHide();
+
+            var $this = $(this);
+            var cid = $this.attr('data-id');
+            sideBlock.attr('data-cid', cid)
+            position($this);
+            loading();
+
+            resource.get('channel', {
+                id: cid
+            }, function(err, channel){
+                if(sideBlock.attr('data-cid') != cid){
+                    return;
+                }
+                if(err){
+                    load('Get channel info failed.');
+                    return;
+                }
+                load(genChannelInfo({
+                    channel: channel
+                }));
+            });
+        };
+
+        var bind = function(list){
+            addEvent(list.find('.item'), 'mouseenter', getInfoAndRender);
+            addEvent(list, 'mouseleave', hide);
+        };
+
+        addEvent(sideBlock, 'mouseenter', stopHide);
+        addEvent(sideBlock, 'mouseleave', hide);
+
+        //channel-subscribed
+
+        return {
+            bind: bind
+        };
     };
 
     Home.prototype.getUserInfo = function(){
         var _this = this;
         resource.get('user', {
-        }, function(err, users){
-            if(err || users.length < 1){
+        }, function(err, user){
+            if(err){
                 console.error(err || 'Can not get user info.');
                 return;
             }
-            _this.dealUserInfo(users[0]);
+            _this.dealUserInfo(user);
         });
     };
 
@@ -100,75 +194,40 @@ define(function(require, exports, module) {
         });
     };
 
+    Home.prototype.getRecommendList = function(){
+        var _this = this;
+        resource.makeList('channel', {
+        }, function(err, recommends){
+            if(err){
+                console.error(err);
+                return;
+            }
+            _this.dealRecommendList(recommends);
+        })(1);
+    };
+
+    Home.prototype.dealRecommendList = function(recommends){
+        this.data.recommends = recommends;
+        this.renderRecommendList({
+            recommends: recommends
+        });
+    };
+
     Home.prototype.renderHomeInfo = function(data){
         this.doms.title.html(genHomeTitle(data));
         this.doms.info.html(genHomeInfo(data));
     };
 
-    Home.prototype.sideBlockLoading = function(){
-        this.doms.sideBlock.addClass('loading');
-    };
-
-    Home.prototype.sideBlockLoad = function(cnt){
-        this.doms.sideBlock.removeClass('loading');
-        this.doms.sideContent.html(cnt);
-    };
-
-    Home.prototype.sideBlockGoto = function(li){
-        var top = li.offset().top + this.doms.middleBlock.scrollTop();
-        var originTop = parseInt(this.doms.sideBlock.css('top'), 10);
-        this.doms.sideBlock
-            .stop()
-            .clearQueue()
-            .show()
-            .delay(200)
-            .animate({
-                'top': (top * 6 - originTop)/5
-            }, 100)
-            .animate({
-                'top': top
-            }, 50);
-    };
-
     Home.prototype.renderSubscriptionList = function(data){
-        var _this = this;
-        _this.doms.content.html(genSubscriptionList(data));
-        var timer;
-        _this.doms.content.find('.item').on('mouseenter', function(){
-            if(timer){
-                timer = clearTimeout(timer);
-            }
+        this.doms.content.find('.loading-tip').hide();
+        this.doms.content.prepend(genSubscriptionList(data));
 
-            var $this = $(this);
-            var cid = $this.attr('data-id');
-            _this.doms.sideBlock.attr('data-cid', cid)
-            _this.sideBlockGoto($this);
-            _this.sideBlockLoading();
+        this.sideBlock.bind(this.doms.content.find('#subscription-list'));
+    };
 
-            resource.get('channel', {
-                id: cid
-            }, function(err, channels){
-                if(_this.doms.sideBlock.attr('data-cid') != cid){
-                    return;
-                }
-                if(err){
-                    _this.sideBlockLoad(JSON.stringify(err));
-                    return;
-                }
-                if(channels.length < 1){
-                    _this.sideBlockLoad('Get channel info failed.');
-                    return;
-                }
-                _this.sideBlockLoad(genChannelInfo({
-                    channel: channels[0]
-                }));
-            });
-        });
-        _this.doms.content.on('mouseleave', function(){
-            timer = setTimeout(function(){
-                _this.doms.sideBlock.hide();
-            }, 200);
-        });
+    Home.prototype.renderRecommendList = function(data){
+        this.doms.content.append(genRecommendList(data));
+        this.sideBlock.bind(this.doms.content.find('#recommend-list'));
     };
 
     module.exports = Home;

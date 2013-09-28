@@ -45,7 +45,19 @@ define(function(require, exports, module){
         };
     };
 
+    var isSameDomain = function(url){
+        if(url.indexOf('://') < 0){
+            return true;
+        }
+        if(url.indexOf(location.origin) === 0){
+            return true;
+        }
+
+        return false;
+    };
+
     exports.format = formatUrl;
     //exports.getType = getType;
     exports.parse = parseUrl;
+    exports.isSameDomain = isSameDomain;
 });

@@ -66,11 +66,7 @@ var ifExist = function(subscription, callback){
             callback && callback(err);
             return;
         }
-        if(subscriptions.length>0){
-            callback && callback('already exist');
-            return;
-        }
-        callback && callback(null);
+        callback && callback(null, subscriptions.length > 0 ? subscriptions[0] : false);
     });
 };
 
@@ -79,16 +75,7 @@ Subscription.prototype.save = function(callback) {
     if(subscription.id){
         updateSubscription(subscription, callback);
     }else{
-        selectSubscription({
-            subscriber : subscription.subscriber,
-            subscribee : subscription.subscribee
-        }, function(err, sameSubscriptions){
-            if(!err && sameSubscriptions.length > 0){
-                callback && callback(null);
-                return;
-            }
-            saveSubscription(subscription, callback);
-        });
+        saveSubscription(subscription, callback);
     }
 };
 

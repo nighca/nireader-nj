@@ -87,7 +87,7 @@ select{
     left: 0;
     display: none;
 
-    background: rgba(0,0,0,0.2);
+    background-color: rgba(97,97,97,0.2);
 
     @inputHeight: 24px;
     @inputWidth: 600px;
@@ -97,50 +97,62 @@ select{
     @paddingy: 9px;
     @paddingx: 8px;
 
+    &.show{
+        display: block;
+    }
+
     .global-input{
         position: absolute;
-        top: 20%;
+        top: 100px;
         left: 50%;
         margin-top: -(@inputHeight/2 + @paddingy);
         margin-left: -(@inputWidth/2 + @paddingx);
         width: @inputWidth;
         height: @inputHeight;
 
+        color: @themeColor;
         background-color: #f0f0f0;
+        font-weight: bold;
     }
 
     .global-result{
         position: absolute;
-        top: 20%;
+        top: 100px;
         left: 50%;
-        margin-top: @inputHeight/2 + @paddingy + 8;
+        margin-top: @inputHeight/2 + @paddingy;
         margin-left: -(@resultWidth/2 + @paddingx);
 
-        .results, .tips{
-            width: @resultWidth;
-            background-color: #f0f0f0;
-        }
-
         .results{
+            width: @resultWidth;
             padding: @paddingy @paddingx;
+            background-color: fadeout(@themeColor, 20%);
+            color: #f9f9f9;
             .result{
                 display: block;
                 padding: 4px 0;
                 margin-bottom: 2px;
                 line-height: 14px;
                 font-size: 12px;
+                font-weight: bold;
+
+                a{
+                    color: inherit;
+                    text-decoration: none;
+                }
             }
         }
         .tips{
+            width: @resultWidth;
             padding: 4px @paddingx;
-            margin-bottom: 4px;
+            background-color: fadeout(@themeColor, 20%);
+            margin: 4px 0 1px;
+            color: mix(@themeColor, #f9f9f9, 20%);
             .tip{
                 display: block;
                 padding: 2px 0;
                 margin-bottom: 2px;
                 line-height: 12px;
                 font-size: 12px;
-                color: #888;
             }
         }
 

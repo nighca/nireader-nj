@@ -18,7 +18,7 @@ var routes = [
     //method, path, handler, needAuth, devOnly
     ['get', '/', pages.home],
     ['get', '/signin', pages.signin],
-    ['get', '/channel/:cid', pages.channel],
+    ['get', '/channel/:cid', pages.channel, true],
     ['get', '/item/:iid', pages.item],
 
     //method, path, handler, needAuth, devOnly
@@ -29,6 +29,7 @@ var routes = [
     ['get', '/api/item', apis.item.get],
     ['get', '/api/subscription', apis.subscription.get, true],
     ['post', '/api/subscription/add', apis.subscription.add, true],
+    ['post', '/api/subscription/remove', apis.subscription.remove, true],
 
     ['get', '/api/user', apis.user.get, true],
 

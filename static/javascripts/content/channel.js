@@ -2,6 +2,8 @@ define(function(require, exports, module) {
     var resource = require('../kit/resource');
     var pagePath = require('../interface/index').page;
     var URL = require('../kit/url');
+    var eventList = require('../kit/eventList').create('content/channel');
+    var addEvent = eventList.add;
 
     var genChannelTitle = require('../template/channel/title');
     var genChannelInfo = require('../template/channel/info');
@@ -26,6 +28,7 @@ define(function(require, exports, module) {
     Channel.prototype.bindEvent = function(){};
 
     Channel.prototype.clean = function(){
+        eventList.clean();
         /*this.doms.content.html('');
         this.doms.title.html('');
         this.doms.info.html('');*/
@@ -71,12 +74,12 @@ define(function(require, exports, module) {
         var _this = this;
         resource.get('channel', {
             id: _this.data.id
-        }, function(err, channels){
-            if(err || channels.length < 1){
+        }, function(err, channel){
+            if(err){
                 console.error(err || 'No such channel');
                 return;
             }
-            _this.dealChannelInfo(channels[0]);
+            _this.dealChannelInfo(channel);
         });
     };
 
@@ -89,7 +92,7 @@ define(function(require, exports, module) {
 
     Channel.prototype.getNeighbourInfo = function(){
         var _this = this;
-        resource.list('channel', null, {
+        resource.list('subscription', null, {
             from: 0
         }, function(err, channels){
             if(err || channels.length < 1){
@@ -176,7 +179,7 @@ define(function(require, exports, module) {
         var _this = this;
         _this.doms.content.html(genItemList(data));
         var timer;
-        _this.doms.content.find('.item').on('mouseenter', function(){
+        addEvent(_this.doms.content.find('.item'), 'mouseenter', function(){
             if(timer){
                 timer = clearTimeout(timer);
             }
@@ -189,22 +192,18 @@ define(function(require, exports, module) {
 
             resource.get('item', {
                 id: iid
-            }, function(err, items){
+            }, function(err, item){
                 if(_this.doms.sideBlock.attr('data-iid') != iid){
                     return;
                 }
                 if(err){
-                    _this.sideBlockLoad(JSON.stringify(err));
-                    return;
-                }
-                if(items.length < 1){
                     _this.sideBlockLoad('Get item info failed.');
                     return;
                 }
-                _this.sideBlockLoad(items[0].content);
+                _this.sideBlockLoad(item.content);
             });
         });
-        _this.doms.content.on('mouseleave', function(){
+        addEvent(_this.doms.content, 'mouseleave', function(){
             timer = setTimeout(function(){
                 _this.doms.sideBlock.hide();
             }, 200);

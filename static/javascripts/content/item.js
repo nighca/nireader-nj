@@ -2,6 +2,8 @@ define(function(require, exports, module) {
     var resource = require('../kit/resource');
     var pagePath = require('../interface/index').page;
     var URL = require('../kit/url');
+    var eventList = require('../kit/eventList').create('content/item');
+    var addEvent = eventList.add;
 
     var genLoadingIcon = require('../template/common/loadingIcon');
     var genItemTitle = require('../template/item/title');
@@ -31,6 +33,7 @@ define(function(require, exports, module) {
     Item.prototype.bindEvent = function(){};
 
     Item.prototype.clean = function(){
+        eventList.clean();
         /*this.doms.content.html('');
         this.doms.title.html('');
         this.doms.info.html('');*/
@@ -61,12 +64,12 @@ define(function(require, exports, module) {
         var _this = this;
         resource.get('item', {
             id: _this.data.id
-        }, function(err, items){
-            if(err || items.length < 1){
+        }, function(err, item){
+            if(err){
                 console.error(err || 'No such item');
                 return;
             }
-            _this.dealItemInfo(items[0]);
+            _this.dealItemInfo(item);
             callback && callback();
         });
     };
@@ -75,12 +78,12 @@ define(function(require, exports, module) {
         var _this = this;
         resource.get('channel', {
             id: _this.data.item.source
-        }, function(err, channels){
-            if(err || channels.length < 1){
+        }, function(err, channel){
+            if(err){
                 console.error(err || 'Can not get channel');
                 return;
             }
-            _this.dealChannelInfo(channels[0]);
+            _this.dealChannelInfo(channel);
         });
     };
 

@@ -32,7 +32,7 @@ exports.get = function(req, res){
 
         res.json({
             err: err,
-            data: items
+            data: items[0]
         });
     }, sort);
 };

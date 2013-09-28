@@ -75,17 +75,18 @@ function selectChannel(options, callback, sort){
     }, sort);
 };
 
-function ifExist(channel, callback){
-    selectChannel({source: channel.source}, function(err, channels){
+function ifExist(source, callback){
+    if(!source){
+        callback && callback('missin param');
+        return;
+    }
+    var source = typeof source === 'string' ? source : source.source;
+    selectChannel({source: source}, function(err, channels){
         if(err){
             callback && callback(err);
             return;
         }
-        if(channels.length>0){
-            callback && callback('already exist');
-            return;
-        }
-        callback && callback(null);
+        callback && callback(null, channels.length > 0 ? channels[0] : false);
     });
 };
 

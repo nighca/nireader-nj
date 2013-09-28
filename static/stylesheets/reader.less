@@ -151,7 +151,7 @@
     }
 }
 
-.title, .main-content{
+.title, .main-content, .sub-title{
     color: #333;
 }
 
@@ -165,6 +165,13 @@
     //font-weight: bold;
     font-size: 36px;
 }
+
+.sub-title{
+    //border-left: 4px solid @themeColor;
+    //padding-left: 8px;
+    //margin-left: -12px;
+}
+
 .info{
     position: relative;
     margin: 0 40px 20px 40px;
@@ -335,17 +342,23 @@
             .transition-duration(0.8s);
         }
     }
+
+    .channel-title{
+        [class^="icon-"], [class*=" icon-"]{
+            float: right;
+            margin-right: 10px;
+            font-size: 14px;
+            line-height: 18px;
+        }
+    }
+    .channel-description{}
+    .channel-generator{}
 }
 
 .cnt-block{
     margin-bottom: 1em;
 }
 
-.sub-title{
-    font-size: 24px;
-    line-height: 1em;
-    color: #a8a8a8;
-}
 
 .main-content .item-list{
     li{

@@ -1,17 +1,15 @@
 define(function(require, exports, module) {
     var template = require('../template');
     var tmpl =
-        '<i class="icon-spinner icon-spin" style="' +
+        '<i class="icon-eye-<%=status%>" style="' +
             'font-size:<%=size*2%>px;' +
-            //'margin-left:-<%=size*1.3%>px' +
-            //'margin-top:-<%=size*1.3%>px' +
         '"></i>';
 
     var render = template.compile(tmpl);
     module.exports = function(data){
-        data = data || {
-            size: 10
-        };
+        data = data || {};
+        data.size = data.size || 10;
+        data.status = data.subscribed ? 'open' : 'close';
 
         return render(data);
     };

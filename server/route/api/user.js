@@ -3,15 +3,14 @@ var User = require('../../model/user');
 exports.get = function(req, res){
     var opt = {}, sort;
     if(req.query.opt){
-        if(req.query.opt.id){
-            opt.id = req.query.opt.id;
-        }
         for(var name in User.struct){
             if(User.struct.hasOwnProperty(name) && req.query.opt[name] !== null && req.query.opt[name] !== undefined){
                 opt[name] = decodeURI(req.query.opt[name]);
             }
         }
     }
+    opt.id = req.session.uid;
+
     if(req.query.sort){
         sort = {
             order: req.query.sort.order ? decodeURI(req.query.sort.order) : null,
@@ -32,7 +31,7 @@ exports.get = function(req, res){
 
         res.json({
             err: err,
-            data: users
+            data: users[0]
         });
     }, sort);
 };

@@ -1,9 +1,7 @@
 var Subscription = require('../../model/subscription');
 
 exports.get = function(req, res){
-    var opt = {
-        id: req.session.uid
-    }, sort;
+    var opt = {}, sort;
     if(req.query.opt){
         for(var name in Subscription.struct){
             if(Subscription.struct.hasOwnProperty(name) && req.query.opt[name] !== null && req.query.opt[name] !== undefined){
@@ -11,6 +9,7 @@ exports.get = function(req, res){
             }
         }
     }
+    opt.subscriber = req.session.uid;
     if(req.query.sort){
         sort = {
             order: req.query.sort.order ? decodeURI(req.query.sort.order) : null,
@@ -31,7 +30,7 @@ exports.get = function(req, res){
 
         res.json({
             err: err,
-            data: subscriptions
+            data: subscriptions[0]
         });
     }, sort);
 };
@@ -42,16 +41,52 @@ exports.add = function(req, res){
         return;
     }
 
-    var opt = {
+    var subscription = Subscription.create({
         subscriber: req.session.uid,
         subscribee: req.body.subscribee,
         description: req.body.description
-    };
-    
-    Subscription.create(opt).save(function(err, subscription){
-        res.json({
-            err: err,
-            data: subscription
+    });
+
+    Subscription.ifExist(subscription, function(err, exist){
+        if(err || exist){
+            res.json({
+                err: err,
+                data: exist
+            });
+            return;
+        }
+        subscription.save(function(err, subscription){
+            res.json({
+                err: err,
+                data: subscription
+            });
+        });
+    });
+};
+
+exports.remove = function(req, res){
+    if(!req.body.subscribee){
+        res.send(500, {err: 'missing params'});
+        return;
+    }
+
+    var subscription = Subscription.create({
+        subscriber: req.session.uid,
+        subscribee: req.body.subscribee,
+        description: req.body.description
+    });
+
+    Subscription.ifExist(subscription, function(err, subscription){
+        if(err || !subscription){
+            res.json({
+                err: err
+            });
+            return;
+        }
+        subscription.remove(function(err){
+            res.json({
+                err: err
+            });
         });
     });
 };
