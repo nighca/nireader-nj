@@ -1,14 +1,14 @@
 define(function(require, exports, module){
     var request = require('./request');
     var formatUrl = require('./url').format;
-    var resourceIF = require('../interface/index').resource;
+    var apis = require('../interface/index').api;
 
     var resources = ['item', 'channel'];
 
     var getUrl = {
-        item: resourceIF.item.get,
-        channel: resourceIF.channel.get,
-        user: resourceIF.user.get
+        item: apis.item.get,
+        channel: apis.channel.get,
+        user: apis.user.get
     };
     var getSort = {
         item: {
@@ -46,9 +46,9 @@ define(function(require, exports, module){
     };
 
     var listUrl = {
-        item: resourceIF.item.list,
-        channel: resourceIF.channel.list,
-        subscription: resourceIF.subscription.list
+        item: apis.item.list,
+        channel: apis.channel.list,
+        subscription: apis.subscription.list
     };
     var listFields = {
         item: ['id', 'pubDate', 'title', 'source'],

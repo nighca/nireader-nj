@@ -7,7 +7,7 @@ define(function(require, exports, module) {
     var customEvent = require('../kit/customEvent');
 
     var interfaces = require('../interface/index');
-    var apis = interfaces.resource;
+    var apis = interfaces.api;
     var pages = require('../interface/index').page;
 
     var genResult = require('../template/common/result');
@@ -22,7 +22,7 @@ define(function(require, exports, module) {
     var showFloater = function(){
         bodyContent.addClass('blur');
         globalFloater.addClass('show');
-        globalInput.val('http://nighca.me/feed/').focus();
+        globalInput.val('').focus();
         globalTip.hide();
         globalResult.hide();
     };

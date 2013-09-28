@@ -14,8 +14,14 @@ exports.in = function(req, res){
             res.send(404, err);
             return;
         }
-        //req.session.cookie.maxAge = 300000;
         req.session.uid = user.id;
+        //req.session.cookie.maxAge = 300000;
+
+        if(!req.get('isAjax')){
+            res.redirect(req.body.target || '/');
+            return;
+        }
+
         user.password = null;
         res.json({
             err: null,

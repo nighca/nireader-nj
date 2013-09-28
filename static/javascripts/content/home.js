@@ -1,8 +1,10 @@
 define(function(require, exports, module) {
     var resource = require('../kit/resource');
-    var pagePath = require('../interface/index').page;
+    var request = require('../kit/request');
+    var notice = require('../kit/notice');
     var eventList = require('../kit/eventList').create('content/home');
     var addEvent = eventList.add;
+    var apis = require('../interface/index').api;
 
     var genHomeTitle = require('../template/home/title');
     var genHomeInfo = require('../template/home/info');
@@ -110,6 +112,51 @@ define(function(require, exports, module) {
             }
         };
 
+        var subscribe = function(cid, icon){
+            icon.addClass('icon-spinner icon-spin');
+
+            request.post({
+                subscribee: cid
+            }, apis.subscription.add, function(err, subscription){
+                icon.removeClass('icon-spinner icon-spin');
+                if(err){
+                    notice('订阅失败');
+                    console.warn(err);
+                }else{
+                    icon
+                        .removeClass('icon-eye-close')
+                        .addClass('icon-eye-open');
+                    _this.refreshSubscriptionList();
+                }
+            });
+        };
+
+        var cancelSubscribe = function(cid, icon){
+            icon.addClass('icon-spinner icon-spin');
+
+            request.post({
+                subscribee: cid
+            }, apis.subscription.remove, function(err, subscription){
+                icon.removeClass('icon-spinner icon-spin');
+                if(err){
+                    notice('取消订阅失败');
+                    console.warn(err);
+                }else{
+                    icon
+                        .removeClass('icon-eye-open')
+                        .addClass('icon-eye-close');
+                    _this.refreshSubscriptionList();
+                }
+            });
+        };
+
+        var bindSubscribe = function(cid){
+            var icon = sideBlock.find('#channel-subscribed');
+            addEvent(icon, 'click', function(e){
+                (icon.hasClass('icon-eye-open') ? cancelSubscribe : subscribe)(cid, icon);
+            });
+        };
+
         var getInfoAndRender = function(){
             stopHide();
 
@@ -132,6 +179,7 @@ define(function(require, exports, module) {
                 load(genChannelInfo({
                     channel: channel
                 }));
+                bindSubscribe(cid);
             });
         };
 
@@ -183,8 +231,14 @@ define(function(require, exports, module) {
                 console.error(err);
                 return;
             }
+            _this.data.subscriptionListPage = page;
             _this.dealSubscriptionList(subscriptions);
         })(page);
+    };
+
+    Home.prototype.refreshSubscriptionList = function(){
+        this.doms.subscriptionList && this.doms.subscriptionList.remove();
+        this.getSubscriptionListByPage(this.data.subscriptionListPage);
     };
 
     Home.prototype.dealSubscriptionList = function(subscriptions){
@@ -219,15 +273,27 @@ define(function(require, exports, module) {
     };
 
     Home.prototype.renderSubscriptionList = function(data){
-        this.doms.content.find('.loading-tip').hide();
-        this.doms.content.prepend(genSubscriptionList(data));
+        if(this.recommendListReady){
+            this.doms.content.prepend(genSubscriptionList(data));
+        }else{
+            this.doms.content.html(genSubscriptionList(data));
+        }
+        this.subscriptionListReady = true;
 
-        this.sideBlock.bind(this.doms.content.find('#subscription-list'));
+        this.doms.subscriptionList = this.doms.content.find('#subscription-list');
+        this.sideBlock.bind(this.doms.subscriptionList);
     };
 
     Home.prototype.renderRecommendList = function(data){
-        this.doms.content.append(genRecommendList(data));
-        this.sideBlock.bind(this.doms.content.find('#recommend-list'));
+        if(this.subscriptionListReady){
+            this.doms.content.append(genRecommendList(data));
+        }else{
+            this.doms.content.html(genRecommendList(data));
+        }
+        this.recommendListReady = true;
+
+        this.doms.recommendList = this.doms.content.find('#recommend-list');
+        this.sideBlock.bind(this.doms.recommendList);
     };
 
     module.exports = Home;

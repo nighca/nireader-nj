@@ -85,11 +85,7 @@ var ifExist = function(item, callback){
             callback && callback(err);
             return;
         }
-        if(items.length>0){
-            callback && callback('already exist');
-            return;
-        }
-        callback && callback(null);
+        callback && callback(null, items.length > 0 ? items[0] : false);
     });
 };
 

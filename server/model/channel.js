@@ -137,6 +137,17 @@ Channel.prototype.updateFromMeta = function(meta){
 
     return channel;
 };
+
+var saveItemIfNotExist = function(item, callback){
+    Item.ifExist(item, function(err, exist){
+        if(err || exist){
+            callback && callback(err, exist);
+            return;
+        }
+        item.save(callback);
+    });
+};
+
 Channel.prototype.fetch = function(callback) {
     var channel = this;
     //console.log("Channel fetch: " + channel.title);//---------------------------------
@@ -164,7 +175,7 @@ Channel.prototype.fetch = function(callback) {
             if(useItem(item, channel)){
                 notFinished++;
                 //console.log("Use Item: " + item.title);//---------------------
-                Item.createFromFeed(item, channel.id).save(function(err){
+                saveItemIfNotExist(Item.createFromFeed(item, channel.id), function(err){
                     if(err){
                         console.error(err);
                     }

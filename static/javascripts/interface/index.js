@@ -1,5 +1,5 @@
 define(function(require, exports, module) {
-    var resource = {
+    var api = {
         channel: {
             get: '/api/channel',
             list: '/api/list/channel',
@@ -32,7 +32,7 @@ define(function(require, exports, module) {
     };
 
     module.exports = {
-        resource: resource,
+        api: api,
         page: page
     };
 });

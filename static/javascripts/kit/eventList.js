@@ -7,19 +7,27 @@ define(function(require, exports, module){
             name: name,
             list: list,
             add: function(dom, event, handler){
-                dom.on(event, handler);
-                list.push({
-                    dom: dom,
-                    event: event,
-                    handler: handler
-                });
+                try{
+                    dom.on(event, handler);
+                    list.push({
+                        dom: dom,
+                        event: event,
+                        handler: handler
+                    });
+                }catch(e){
+                    console.log(e.stack);
+                }
 
                 return list;
             },
             clean: function(){
-                for (var i = list.length - 1, record; i >= 0; i--) {
-                    var record = list[i];
-                    record.dom.off(record.event, record.handler);
+                try{
+                    for (var i = list.length - 1, record; i >= 0; i--) {
+                        var record = list[i];
+                        record.dom.off(record.event, record.handler);
+                    }
+                }catch(e){
+                    console.log(e.stack);
                 }
                 list = lists[name] = [];
             }
