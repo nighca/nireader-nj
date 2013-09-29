@@ -1,6 +1,6 @@
 extends reader
 
-append stylesheets
+block stylesheets
     link(rel='stylesheet', href='/stylesheets/entrance.css')
 
 block headerContent
@@ -19,7 +19,3 @@ block headerContent
                 input#password-in(type='password', name='password', placeholder='PASSWORD')
                 button#submit(type='submit')
                     i.icon-ok
-
-append scripts
-    script.
-        //seajs.use("/javascripts/page/entrance");

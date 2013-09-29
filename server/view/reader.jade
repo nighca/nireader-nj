@@ -1,6 +1,6 @@
 extends global
 
-append stylesheets
+block stylesheets
     link(rel='stylesheet', href='/stylesheets/reader.css')
 
 block content
@@ -29,4 +29,4 @@ block content
 
 append scripts
     script.
-        seajs.use("/javascripts/page/reader");
+        seajs.use("/javascripts/src/page/reader");

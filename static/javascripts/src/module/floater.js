@@ -27,6 +27,7 @@ define(function(require, exports, module) {
     };
     var initDom = function(){
         globalInput.val('').focus();
+        checkInput();
         globalTip.hide();
         globalResult.hide();
     };
