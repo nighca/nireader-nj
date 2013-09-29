@@ -26,7 +26,32 @@ define(function(require, exports, module){
         }
     };
 
-    var getResource = function(type, opt, callback, sort){
+    var refreshResource = function(type, opt, callback, sort){
+        if(!type || typeof type !== 'string'){
+            return;
+        }
+
+        var cacheKey = {
+            type: type,
+            opt: opt,
+            sort: sort
+        };
+
+        var params = {
+            opt: opt,
+            sort: sort || getSort[type]
+        };
+
+        var url = getUrl[type];
+        request.get(params, url, function(err, resource){
+            if(!err){
+                cache.set(cacheKey, resource)
+            }
+            callback && callback(err, resource);
+        });
+    };
+
+    var getResource = function(type, opt, callback, sort, refresh){
         if(!type || typeof type !== 'string'){
             return;
         }
@@ -36,7 +61,7 @@ define(function(require, exports, module){
             opt: opt,
             sort: sort
         };
-        if(cachedResult = cache.get(cacheKey)){
+        if(!refresh && (cachedResult = cache.get(cacheKey))){
             callback && callback(null, cachedResult);
             return;
         }
@@ -131,6 +156,7 @@ define(function(require, exports, module){
         }
     };
 
+    exports.refresh = refreshResource;
     exports.get = getResource;
     exports.list = listResource;
     exports.makeList = makeCertainList;

@@ -124,6 +124,7 @@ define(function(require, exports, module) {
                     icon
                         .removeClass('icon-eye-close')
                         .addClass('icon-eye-open');
+                    resource.refresh('channel', {id: cid});
                     _this.refreshSubscriptionList();
                 }
             });
@@ -143,6 +144,7 @@ define(function(require, exports, module) {
                     icon
                         .removeClass('icon-eye-open')
                         .addClass('icon-eye-close');
+                    resource.refresh('channel', {id: cid});
                     _this.refreshSubscriptionList();
                 }
             });
