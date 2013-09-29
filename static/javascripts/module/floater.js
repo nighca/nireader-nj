@@ -42,8 +42,8 @@ define(function(require, exports, module) {
         }
     };
 
-    var reloadPageInfo = function(){
-        customEvent.trigger('pageInfoUpdate');
+    var reloadPage = function(){
+        customEvent.trigger('userInfoUpdate');
     };
 
     var cleanResult = function(){
@@ -139,7 +139,7 @@ define(function(require, exports, module) {
                         }
                         cleanResult();
                         showTip('Channel ' + channel.title + ' subscribed.');
-                        reloadPageInfo();
+                        reloadPage();
                     });
                 });
             };
@@ -156,7 +156,7 @@ define(function(require, exports, module) {
             }
         }
 
-        console.log(val, currVal, val == currVal);//-------------------------------------------
+        //console.log(val, currVal, val == currVal);//-------------------------------------------
         if(val == currVal){
             return;
         }else{

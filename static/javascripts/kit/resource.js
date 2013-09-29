@@ -1,5 +1,6 @@
 define(function(require, exports, module){
     var request = require('./request');
+    var cache = require('./cache');
     var formatUrl = require('./url').format;
     var apis = require('../interface/index').api;
 
@@ -30,13 +31,28 @@ define(function(require, exports, module){
             return;
         }
 
+        var cachedResult, cacheKey = {
+            type: type,
+            opt: opt,
+            sort: sort
+        };
+        if(cachedResult = cache.get(cacheKey)){
+            callback && callback(null, cachedResult);
+            return;
+        }
+
         var params = {
             opt: opt,
             sort: sort || getSort[type]
         };
 
         var url = getUrl[type];
-        request.get(params, url, callback);
+        request.get(params, url, function(err, resource){
+            if(!err){
+                cache.set(cacheKey, resource)
+            }
+            callback && callback(err, resource);
+        });
     };
 
     var makeGet = function(type, callback){

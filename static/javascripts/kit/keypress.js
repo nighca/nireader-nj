@@ -27,7 +27,7 @@ define(function(require, exports, module){
     };
 
     $('body').on('keyup', function(e){
-        console.log(e.which, e.ctrlKey, e.altKey, e);//--------------------------------------
+        //console.log(e.which, e.ctrlKey, e.altKey, e);//--------------------------------------
         trigger(e.which, e.ctrlKey, e.altKey, e);
 
         e.preventDefault();

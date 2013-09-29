@@ -9,7 +9,9 @@ define(function(require, exports, module) {
         page.checkout(info);
     });
 
-    customEvent.on('pageInfoUpdate', function(){
-    	stateManager.checkout();
+    customEvent.on('userInfoUpdate', function(){
+        if(page.content && page.content.type === 'home'){
+            stateManager.checkout();
+        }
     });
 });
