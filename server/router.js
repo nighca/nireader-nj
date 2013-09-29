@@ -1,5 +1,6 @@
 var pages = {
     home: require('./route/page/home'),
+    entrance: require('./route/page/entrance'),
     channel: require('./route/page/channel'),
     item: require('./route/page/item'),
     signin: require('./route/page/signin')
@@ -17,6 +18,7 @@ var apis = {
 var routes = [
     //method, path, handler, needAuth, devOnly
     ['get', '/', pages.home],
+    ['get', '/welcome', pages.entrance],
     ['get', '/signin', pages.signin],
     ['get', '/channel/:cid', pages.channel, true],
     ['get', '/item/:iid', pages.item],

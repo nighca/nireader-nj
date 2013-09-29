@@ -18,6 +18,10 @@ define(function(require, exports, module) {
         },
         user: {
             get: '/api/user'
+        },
+        auth: {
+            in: '/api/signin',
+            out: '/api/signout'
         }
     };
 

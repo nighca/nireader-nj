@@ -3,6 +3,7 @@ define(function(require, exports, module){
 
 	var Contents = {
 		'home': require('../content/home'),
+		'welcome': require('../content/entrance'),
 		'channel': require('../content/channel'),
 		'item': require('../content/item')
 	};

@@ -13,10 +13,9 @@ html
     body
         if user
             span#user-info(data-uid=user.id)
-        #header.header
+        block headerContent
         #body.body
             block content
-                p no content
         #footer.footer
             #floater.floater
                 input#input.global-input(type='text')

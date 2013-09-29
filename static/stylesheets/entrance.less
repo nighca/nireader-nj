@@ -1,45 +1,47 @@
 @import "define.less";
 
-#title-block{
-	position: absolute;
-	left: 10%;
-	top: 15%;
-	width: 60%;
-}
+.header{
+	.title-block{
+		position: absolute;
+		left: 10%;
+		top: 15%;
+		width: 60%;
+	}
 
-.top-title, .second-title{
-	font-size: 60px;
-	line-height: 60px;
-}
+	.top-title, .second-title{
+		font-size: 60px;
+		line-height: 60px;
+	}
 
-.top-title{
-	font-weight: bold;
-}
+	.top-title{
+		font-weight: bold;
+	}
 
-.second-title{
-	color: #a8a8a8;
-}
-
-.ops{
-	margin-top: 40px;
-
-	.op{
-		font-size: 24px;
-		text-decoration: none;
+	.second-title{
 		color: #a8a8a8;
+	}
 
-		.transition-duration();
+	.ops{
+		margin-top: 40px;
 
-		&:hover{
-			color: #000;
+		.op{
+			font-size: 24px;
+			text-decoration: none;
+			color: #a8a8a8;
+
+			.transition-duration();
+
+			&:hover{
+				color: #000;
+			}
 		}
 	}
-}
 
-.signin-block{
-	display: none;
-	margin-top: 20px;
-	input{
-		margin-right: 20px;
+	.signin-block{
+		display: none;
+		margin-top: 20px;
+		input{
+			margin-right: 20px;
+		}
 	}
 }

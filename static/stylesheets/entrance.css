@@ -1,13 +1,14 @@
-@font-face{font-family:'TeXGyre';src:url('../font/texgyreadventor-regular-webfont.woff') format('woff');font-weight:normal;font-style:normal}.left{float:left}
+@font-face{font-family:'TeXGyre';src:url('../font/texgyreadventor-regular-webfont.woff') format('woff');font-weight:normal;font-style:normal}.blur{-webkit-filter:blur(3px);-moz-filter:blur(3px);-o-filter:blur(3px);-ms-filter:blur(3px);filter:blur(3px)}
+.left{float:left}
 .right{float:right}
 .align-left{text-align:left}
 .align-right{text-align:right}
 .align-center{text-align:center}
 .hidden{display:none}
 .inline-block{display:inline-block;*display:inline;*zoom:1}
-#title-block{position:absolute;left:10%;top:15%;width:60%}
-.top-title,.second-title{font-size:60px;line-height:60px}
-.top-title{font-weight:bold}
-.second-title{color:#a8a8a8}
-.ops{margin-top:40px}.ops .op{font-size:24px;text-decoration:none;color:#a8a8a8;-webkit-transition-duration:.5s;-moz-transition-duration:.5s;-o-transition-duration:.5s;transition-duration:.5s}.ops .op:hover{color:#000}
-.signin-block{display:none;margin-top:20px}.signin-block input{margin-right:20px}
+.header .title-block{position:absolute;left:10%;top:15%;width:60%}
+.header .top-title,.header .second-title{font-size:60px;line-height:60px}
+.header .top-title{font-weight:bold}
+.header .second-title{color:#a8a8a8}
+.header .ops{margin-top:40px}.header .ops .op{font-size:24px;text-decoration:none;color:#a8a8a8;-webkit-transition-duration:.5s;-moz-transition-duration:.5s;-o-transition-duration:.5s;transition-duration:.5s}.header .ops .op:hover{color:#000}
+.header .signin-block{display:none;margin-top:20px}.header .signin-block input{margin-right:20px}

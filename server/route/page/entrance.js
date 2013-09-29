@@ -1,7 +1,7 @@
 module.exports = function(req, res){
     if(req.session.uid){
-        res.render('reader', {title: 'home'});
+        res.redirect('/');
     }else{
-        res.redirect('/welcome');
+        res.render('entrance', {title: 'welcome'});
     }  
 };

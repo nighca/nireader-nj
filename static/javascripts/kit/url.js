@@ -35,14 +35,18 @@ define(function(require, exports, module){
     };*/
 
     var parseUrl = function(url){
-        var pattern = /([^\/]+)\/([^\/]+)$/;
-        return pattern.test(url) ? {
-            type: pattern.exec(url)[1],
-            id: parseInt(pattern.exec(url)[2], 10)
-        } : {
-            type: null,
-            id: null
-        };
+        //var pattern = /([^\/]+)\/([^\/]+)$/;
+        var pattern = /\/([^\/]+)(\/([^\/]+))?$/;
+        var result = {};
+        if(pattern.test(url)){
+            var t = pattern.exec(url);
+            result.type = t[1];
+            if(t[3]){
+                result.id = parseInt(t[3], 10);
+            }
+        }
+
+        return result;
     };
 
     var isSameDomain = function(url){

@@ -1,24 +1,25 @@
-extends global
+extends reader
 
 append stylesheets
     link(rel='stylesheet', href='/stylesheets/entrance.css')
 
-block content
-    #title-block
-        h3.top-title NIREADER
-        h3.second-title JUST
-        h3.second-title ANOTHER
-        h3.second-title RSS READER
+block headerContent
+    #header.header
+        #title-block.title-block
+            h3.top-title NIREADER
+            h3.second-title JUST
+            h3.second-title ANOTHER
+            h3.second-title RSS READER
 
-        p.ops
-            a#signin.op(href='/signin') SIGN IN
-        #signin-block.signin-block
-            form(action='/api/signin', method='post')
-                input(type='text', name='username', placeholder='USERNAME')
-                input(type='password', name='password', placeholder='PASSWORD')
-                button(type='submit')
+            p.ops
+                a#signin.op(href='/') SIGN IN
+            #signin-block.signin-block
+                //form(action='/api/signin', method='post')
+                input#name-in(type='text', name='username', placeholder='USERNAME')
+                input#password-in(type='password', name='password', placeholder='PASSWORD')
+                button#submit(type='submit')
                     i.icon-ok
 
 append scripts
     script.
-        seajs.use("/javascripts/page/entrance");
+        //seajs.use("/javascripts/page/entrance");

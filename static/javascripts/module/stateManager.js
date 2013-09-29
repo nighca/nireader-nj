@@ -1,5 +1,6 @@
 define(function(require, exports, module) {
     var formatUrl = require('../kit/url').format;
+    var customEvent = require('../kit/customEvent');
 
     var StateManager = function(opt){
         this.handlers = {};
@@ -14,6 +15,15 @@ define(function(require, exports, module) {
     StateManager.prototype.bindEvent = function(){
         var manager = this;
 
+        var gotoUrl = function(url){
+            url = formatUrl(url);
+            manager.pushState({
+                url: url,
+                title: 'Loading'
+            });
+            manager.checkout();
+        }
+
         $('body').delegate('[data-link-async]', 'click', function(e){
             e.preventDefault();
 
@@ -22,13 +32,10 @@ define(function(require, exports, module) {
                 return false;
             }
 
-            var url = formatUrl(link.attr('href'));
-            manager.pushState({
-                url: url,
-                title: 'Loading'
-            });
-            manager.checkout();
+            gotoUrl(link.attr('href'));
         });
+
+        customEvent.on('goto', gotoUrl);
 
         window.onpopstate = function(e){
             manager.checkout();
@@ -63,7 +70,7 @@ define(function(require, exports, module) {
                 }
             }
         }
-    };    
+    };
 
     module.exports = new StateManager();
 });

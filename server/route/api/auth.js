@@ -25,9 +25,7 @@ exports.in = function(req, res){
         user.password = null;
         res.json({
             err: null,
-            data: {
-                user: user
-            }
+            data: user
         });
     });
 };
