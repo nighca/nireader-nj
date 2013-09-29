@@ -15,7 +15,15 @@ define(function(require, exports, module) {
 
     Entrance.prototype.init = function(){
         this.prepareInfo();
+        this.dealLinks();
+        
         this.bindEvent();
+    };
+
+    Entrance.prototype.dealLinks = function(){
+        this.doms.topLink.hide();
+        this.doms.leftLink.hide();
+        this.doms.rightLink.hide();
     };
 
     Entrance.prototype.bindEvent = function(){
