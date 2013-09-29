@@ -17,7 +17,6 @@ define(function(require, exports, module){
             wrapper: this.wrapper
         });
         this.content.init();
-        this.content.bindEvent();
     };
 
     page.init = function(){

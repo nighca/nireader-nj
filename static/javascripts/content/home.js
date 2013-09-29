@@ -11,7 +11,6 @@ define(function(require, exports, module) {
     var genSubscriptionList = require('../template/home/subscriptionList');
     var genRecommendList = require('../template/home/recommendList');
     var genChannelInfo = require('../template/home/channelInfo');
-    var genLoadingIcon = require('../template/common/loadingIcon');
 
     var Home = function(opt){
         this.url = opt.url;
@@ -69,7 +68,6 @@ define(function(require, exports, module) {
     };
 
     Home.prototype.initDoms = function(){
-        //this.doms.content.html(genLoadingIcon());
     };
 
     Home.prototype.genSideBlock = function(){

@@ -3,15 +3,17 @@ define(function(require, exports, module) {
 
     var pattern = require('../kit/pattern');
     var request = require('../kit/request');
+    var notice = require('../kit/notice');
     var URL = require('../kit/url');
     var customEvent = require('../kit/customEvent');
 
     var interfaces = require('../interface/index');
     var apis = interfaces.api;
-    var pages = require('../interface/index').page;
+    var pages = interfaces.page;
 
     var genResult = require('../template/common/result');
     var genTip = require('../template/common/tip');
+    var loadingIcon = require('../template/common/loadingIcon')();
 
     var bodyContent = $('#body');
     var globalFloater = $('#floater');
@@ -19,12 +21,22 @@ define(function(require, exports, module) {
     var globalTip = $('#tips');
     var globalResult = $('#results');
 
-    var showFloater = function(){
-        bodyContent.addClass('blur');
-        globalFloater.addClass('show');
+    var currVal;
+    var initInfo = function(){
+        currVal = globalInput.val().trim();
+    };
+    var initDom = function(){
         globalInput.val('').focus();
         globalTip.hide();
         globalResult.hide();
+    };
+
+    var showFloater = function(){
+        bodyContent.addClass('blur');
+        globalFloater.addClass('show');
+        
+        initDom();
+        initInfo();
     };
 
     //showFloater();
@@ -72,19 +84,20 @@ define(function(require, exports, module) {
         addTip(word);
     };
 
-    var addResult = function(word, link){
+    var addResult = function(word, link, async){
         var link = link || 'javascript:;';
         var target = URL.isSameDomain(link) ? '' : '_blank';
         globalResult.show().append(genResult({
             result: {
                 word: word,
                 link: link,
-                target: target
+                target: target,
+                async: async
             }
         }));
     };
 
-    var enterHandler = function(){};
+    var enterHandler, tabHandler;
 
     var createChannel = function(url, callback){
         request.post({
@@ -108,7 +121,7 @@ define(function(require, exports, module) {
     var dealFeed = function(){
 
         var url = globalInput.val();
-        showTip('A feed url? parsing...');
+        showTip('A feed url? parsing... ' + loadingIcon);
 
         createChannel(url, function(err, channel){
             if(url !== currVal){
@@ -120,8 +133,10 @@ define(function(require, exports, module) {
                 showTip('Failed to parse, invalid feed url.');
                 return;
             }
-            showTip('Press <b>Enter</b> to add & subscribe.');
-            addResult(channel.title, channel.link);
+
+            var exist = !!channel.id;
+            showTip('Press <b>Enter</b> to ' + (exist ? '' : 'add & ') + 'subscribe.');
+            addResult(channel.title, exist ? pages.channel(channel.id) : channel.link, exist);
 
             enterHandler = function(){
                 saveChannel(channel, function(err, channel){
@@ -129,7 +144,7 @@ define(function(require, exports, module) {
                         showTip('Failed to add channel. Please try again.');
                         return;
                     }
-                    showTip('Channel ' + channel.title + ' added, subscribing...');
+                    showTip('Channel ' + channel.title + ' added, subscribing... ' + loadingIcon);
                     addSubscription(channel.id, function(err, subscription){
                         if(err){
                             showTip(
@@ -146,28 +161,103 @@ define(function(require, exports, module) {
         });
     };
 
-    var currVal = globalInput.val().trim();
-    globalInput.on('keyup', function(e){
-        var val = $(this).val().trim();
+    var dealLogout = function(){
+        showTip('Press <b>Enter</b> to logout.');
 
-        if(e.which === 13){// Enter
-            if(!enterHandler()){
-                return;
-            }
-        }
+        enterHandler = function(){
+            showTip(loadingIcon);
+            request.get(apis.auth.out, function(err){
+                if(err){
+                    notice(err);
+                    return;
+                }
+                location.href = pages.home;
+            });
+        };
+    };
 
-        //console.log(val, currVal, val == currVal);//-------------------------------------------
+    var dealHome = function(){
+        showTip('Press <b>Enter</b> to go to home (\'/\').');
+
+        enterHandler = function(){
+            showTip(loadingIcon);
+            customEvent.trigger('goto', '/');
+            cleanTip();
+        };
+    };
+
+    var cmds = {
+        'logout': dealLogout,
+        'home': dealHome
+    };
+
+    var checkInput = function(){
+        var val = globalInput.val().trim();
+
+        // No change
         if(val == currVal){
             return;
         }else{
             currVal = val;
         }
 
+        // Clean result
         cleanAll();
 
-        if(pattern.url.test(val)){
-            dealFeed();
+        // CMD
+        if(val && cmds[val]){
+            cmds[val]();
+            return;
         }
+
+        // Feed url
+        if(val && pattern.url.test(val)){
+            dealFeed();
+            return;
+        }
+
+        // CMD hint
+        var pos, str, cmd;
+        if(val){
+            for(var c in cmds){
+                if(cmds.hasOwnProperty(c) && (pos = c.indexOf(val)) >= 0){
+                    cmd = c;
+                    str =
+                        c.slice(0, pos) +
+                        '<b>' +
+                        val +
+                        '</b>' +
+                        c.slice(pos + val.length) +
+                        '\t ---- Use <b>Tab</b>'
+                    addTip(str);
+                }
+            }
+        }
+        tabHandler = cmd && function(e){
+            globalInput.val(cmd);
+            //checkInput();
+        };
+    };
+
+    globalInput.on('keydown', function(e){
+        // Tab
+        if(e.which === 9){
+            e.preventDefault();
+            if(tabHandler && !tabHandler(e)){
+                return;
+            }
+        }
+    });
+
+    globalInput.on('keyup', function(e){
+        // Enter
+        if(e.which === 13){
+            if(enterHandler && !enterHandler(e)){
+                return;
+            }
+        }
+
+        checkInput();
     });
 
     keypress.register(27, function(e){

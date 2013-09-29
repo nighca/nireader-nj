@@ -1,6 +1,7 @@
 define(function(require, exports, module) {
     var request = require('../kit/request');
     var customEvent = require('../kit/customEvent');
+    var notice = require('../kit/notice');
     var eventList = require('../kit/eventList').create('content/entrance');
     var addEvent = eventList.add;
     var apis = require('../interface/index').api;
@@ -18,6 +19,7 @@ define(function(require, exports, module) {
     };
 
     Entrance.prototype.bindEvent = function(){
+        var _this = this;
         var doms = this.doms;
 
         addEvent(doms.signin, 'click', function(){
@@ -25,24 +27,36 @@ define(function(require, exports, module) {
             return false;
         });
 
-        addEvent(doms.submit, 'click', function(){
-            var username = doms.nameIn.val();
-            var password = doms.passwordIN.val();
-
-            if(!username || !password){
-                return;
-            }
-
-            request.post({
-                username: username,
-                password: password
-            }, apis.auth.in, function(err, data){
-                if(!err){
-                    customEvent.trigger('goto', '/');
-                }
-            });
+        addEvent(doms.submit, 'click', function(e){
+            _this.signIn();
         });
 
+        addEvent(doms.passwordIN, 'keyup', function(e){
+            if(e.which === 13){// Enter
+                _this.signIn();
+            }
+        });
+
+    };
+
+    Entrance.prototype.signIn = function(){
+        var username = this.doms.nameIn.val();
+        var password = this.doms.passwordIN.val();
+
+        if(!username || !password){
+            return;
+        }
+
+        request.post({
+            username: username,
+            password: password
+        }, apis.auth.in, function(err, data){
+            if(err){
+                notice(err);
+                return;
+            }
+            customEvent.trigger('goto', '/');
+        });
     };
 
     Entrance.prototype.clean = function(){

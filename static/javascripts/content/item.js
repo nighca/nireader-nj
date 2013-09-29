@@ -5,7 +5,6 @@ define(function(require, exports, module) {
     var eventList = require('../kit/eventList').create('content/item');
     var addEvent = eventList.add;
 
-    var genLoadingIcon = require('../template/common/loadingIcon');
     var genItemTitle = require('../template/item/title');
     var genItemInfo = require('../template/item/info');
     var genItemContent = require('../template/item/content');
