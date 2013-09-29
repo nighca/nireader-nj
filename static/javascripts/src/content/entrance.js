@@ -16,7 +16,7 @@ define(function(require, exports, module) {
     Entrance.prototype.init = function(){
         this.prepareInfo();
         this.dealLinks();
-        
+
         this.bindEvent();
     };
 
@@ -77,6 +77,9 @@ define(function(require, exports, module) {
     Entrance.prototype.prepareInfo = function(){
         this.doms = {
             wrapper: $('#header'),
+            leftLink: $('#left-link'),
+            rightLink: $('#right-link'),
+            topLink: $('#top-link'),
             signin: $('#signin'),
             signinBlock: $('#signin-block'),
             nameIn: $('#name-in'),
