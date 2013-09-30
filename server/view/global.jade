@@ -1,0 +1,25 @@
+!!! 5
+html
+    head
+        title= title
+        block libs
+            script(src='/javascripts/lib/sea.js')
+            script(src='/javascripts/lib/jquery-2.0.2.min.js')
+            script(src='/javascripts/lib/type.min.js')
+            script(src='/javascripts/lib/template.min.js')
+            script(src='/javascripts/lib/kit.js')
+        block stylesheets
+            link(rel='stylesheet', href='/stylesheets/global.css')
+    body
+        if user
+            span#user-info(data-uid=user.id)
+        block headerContent
+        #body.body
+            block content
+        #footer.footer
+            #floater.floater
+                input#input.global-input(type='text')
+                div.global-result
+                    ul#tips.tips
+                    ul#results.results
+        block scripts

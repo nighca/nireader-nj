@@ -1,0 +1,4 @@
+{
+    "fetchInterval": 600000,
+    "tryFetchTimes": 5
+}

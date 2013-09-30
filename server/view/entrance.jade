@@ -1,0 +1,21 @@
+extends reader
+
+block stylesheets
+    link(rel='stylesheet', href='/stylesheets/entrance.css')
+
+block headerContent
+    #header.header
+        #title-block.title-block
+            h3.top-title NIREADER
+            h3.second-title JUST
+            h3.second-title ANOTHER
+            h3.second-title RSS READER
+
+            p.ops
+                span#signin.op SIGN IN
+            #signin-block.signin-block
+                //form(action='/api/signin', method='post')
+                input#name-in(type='text', name='username', placeholder='USERNAME')
+                input#password-in(type='password', name='password', placeholder='PASSWORD')
+                button#submit(type='submit')
+                    i.icon-ok

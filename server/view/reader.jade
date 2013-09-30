@@ -1,0 +1,32 @@
+extends global
+
+block stylesheets
+    link(rel='stylesheet', href='/stylesheets/reader.css')
+
+block content
+    a#left-link.left-block(data-link-async="true", data-link-preload="true")
+        i.icon-caret-left
+    a#right-link.right-block(data-link-async="true", data-link-preload="true", href="/channel/2")
+        i.icon-caret-right
+    a#top-link.top-block(data-link-async="true", data-link-preload="false")
+        i.icon-caret-up
+    #middle-block.middle-block
+        .center-block
+            h3#title.title 
+            p#info.info 
+            #content.main-content
+                i.icon-spin.icon-spinner.loading-tip(style="font-size:20px;")
+        #side-block.side-block
+            #side-content.side-content
+            i.icon-spin.icon-spinner.loading-tip
+            i.rectangle
+
+        ul.middle-footer-links
+            li
+                a(href="https://github.com/nighca/nireader-nj", target="_blank") repository
+            li
+                a(href="http://nighca.me", target="_blank") me
+
+append scripts
+    script.
+        seajs.use("/javascripts/src/page/reader");

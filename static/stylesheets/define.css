@@ -1,0 +1,8 @@
+@font-face{font-family:'TeXGyre';src:url('../font/texgyreadventor-regular-webfont.woff') format('woff');font-weight:normal;font-style:normal;}.blur{-webkit-filter:blur(3px);-moz-filter:blur(3px);-o-filter:blur(3px);-ms-filter:blur(3px);filter:blur(3px);}
+.left{float:left;}
+.right{float:right;}
+.align-left{text-align:left;}
+.align-right{text-align:right;}
+.align-center{text-align:center;}
+.hidden{display:none;}
+.inline-block{display:inline-block;*display:inline;*zoom:1;}
