@@ -1,0 +1,74 @@
+@themeColor: rgba(83, 15, 116, 1);
+
+/* font */
+@font-face {
+    font-family: 'TeXGyre';
+    src: url('../font/texgyreadventor-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* my style */
+
+.transparent(@p){
+    -moz-opacity: @p;
+    -khtml-opacity: @p; 
+    opacity: @p;
+}
+
+.scale(@n){
+    -webkit-transform: scale(@n);
+    -moz-transform: scale(@n);
+    -o-transform: scale(@n);
+}
+
+.blur{
+    @r: 3px;
+    -webkit-filter: blur(@r);
+    -moz-filter: blur(@r);
+    -o-filter: blur(@r);
+    -ms-filter: blur(@r);
+    filter: blur(@r);
+}
+
+.transition-duration(@duration: .5s){
+    -webkit-transition-duration: @duration;
+    -moz-transition-duration: @duration;
+    -o-transition-duration: @duration;
+    transition-duration: @duration;
+}
+
+.gradient (@direction: top, @bgn: #fff, @end: #000, @bgn_pos: 0%, @end_pos: 100%) {
+    //background-color: (@bgn + @end)/2;
+    background-image: linear-gradient(@direction, rgba(255,255,255,0) 0%, @bgn @bgn_pos, @end @end_pos);
+    background-image: -o-linear-gradient(@direction, rgba(255,255,255,0) 0%, @bgn @bgn_pos, @end @end_pos);
+    background-image: -moz-linear-gradient(@direction, rgba(255,255,255,0) 0%, @bgn @bgn_pos, @end @end_pos);
+    background-image: -webkit-linear-gradient(@direction, rgba(255,255,255,0) 0%, @bgn @bgn_pos, @end @end_pos);
+    background-image: -ms-linear-gradient(@direction, rgba(255,255,255,0) 0%, @bgn @bgn_pos, @end @end_pos);
+}
+
+.left{
+    float: left;
+}
+.right{
+    float: right;
+}
+
+.align-left{
+    text-align: left;
+}
+.align-right{
+    text-align: right;
+}
+.align-center{
+    text-align: center;
+}
+
+.hidden {
+    display:none;
+}
+.inline-block{
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+}

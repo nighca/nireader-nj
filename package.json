@@ -1,13 +1,18 @@
 {
   "name": "nireader",
-  "version": "0.0.1",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node server/nireader.js"
   },
   "dependencies": {
     "express": "3.2.5",
     "jade": "*",
+    "feedparser": "*",
     "mysql": "*"
+  },
+  "subdomain": "nireader",
+  "engines": {
+    "node": "0.10.x"
   }
 }

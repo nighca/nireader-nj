@@ -1,6 +1,13 @@
-var db = require('../lib/db');
+var db = require('../src/lib/db');
 
-db.init(function () {
+db.initTable('article', {
+	title: 'string',
+	content: 'longtext'
+}, function(err, results){
+	if(err){
+		console.log('INIT TABLE article', err);
+		return;
+	}
 	db.insertItem('article', {
 		title: 'test1',
 		content: 'test-content1'
@@ -18,6 +25,11 @@ db.init(function () {
 					content: 'test-content2'
 				}, function (err, results) {
 					console.log('insert2: \n', err, results);
+					db.updateItem('article', {
+						title: '-test2-',
+						content: '\'test\'-content2!',
+						id: results.insertId
+					});
 				});
 			});
 		});
@@ -34,10 +46,9 @@ db.init(function () {
 				if(err){
 					console.log(err);
 				}
-				process.exit();
+				//process.exit();
 			});
 		});
 	});
-	
 });
 

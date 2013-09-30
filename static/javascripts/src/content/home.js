@@ -1,0 +1,305 @@
+define(function(require, exports, module) {
+    var resource = require('../kit/resource');
+    var request = require('../kit/request');
+    var notice = require('../kit/notice');
+    var eventList = require('../kit/eventList').create('content/home');
+    var addEvent = eventList.add;
+    var apis = require('../interface/index').api;
+
+    var genHomeTitle = require('../template/home/title');
+    var genHomeInfo = require('../template/home/info');
+    var genSubscriptionList = require('../template/home/subscriptionList');
+    var genRecommendList = require('../template/home/recommendList');
+    var genChannelInfo = require('../template/home/channelInfo');
+
+    var Home = function(opt){
+        this.url = opt.url;
+        this.wrapper = opt.wrapper;
+        
+        this.type = 'home';
+    };
+
+    Home.prototype.init = function(){
+        this.prepareInfo();
+        this.initDoms();
+
+        this.getSubscriptionListByPage(1);
+        this.getRecommendList();
+        this.getUserInfo();
+        this.dealLinks();
+
+        this.bindEvent();
+    };
+
+    Home.prototype.bindEvent = function(){};
+
+    Home.prototype.clean = function(){
+        eventList.clean();
+        /*this.doms.content.html('');
+        this.doms.title.html('');
+        this.doms.info.html('');*/
+        this.doms.sideContent.html('');
+        this.doms.sideBlock.clearQueue().stop().hide();
+        this.doms.leftLink.attr('href', '').show();
+        this.doms.rightLink.attr('href', '').show();
+        this.doms.topLink.attr('href', '').show();
+    };
+
+    Home.prototype.prepareInfo = function(){
+        var _this = this;
+
+        _this.data = {
+        };
+
+        _this.doms = {
+            wrapper: _this.wrapper,
+            middleBlock: _this.wrapper.find('#middle-block'),
+            title: _this.wrapper.find('#title'),
+            info: _this.wrapper.find('#info'),
+            content: _this.wrapper.find('#content'),
+            sideBlock: _this.wrapper.find('#side-block'),
+            sideContent: _this.wrapper.find('#side-content'),
+            leftLink: _this.wrapper.find('#left-link'),
+            rightLink: _this.wrapper.find('#right-link'),
+            topLink: _this.wrapper.find('#top-link')
+        };
+
+        _this.sideBlock = _this.genSideBlock();
+    };
+
+    Home.prototype.initDoms = function(){
+    };
+
+    Home.prototype.genSideBlock = function(){
+        var _this = this;
+        var hideTimer,
+            middleBlock = _this.doms.middleBlock,
+            sideBlock = _this.doms.sideBlock,
+            sideContent = _this.doms.sideContent;
+
+        var loading = function(){
+            sideBlock.addClass('loading');
+        };
+        var load = function(cnt){
+            sideBlock.removeClass('loading');
+            sideContent.html(cnt);
+        };
+        var position = function(li){
+            var top = li.offset().top + middleBlock.scrollTop();
+            var originTop = parseInt(sideBlock.css('top'), 10);
+            sideBlock
+                .stop()
+                .clearQueue()
+                .show()
+                .delay(200)
+                .animate({
+                    'top': (top * 6 - originTop)/5
+                }, 100)
+                .animate({
+                    'top': top
+                }, 50);
+        };
+        var hide = function(){
+            hideTimer = setTimeout(function(){
+                sideBlock.hide();
+            }, 200);
+        };
+        var stopHide = function(){
+            if(hideTimer){
+                hideTimer = clearTimeout(hideTimer);
+            }
+        };
+
+        var subscribe = function(cid, icon){
+            icon.addClass('icon-spinner icon-spin');
+
+            request.post({
+                subscribee: cid
+            }, apis.subscription.add, function(err, subscription){
+                icon.removeClass('icon-spinner icon-spin');
+                if(err){
+                    notice('订阅失败');
+                    console.warn(err);
+                }else{
+                    icon
+                        .addClass('icon-eye-open')
+                        .removeClass('icon-eye-close');
+                    _this.refreshSubscriptionList();
+                }
+            });
+        };
+
+        var cancelSubscribe = function(cid, icon){
+            icon.addClass('icon-spinner icon-spin');
+
+            request.post({
+                subscribee: cid
+            }, apis.subscription.remove, function(err, subscription){
+                icon.removeClass('icon-spinner icon-spin');
+                if(err){
+                    notice('取消订阅失败');
+                    console.warn(err);
+                }else{
+                    icon
+                        .addClass('icon-eye-close')
+                        .removeClass('icon-eye-open');
+                    _this.refreshSubscriptionList();
+                }
+            });
+        };
+
+        var bindSubscribe = function(cid){
+            var icon = sideBlock.find('#channel-subscribed');
+            addEvent(icon, 'click', function(e){
+                (icon.hasClass('icon-eye-open') ? cancelSubscribe : subscribe)(cid, icon);
+            });
+        };
+
+        var getInfoAndRender = function(){
+            stopHide();
+
+            var $this = $(this);
+            var cid = $this.attr('data-id');
+            sideBlock.attr('data-cid', cid)
+            position($this);
+            loading();
+
+            resource.get('channel', {
+                id: cid
+            }, function(err, channel){
+                if(sideBlock.attr('data-cid') != cid){
+                    return;
+                }
+                if(err){
+                    load('Get channel info failed.');
+                    return;
+                }
+
+                for (var i = _this.data.subscriptions.length - 1; i >= 0; i--) {
+                    if(_this.data.subscriptions[i].id == channel.id){
+                        channel.subscribed = true;
+                        break;
+                    }
+                }
+                load(genChannelInfo({
+                    channel: channel
+                }));
+                bindSubscribe(cid);
+            });
+        };
+
+        var bind = function(list){
+            addEvent(list.find('.item'), 'mouseenter', getInfoAndRender);
+            addEvent(list, 'mouseleave', hide);
+        };
+
+        addEvent(sideBlock, 'mouseenter', stopHide);
+        addEvent(sideBlock, 'mouseleave', hide);
+
+        //channel-subscribed
+
+        return {
+            bind: bind
+        };
+    };
+
+    Home.prototype.getUserInfo = function(){
+        var _this = this;
+        resource.get('user', {
+        }, function(err, user){
+            if(err){
+                console.error(err || 'Can not get user info.');
+                return;
+            }
+            _this.dealUserInfo(user);
+        });
+    };
+
+    Home.prototype.dealUserInfo = function(user){
+        this.data.user = user;
+        this.renderHomeInfo({
+            user: user
+        });
+    };
+
+    Home.prototype.dealLinks = function(){
+        this.doms.topLink.hide();
+        this.doms.leftLink.hide();
+        this.doms.rightLink.hide();
+    };
+
+    Home.prototype.getSubscriptionListByPage = function(page){
+        var _this = this;
+        resource.makeList('subscription', {
+        }, function(err, subscriptions){
+            if(err){
+                console.error(err);
+                return;
+            }
+            _this.data.subscriptionListPage = page;
+            _this.dealSubscriptionList(subscriptions);
+        })(page);
+    };
+
+    Home.prototype.refreshSubscriptionList = function(){
+        this.doms.subscriptionList && this.doms.subscriptionList.remove();
+        this.getSubscriptionListByPage(this.data.subscriptionListPage);
+    };
+
+    Home.prototype.dealSubscriptionList = function(subscriptions){
+        this.data.subscriptions = subscriptions;
+        this.renderSubscriptionList({
+            subscriptions: subscriptions
+        });
+    };
+
+    Home.prototype.getRecommendList = function(){
+        var _this = this;
+        resource.makeList('channel', {
+        }, function(err, recommends){
+            if(err){
+                console.error(err);
+                return;
+            }
+            _this.dealRecommendList(recommends);
+        })(1);
+    };
+
+    Home.prototype.dealRecommendList = function(recommends){
+        this.data.recommends = recommends;
+        this.renderRecommendList({
+            recommends: recommends
+        });
+    };
+
+    Home.prototype.renderHomeInfo = function(data){
+        this.doms.title.html(genHomeTitle(data));
+        this.doms.info.html(genHomeInfo(data));
+    };
+
+    Home.prototype.renderSubscriptionList = function(data){
+        if(this.recommendListReady){
+            this.doms.content.prepend(genSubscriptionList(data));
+        }else{
+            this.doms.content.html(genSubscriptionList(data));
+        }
+        this.subscriptionListReady = true;
+
+        this.doms.subscriptionList = this.doms.content.find('#subscription-list');
+        this.sideBlock.bind(this.doms.subscriptionList);
+    };
+
+    Home.prototype.renderRecommendList = function(data){
+        if(this.subscriptionListReady){
+            this.doms.content.append(genRecommendList(data));
+        }else{
+            this.doms.content.html(genRecommendList(data));
+        }
+        this.recommendListReady = true;
+
+        this.doms.recommendList = this.doms.content.find('#recommend-list');
+        this.sideBlock.bind(this.doms.recommendList);
+    };
+
+    module.exports = Home;
+});

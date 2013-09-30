@@ -1,0 +1,51 @@
+extends global
+
+block stylesheets
+    link(rel='stylesheet', href='/stylesheets/reader.css')
+
+block content
+    a#left-link.left-block(data-link-async="true")
+        i.icon-caret-left
+    a#right-link.right-block(data-link-async="true")
+        i.icon-caret-right
+    a#top-link.top-block(data-link-async="true")
+        i.icon-caret-up
+    #middle-block.middle-block
+        .center-block
+            h3#title.title 
+            p#info.info 
+            #content.main-content
+                i.icon-spin.icon-spinner.loading-tip(style="font-size:20px;")
+        #side-block.side-block
+            #side-content.side-content
+            i.icon-spin.icon-spinner.loading-tip
+            i.rectangle
+
+        ul.middle-footer-links
+            li
+                a(href="https://github.com/nighca/nireader-nj", target="_blank") repository
+            li
+                a(href="http://nighca.me", target="_blank") me
+
+append scripts
+    script.
+        // Set configuration
+        seajs.config({
+            base: '../javascripts/dist/'
+        });
+
+        // For development
+        if (location.href.indexOf('?dev') > 0) {
+            seajs.use('/javascripts/src/page/reader', function(reader){
+                reader.bind();
+            });
+        }
+        // For production
+        else {
+            seajs.use('/javascripts/dist/page/reader', function(){
+                seajs.use('nireader/nireader-fe/1.0.0/page/reader', function(reader){
+                    reader.bind();
+                });
+            });
+        }
+        
