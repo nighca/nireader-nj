@@ -1,7 +1,8 @@
 #node modules
 node_modules/
 
-#files
+#dist files
+#static/javascripts/dist/
 
 #.gitignore
 ~*
