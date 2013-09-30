@@ -1,5 +1,5 @@
 var Channel = require('../../model/channel');
-var Subscription = require('../../model/subscription');
+//var Subscription = require('../../model/subscription');
 var feed = require('../../lib/feed');
 
 var createChannelFromMeta = function(meta, xmlurl){
@@ -47,27 +47,11 @@ exports.get = function(req, res){
             res.send(404);
             return;
         }
-
-        var channel = channels[0];
-        if(req.session.uid){
-            Subscription.ifExist({
-                subscriber: req.session.uid,
-                subscribee: channel.id
-            }, function(err, exist){
-                if(!err && exist){
-                    channel.subscribed = true;
-                }
-                res.json({
-                    err: err,
-                    data: channel
-                });
-            });
-        }else{
-            res.json({
-                err: err,
-                data: channel
-            });
-        }
+        
+        res.json({
+            err: err,
+            data: channels[0]
+        });
     }, sort);
 };
 

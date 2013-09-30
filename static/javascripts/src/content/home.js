@@ -122,9 +122,8 @@ define(function(require, exports, module) {
                     console.warn(err);
                 }else{
                     icon
-                        .removeClass('icon-eye-close')
-                        .addClass('icon-eye-open');
-                    resource.refresh('channel', {id: cid});
+                        .addClass('icon-eye-open')
+                        .removeClass('icon-eye-close');
                     _this.refreshSubscriptionList();
                 }
             });
@@ -142,9 +141,8 @@ define(function(require, exports, module) {
                     console.warn(err);
                 }else{
                     icon
-                        .removeClass('icon-eye-open')
-                        .addClass('icon-eye-close');
-                    resource.refresh('channel', {id: cid});
+                        .addClass('icon-eye-close')
+                        .removeClass('icon-eye-open');
                     _this.refreshSubscriptionList();
                 }
             });
@@ -175,6 +173,13 @@ define(function(require, exports, module) {
                 if(err){
                     load('Get channel info failed.');
                     return;
+                }
+
+                for (var i = _this.data.subscriptions.length - 1; i >= 0; i--) {
+                    if(_this.data.subscriptions[i].id == channel.id){
+                        channel.subscribed = true;
+                        break;
+                    }
                 }
                 load(genChannelInfo({
                     channel: channel

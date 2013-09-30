@@ -70,8 +70,10 @@ define(function(require, exports, module) {
     Entrance.prototype.clean = function(){
         eventList.clean();
         this.doms.wrapper.animate({
-            marginTop: '-100%'
-        }, 1000);
+            marginTop: -this.doms.wrapper.height() + 'px'
+        }, 1000, function(){
+            $(this).hide();
+        });
     };
 
     Entrance.prototype.prepareInfo = function(){

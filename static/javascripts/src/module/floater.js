@@ -45,7 +45,7 @@ define(function(require, exports, module) {
     var hideFloater = function(){
         bodyContent.removeClass('blur');
         globalFloater.removeClass('show');
-    }
+    };
 
     var toggleFloater = function(){
         if(globalFloater.hasClass('show')){
@@ -86,7 +86,7 @@ define(function(require, exports, module) {
     };
 
     var addResult = function(word, link, async){
-        var link = link || 'javascript:;';
+        link = link || 'javascript:;';
         var target = URL.isSameDomain(link) ? '' : '_blank';
         globalResult.show().append(genResult({
             result: {
@@ -166,7 +166,7 @@ define(function(require, exports, module) {
         showTip('Press <b>Enter</b> to logout.');
 
         enterHandler = function(){
-            showTip(loadingIcon);
+            showTip('logout ing... ' + loadingIcon);
             request.get(apis.auth.out, function(err){
                 if(err){
                     notice(err);
@@ -181,7 +181,7 @@ define(function(require, exports, module) {
         showTip('Press <b>Enter</b> to go to home (\'/\').');
 
         enterHandler = function(){
-            showTip(loadingIcon);
+            showTip('going to home... ' + loadingIcon);
             customEvent.trigger('goto', '/');
             cleanTip();
         };
@@ -229,7 +229,7 @@ define(function(require, exports, module) {
                         val +
                         '</b>' +
                         c.slice(pos + val.length) +
-                        '\t ---- Use <b>Tab</b>'
+                        '\t ---- Use <b>Tab</b>';
                     addTip(str);
                 }
             }
@@ -254,6 +254,7 @@ define(function(require, exports, module) {
         // Enter
         if(e.which === 13){
             if(enterHandler && !enterHandler(e)){
+                globalInput.val('');
                 return;
             }
         }

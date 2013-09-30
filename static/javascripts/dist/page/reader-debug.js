@@ -317,10 +317,7 @@ define("nireader/nireader-fe/1.0.0/content/home-debug", [ "nireader/nireader-fe/
                     notice("订阅失败");
                     console.warn(err);
                 } else {
-                    icon.removeClass("icon-eye-close").addClass("icon-eye-open");
-                    resource.refresh("channel", {
-                        id: cid
-                    });
+                    icon.addClass("icon-eye-open").removeClass("icon-eye-close");
                     _this.refreshSubscriptionList();
                 }
             });
@@ -335,10 +332,7 @@ define("nireader/nireader-fe/1.0.0/content/home-debug", [ "nireader/nireader-fe/
                     notice("取消订阅失败");
                     console.warn(err);
                 } else {
-                    icon.removeClass("icon-eye-open").addClass("icon-eye-close");
-                    resource.refresh("channel", {
-                        id: cid
-                    });
+                    icon.addClass("icon-eye-close").removeClass("icon-eye-open");
                     _this.refreshSubscriptionList();
                 }
             });
@@ -365,6 +359,12 @@ define("nireader/nireader-fe/1.0.0/content/home-debug", [ "nireader/nireader-fe/
                 if (err) {
                     load("Get channel info failed.");
                     return;
+                }
+                for (var i = _this.data.subscriptions.length - 1; i >= 0; i--) {
+                    if (_this.data.subscriptions[i].id == channel.id) {
+                        channel.subscribed = true;
+                        break;
+                    }
                 }
                 load(genChannelInfo({
                     channel: channel
@@ -891,13 +891,13 @@ define("nireader/nireader-fe/1.0.0/template/home/info-debug", [ "nireader/niread
 
 define("nireader/nireader-fe/1.0.0/template/home/subscriptionList-debug", [ "nireader/nireader-fe/1.0.0/template/template-debug", "nireader/nireader-fe/1.0.0/kit/time-debug", "nireader/nireader-fe/1.0.0/kit/num-debug" ], function(require, exports, module) {
     var template = require("nireader/nireader-fe/1.0.0/template/template-debug");
-    var tmpl = '<ul id="subscription-list" class="item-list">' + "<%for(i = 0; i < subscriptions.length; i ++) {%>" + '<li class="item" data-id="<%=subscriptions[i].id%>">' + '<a data-link-async="true" data-link-preload="true" href="/channel/<%=subscriptions[i].id%>">' + "<%=subscriptions[i].title%>" + "</a>" + '<span class="pubdate">' + '<%="更新于" + formatTime(subscriptions[i].pubDate, " ")%>' + "</span>" + "</li>" + "<%}%>" + "</ul>";
+    var tmpl = '<ul id="subscription-list" class="item-list">' + "<%for(i = 0; i < subscriptions.length; i ++) {%>" + '<li class="item" data-id="<%=subscriptions[i].id%>">' + '<a data-link-async="true" href="/channel/<%=subscriptions[i].id%>">' + "<%=subscriptions[i].title%>" + "</a>" + '<span class="pubdate">' + '<%="更新于" + formatTime(subscriptions[i].pubDate, " ")%>' + "</span>" + "</li>" + "<%}%>" + "</ul>";
     module.exports = template.compile(tmpl);
 });
 
 define("nireader/nireader-fe/1.0.0/template/home/recommendList-debug", [ "nireader/nireader-fe/1.0.0/template/template-debug", "nireader/nireader-fe/1.0.0/kit/time-debug", "nireader/nireader-fe/1.0.0/kit/num-debug" ], function(require, exports, module) {
     var template = require("nireader/nireader-fe/1.0.0/template/template-debug");
-    var tmpl = '<h6 class="sub-title">' + "Recommend:" + "</h6>" + '<ul id="recommend-list" class="item-list">' + "<%for(i = 0; i < recommends.length; i ++) {%>" + '<li class="item" data-id="<%=recommends[i].id%>">' + '<a data-link-async="true" data-link-preload="true" href="/channel/<%=recommends[i].id%>">' + "<%=recommends[i].title%>" + "</a>" + '<span class="pubdate">' + '<%="更新于" + formatTime(recommends[i].pubDate, " ")%>' + "</span>" + "</li>" + "<%}%>" + "</ul>";
+    var tmpl = '<h6 class="sub-title">' + "Recommend:" + "</h6>" + '<ul id="recommend-list" class="item-list">' + "<%for(i = 0; i < recommends.length; i ++) {%>" + '<li class="item" data-id="<%=recommends[i].id%>">' + '<a data-link-async="true" href="/channel/<%=recommends[i].id%>">' + "<%=recommends[i].title%>" + "</a>" + '<span class="pubdate">' + '<%="更新于" + formatTime(recommends[i].pubDate, " ")%>' + "</span>" + "</li>" + "<%}%>" + "</ul>";
     module.exports = template.compile(tmpl);
 });
 
@@ -966,8 +966,10 @@ define("nireader/nireader-fe/1.0.0/content/entrance-debug", [ "nireader/nireader
     Entrance.prototype.clean = function() {
         eventList.clean();
         this.doms.wrapper.animate({
-            marginTop: "-100%"
-        }, 1e3);
+            marginTop: -this.doms.wrapper.height() + "px"
+        }, 1e3, function() {
+            $(this).hide();
+        });
     };
     Entrance.prototype.prepareInfo = function() {
         this.doms = {
@@ -1173,7 +1175,7 @@ define("nireader/nireader-fe/1.0.0/template/channel/info-debug", [ "nireader/nir
 
 define("nireader/nireader-fe/1.0.0/template/channel/itemList-debug", [ "nireader/nireader-fe/1.0.0/template/template-debug", "nireader/nireader-fe/1.0.0/kit/time-debug", "nireader/nireader-fe/1.0.0/kit/num-debug" ], function(require, exports, module) {
     var template = require("nireader/nireader-fe/1.0.0/template/template-debug");
-    var tmpl = '<ul class="item-list">' + "<%for(i = 0; i < items.length; i ++) {%>" + '<li class="item" data-id="<%=items[i].id%>">' + '<a data-link-async="true" data-link-preload="true" href="/item/<%=items[i].id%>">' + "<%=items[i].title%>" + "</a>" + '<span class="pubdate">' + '<%=formatTime(items[i].pubDate, " ")%>' + "</span>" + "</li>" + "<%}%>" + "</ul>";
+    var tmpl = '<ul class="item-list">' + "<%for(i = 0; i < items.length; i ++) {%>" + '<li class="item" data-id="<%=items[i].id%>">' + '<a data-link-async="true" href="/item/<%=items[i].id%>">' + "<%=items[i].title%>" + "</a>" + '<span class="pubdate">' + '<%=formatTime(items[i].pubDate, " ")%>' + "</span>" + "</li>" + "<%}%>" + "</ul>";
     module.exports = template.compile(tmpl);
 });
 
@@ -1197,7 +1199,9 @@ define("nireader/nireader-fe/1.0.0/content/item-debug", [ "nireader/nireader-fe/
         _this.prepareInfo();
         _this.getItemInfo(function() {
             _this.getChannelInfo();
-            _this.getNeighbourInfo();
+            _this.getNeighbourInfo(function() {
+                _this.preloadNeighbours();
+            });
         });
         _this.bindEvent();
     };
@@ -1251,6 +1255,20 @@ define("nireader/nireader-fe/1.0.0/content/item-debug", [ "nireader/nireader-fe/
             _this.dealChannelInfo(channel);
         });
     };
+    // 预读取相邻文章内容到缓存中
+    Item.prototype.preloadNeighbours = function() {
+        var neighbour;
+        if (neighbour = this.data.neighbours.prev) {
+            resource.get("item", {
+                id: neighbour.id
+            });
+        }
+        if (neighbour = this.data.neighbours.next) {
+            resource.get("item", {
+                id: neighbour.id
+            });
+        }
+    };
     Item.prototype.dealItemInfo = function(item) {
         this.data.item = item;
         this.renderItemInfo({
@@ -1263,7 +1281,7 @@ define("nireader/nireader-fe/1.0.0/content/item-debug", [ "nireader/nireader-fe/
             channel: channel
         });
     };
-    Item.prototype.getNeighbourInfo = function() {
+    Item.prototype.getNeighbourInfo = function(callback) {
         var _this = this;
         resource.list("item", {
             source: _this.data.item.source
@@ -1285,9 +1303,11 @@ define("nireader/nireader-fe/1.0.0/content/item-debug", [ "nireader/nireader-fe/
                 prev: items[pos - 1],
                 next: items[pos + 1]
             });
+            callback && callback();
         });
     };
     Item.prototype.dealNeighbourInfo = function(neighbours) {
+        this.data.neighbours = neighbours;
         if (neighbours.prev) {
             this.doms.leftLink.attr("href", pagePath.item(neighbours.prev.id)).attr("title", neighbours.prev.title).show();
         } else {
@@ -1407,7 +1427,7 @@ define("nireader/nireader-fe/1.0.0/module/floater-debug", [ "nireader/nireader-f
         addTip(word);
     };
     var addResult = function(word, link, async) {
-        var link = link || "javascript:;";
+        link = link || "javascript:;";
         var target = URL.isSameDomain(link) ? "" : "_blank";
         globalResult.show().append(genResult({
             result: {
@@ -1473,7 +1493,7 @@ define("nireader/nireader-fe/1.0.0/module/floater-debug", [ "nireader/nireader-f
     var dealLogout = function() {
         showTip("Press <b>Enter</b> to logout.");
         enterHandler = function() {
-            showTip(loadingIcon);
+            showTip("logout ing... " + loadingIcon);
             request.get(apis.auth.out, function(err) {
                 if (err) {
                     notice(err);
@@ -1486,7 +1506,7 @@ define("nireader/nireader-fe/1.0.0/module/floater-debug", [ "nireader/nireader-f
     var dealHome = function() {
         showTip("Press <b>Enter</b> to go to home ('/').");
         enterHandler = function() {
-            showTip(loadingIcon);
+            showTip("going to home... " + loadingIcon);
             customEvent.trigger("goto", "/");
             cleanTip();
         };
@@ -1543,6 +1563,7 @@ define("nireader/nireader-fe/1.0.0/module/floater-debug", [ "nireader/nireader-f
         // Enter
         if (e.which === 13) {
             if (enterHandler && !enterHandler(e)) {
+                globalInput.val("");
                 return;
             }
         }

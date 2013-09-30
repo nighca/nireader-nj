@@ -18,12 +18,14 @@ define(function(require, exports, module) {
     };
 
     Item.prototype.init = function(){
-    	var _this = this;
+        var _this = this;
 
         _this.prepareInfo();
         _this.getItemInfo(function(){
-        	_this.getChannelInfo();
-        	_this.getNeighbourInfo();
+            _this.getChannelInfo();
+            _this.getNeighbourInfo(function(){
+                _this.preloadNeighbours();
+            });
         });
 
         _this.bindEvent();
@@ -86,6 +88,21 @@ define(function(require, exports, module) {
         });
     };
 
+    // 预读取相邻文章内容到缓存中
+    Item.prototype.preloadNeighbours = function(){
+        var neighbour;
+        if(neighbour = this.data.neighbours.prev){
+            resource.get('item', {
+                id: neighbour.id
+            });
+        }
+        if(neighbour = this.data.neighbours.next){
+            resource.get('item', {
+                id: neighbour.id
+            });
+        }
+    };
+
     Item.prototype.dealItemInfo = function(item){
         this.data.item = item;
         this.renderItemInfo({
@@ -100,10 +117,10 @@ define(function(require, exports, module) {
         });
     };
 
-    Item.prototype.getNeighbourInfo = function(){
+    Item.prototype.getNeighbourInfo = function(callback){
         var _this = this;
         resource.list('item', {
-        	source: _this.data.item.source
+            source: _this.data.item.source
         }, {
             from: 0
         }, function(err, items){
@@ -124,9 +141,12 @@ define(function(require, exports, module) {
                 prev: items[pos-1],
                 next: items[pos+1]
             });
+
+            callback && callback();
         });
     };
     Item.prototype.dealNeighbourInfo = function(neighbours){
+        this.data.neighbours = neighbours;
         if(neighbours.prev){
             this.doms.leftLink
                 .attr('href', pagePath.item(neighbours.prev.id))
@@ -155,8 +175,8 @@ define(function(require, exports, module) {
     };
 
     Item.prototype.renderChannelInfo = function(data){
-    	this.doms.topLink.attr('title', data.channel.title);
-    	this.doms.info.prepend(genItemChannelTitle(data));
+        this.doms.topLink.attr('title', data.channel.title);
+        this.doms.info.prepend(genItemChannelTitle(data));
     };
 
     module.exports = Item;
