@@ -36,7 +36,7 @@ define(function(require, exports, module){
 
     var parseUrl = function(url){
         //var pattern = /([^\/]+)\/([^\/]+)$/;
-        var pattern = /\/([^\/]+)(\/([^\/]+))?$/;
+        var pattern = /\/([\w]*)(\/([\w]+))?($|\?)/;
         var result = {};
         if(pattern.test(url)){
             var t = pattern.exec(url);

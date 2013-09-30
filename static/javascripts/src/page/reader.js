@@ -5,13 +5,22 @@ define(function(require, exports, module) {
 
     var customEvent = require('../kit/customEvent');
 
-    stateManager.on('checkout', function(info){
-        page.checkout(info);
-    });
+    var bind = function(){
+        stateManager.on('checkout', function(info){
+            page.checkout(info);
+        });
 
-    customEvent.on('userInfoUpdate', function(){
-        if(page.content && page.content.type === 'home'){
-            stateManager.checkout();
-        }
-    });
+        customEvent.on('userInfoUpdate', function(){
+            if(page.content && page.content.type === 'home'){
+                stateManager.checkout();
+            }
+        });
+    };
+
+    //bind();
+
+    module.exports = {
+        name: 'reader',
+        bind: bind
+    };
 });

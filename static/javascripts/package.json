@@ -1,0 +1,9 @@
+{
+    "family": "nireader",
+    "name": "nireader-fe",
+    "version": "1.0.0",
+    "description": "front-end of nireader",
+    "spm": {
+        "output": ["page/reader.js"]
+    }
+}
