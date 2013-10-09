@@ -3,12 +3,14 @@ define(function(require, exports, module) {
         channel: {
             get: '/api/channel',
             list: '/api/list/channel',
+            search: '/api/search/channel',
             create: '/api/channel/create',
             save: '/api/channel/save'
         },
         item: {
             get: '/api/item',
-            list: '/api/list/item'
+            list: '/api/list/item',
+            search: '/api/search/item'
         },
         subscription: {
             get: '/api/subscription',

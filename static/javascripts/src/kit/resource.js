@@ -156,8 +156,49 @@ define(function(require, exports, module){
         }
     };
 
+    var searchUrl = {
+        item: apis.item.search,
+        channel: apis.channel.search,
+        subscription: apis.subscription.search
+    };
+    var searchResource = function(type, keywords, page, callback, sort, fields){
+        if(!type || typeof type !== 'string'){
+            return;
+        }
+
+        var numInPage = listNumInPage[type];
+
+        var limit;
+        if(typeof page === 'object'){
+            limit = page;
+        }
+
+        var params = {
+            keywords: keywords,
+            fields: fields || listFields[type],
+            sort: sort || listSort[type],
+            limit:
+                limit ||
+                (numInPage ? {
+                    from: numInPage * (page - 1),
+                    num: numInPage
+                } : null)
+        };
+
+        var url = searchUrl[type];
+        request.get(params, url, callback);
+    };
+
+    var makeCertainSearch = function(type, opt, callback, sort, fields){
+        return function(page){
+            return searchResource(type, opt, page, callback, sort, fields);
+        }
+    };
+
     exports.refresh = refreshResource;
     exports.get = getResource;
     exports.list = listResource;
+    exports.search = searchResource;
     exports.makeList = makeCertainList;
+    exports.makeSearch = makeCertainSearch;
 });

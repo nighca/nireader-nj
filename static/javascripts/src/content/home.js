@@ -23,7 +23,7 @@ define(function(require, exports, module) {
         this.prepareInfo();
         this.initDoms();
 
-        this.getSubscriptionListByPage(1);
+        this.getAllSubscriptionList();
         this.getRecommendList();
         this.getUserInfo();
         this.dealLinks();
@@ -144,6 +144,7 @@ define(function(require, exports, module) {
                         .addClass('icon-eye-close')
                         .removeClass('icon-eye-open');
                     _this.refreshSubscriptionList();
+                    hide();
                 }
             });
         };
@@ -241,9 +242,22 @@ define(function(require, exports, module) {
         })(page);
     };
 
+    Home.prototype.getAllSubscriptionList = function(){
+        var _this = this;
+        resource.makeList('subscription', {
+        }, function(err, subscriptions){
+            if(err){
+                console.error(err);
+                return;
+            }
+            _this.dealSubscriptionList(subscriptions);
+        })({});
+    };
+
     Home.prototype.refreshSubscriptionList = function(){
         this.doms.subscriptionList && this.doms.subscriptionList.remove();
-        this.getSubscriptionListByPage(this.data.subscriptionListPage);
+        //this.getSubscriptionListByPage(this.data.subscriptionListPage);
+        this.getAllSubscriptionList(this.data.subscriptionListPage);
     };
 
     Home.prototype.dealSubscriptionList = function(subscriptions){

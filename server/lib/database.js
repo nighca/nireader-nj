@@ -182,15 +182,26 @@ var insertItems = function(pool, table, objs, callback){
     }
 };
 
-var makeQuery = function(query, obj, sort, limit){
-    if(typeof obj === 'string'){
-        query += ' WHERE ' + obj;
+var makeQuery = function(query, opts, sort, limit, fuzzy){
+    if(typeof opts === 'string'){
+        query += ' WHERE ' + opts;
+    }else if(fuzzy){
+        // need better query method
+        var searchArea = ' CONCAT(IFNULL(' + opts.names.join(',""), IFNULL(') + '," ")) ';
+        for (var i = 0, len = opts.keywords.length; i < len; i++) {
+            if(i === 0){
+                query += ' WHERE ';
+            }else{
+                query += ' AND ';
+            }
+            query += searchArea + ' LIKE "%' + opts.keywords[i] + '%"';
+        }
     }else{
         var names = [], values = [];
-        for(var name in obj){
-            if(obj.hasOwnProperty(name) && obj[name] !== undefined && obj[name] !== null){
+        for(var name in opts){
+            if(opts.hasOwnProperty(name) && opts[name] !== undefined && opts[name] !== null){
                 names.push(name);
-                values.push(formatVal(obj[name]));
+                values.push(formatVal(opts[name]));
             }
         }
 

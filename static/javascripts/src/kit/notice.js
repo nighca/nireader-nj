@@ -1,7 +1,7 @@
 define(function(require, exports, module){
     module.exports = function(word){
     	if(typeof word !== 'string'){
-    		word = JSON.stringfy(word);
+    		word = JSON.stringify(word);
     	}
         alert(word);
     };

@@ -45,7 +45,7 @@ var parseFields = function(query){
         fields = [];
         for (var i = 0, l = query.fields.length; i < l; i++) {
             fields.push(decodeURI(query.fields[i]));
-        };
+        }
     }
     return fields;
 };

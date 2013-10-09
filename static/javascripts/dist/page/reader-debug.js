@@ -739,7 +739,7 @@ define("nireader/nireader-fe/1.0.0/interface/index-debug", [], function(require,
 define("nireader/nireader-fe/1.0.0/kit/notice-debug", [], function(require, exports, module) {
     module.exports = function(word) {
         if (typeof word !== "string") {
-            word = JSON.stringfy(word);
+            word = JSON.stringify(word);
         }
         alert(word);
     };

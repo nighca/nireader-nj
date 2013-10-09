@@ -12,6 +12,7 @@ var apis = {
     subscription: require('./route/api/subscription'),
     user: require('./route/api/user'),
     list: require('./route/api/list'),
+    search: require('./route/api/search'),
     auth: require('./route/api/auth')
 };
 
@@ -42,7 +43,10 @@ var routes = [
     //method, path, handler, needAuth, devOnly
     ['get', '/api/list/item', apis.list.item],
     ['get', '/api/list/channel', apis.list.channel],
-    ['get', '/api/list/subscription', apis.list.subscription, true]
+    ['get', '/api/list/subscription', apis.list.subscription, true],
+
+    //method, path, handler, needAuth, devOnly
+    ['get', '/api/search/channel', apis.search.channel]
 ];
 
 

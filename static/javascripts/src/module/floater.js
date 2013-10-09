@@ -3,6 +3,7 @@ define(function(require, exports, module) {
 
     var pattern = require('../kit/pattern');
     var request = require('../kit/request');
+    var resource = require('../kit/resource');
     var notice = require('../kit/notice');
     var URL = require('../kit/url');
     var customEvent = require('../kit/customEvent');
@@ -187,6 +188,29 @@ define(function(require, exports, module) {
         };
     };
 
+    var doSearch = function(val){
+        if(val){
+            var keywords = val.split(' '), realKeywords = [];
+            for (var i = 0, l = keywords.length; i < l; i++) {
+                if(keywords[i]){
+                    realKeywords.push(keywords[i]);
+                }
+            }
+            if(!realKeywords.length){
+                return;
+            }
+
+            addTip('searching... ' + loadingIcon);
+            resource.search('channel', realKeywords, 1, function(err, channels){
+                if(!err){
+                    for (var i = 0, l = channels.length; i < l; i++) {
+                        addResult(channels[i].title, pages.channel(channels[i].id), true);
+                    }
+                }
+            });
+        }
+    };
+
     var cmds = {
         'logout': dealLogout,
         'home': dealHome
@@ -238,6 +262,9 @@ define(function(require, exports, module) {
             globalInput.val(cmd);
             //checkInput();
         };
+
+        // Search for channels
+        doSearch(val);
     };
 
     globalInput.on('keydown', function(e){
