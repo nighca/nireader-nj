@@ -57,6 +57,7 @@ define(function(require, exports, module){
         }
 
         var cachedResult, cacheKey = {
+            cache: 'resource',
             type: type,
             opt: opt,
             sort: sort
@@ -122,8 +123,19 @@ define(function(require, exports, module){
         subscription: 20
     };
 
-    var listResource = function(type, opt, page, callback, sort, fields){
+    var listResource = function(type, opt, page, callback, sort, fields, refresh){
         if(!type || typeof type !== 'string'){
+            return;
+        }
+
+        var cachedResult, cacheKey = {
+            cache: 'list',
+            type: type,
+            opt: opt,
+            sort: sort
+        };
+        if(!refresh && (cachedResult = cache.get(cacheKey))){
+            callback && callback(null, cachedResult);
             return;
         }
 
@@ -147,12 +159,17 @@ define(function(require, exports, module){
         };
 
         var url = listUrl[type];
-        request.get(params, url, callback);
+        request.get(params, url, function(err, list){
+            if(!err){
+                cache.set(cacheKey, list)
+            }
+            callback && callback(err, list);
+        });
     };
 
-    var makeCertainList = function(type, opt, callback, sort, fields){
+    var makeCertainList = function(type, opt, callback, sort, fields, refresh){
         return function(page){
-            return listResource(type, opt, page, callback, sort, fields);
+            return listResource(type, opt, page, callback, sort, fields, refresh);
         }
     };
 

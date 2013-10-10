@@ -200,7 +200,7 @@ define(function(require, exports, module) {
                 return;
             }
 
-            addTip('searching... ' + loadingIcon);
+            //addTip('searching... ' + loadingIcon);
             resource.search('channel', realKeywords, 1, function(err, channels){
                 if(!err){
                     for (var i = 0, l = channels.length; i < l; i++) {

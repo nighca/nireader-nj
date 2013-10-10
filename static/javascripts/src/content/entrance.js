@@ -6,6 +6,8 @@ define(function(require, exports, module) {
     var addEvent = eventList.add;
     var apis = require('../interface/index').api;
 
+    var pageTitle = $('title');
+
     var Entrance = function(opt){
         this.url = opt.url;
         //this.wrapper = opt.wrapper;
@@ -15,6 +17,7 @@ define(function(require, exports, module) {
 
     Entrance.prototype.init = function(){
         this.prepareInfo();
+        pageTitle.text('Welcome');
         this.dealLinks();
 
         this.bindEvent();

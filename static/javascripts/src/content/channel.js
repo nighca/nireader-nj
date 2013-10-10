@@ -9,6 +9,8 @@ define(function(require, exports, module) {
     var genChannelInfo = require('../template/channel/info');
     var genItemList = require('../template/channel/itemList');
 
+    var pageTitle = $('title');
+
     var Channel = function(opt){
         this.url = opt.url;
         this.wrapper = opt.wrapper;
@@ -148,6 +150,7 @@ define(function(require, exports, module) {
     Channel.prototype.renderChannelInfo = function(data){
         this.doms.title.html(genChannelTitle(data));
         this.doms.info.html(genChannelInfo(data));
+        pageTitle.text(data.channel.title);
     };
 
     Channel.prototype.sideBlockLoading = function(){

@@ -4,11 +4,18 @@ define(function(require, exports, module) {
     var URL = require('../kit/url');
     var eventList = require('../kit/eventList').create('content/item');
     var addEvent = eventList.add;
+    var removeEvent = eventList.remove;
 
     var genItemTitle = require('../template/item/title');
     var genItemInfo = require('../template/item/info');
     var genItemContent = require('../template/item/content');
     var genItemChannelTitle = require('../template/item/channelTitle');
+
+    var pageTitle = $('title');
+
+    var testScroll = require('../kit/testScroll');
+    var testBottom = testScroll.bottom;
+    var testTop = testScroll.top;
 
     var Item = function(opt){
         this.url = opt.url;
@@ -31,13 +38,64 @@ define(function(require, exports, module) {
         _this.bindEvent();
     };
 
-    Item.prototype.bindEvent = function(){};
+    Item.prototype.bindEvent = function(){
+        var data = this.data;
+        var middleBlock = this.doms.middleBlock;
+        var leftLink = this.doms.leftLink;
+        var rightLink = this.doms.rightLink;
+        var checkoutDelay = 300;
+
+        var topScroll = function(e, delta, deltaX, deltaY){
+            if(deltaY > 0){
+                (leftLink.css('display') !== 'none') && leftLink.click();
+            }
+        };
+        var bottomScroll = function(e, delta, deltaX, deltaY){
+            if(deltaY < 0){
+                (rightLink.css('display') !== 'none') && rightLink.click();
+            }
+        };
+
+        addEvent(middleBlock, 'mousewheel', function(e, delta, deltaX, deltaY){
+            removeEvent(middleBlock, 'mousewheel', topScroll);
+            removeEvent(middleBlock, 'mousewheel', bottomScroll);
+
+            // !!! Bug exists, but i don't know why.
+
+            if(deltaY > 0 && testTop(middleBlock)){
+                data.timer1 = data.timer1 || setTimeout(function(){
+                    addEvent(middleBlock, 'mousewheel', topScroll);
+                    data.timer1 = null;
+                }, checkoutDelay);
+            }
+
+            if(deltaY < 0 && testBottom(middleBlock)){
+                data.timer2 = data.timer2 || setTimeout(function(){
+                    addEvent(middleBlock, 'mousewheel', bottomScroll);
+                    data.timer2 = null;
+                }, checkoutDelay);
+            }
+
+            /*data.timer = data.timer || setTimeout(function(){
+                if(deltaY > 0 && testTop(middleBlock)){
+                    addEvent(middleBlock, 'mousewheel', topScroll);
+                }
+                if(deltaY < 0 && testBottom(middleBlock)){
+                    addEvent(middleBlock, 'mousewheel', bottomScroll);
+                }
+                data.timer = null;
+            }, checkoutDelay);*/
+        });
+    };
 
     Item.prototype.clean = function(){
         eventList.clean();
         /*this.doms.content.html('');
         this.doms.title.html('');
         this.doms.info.html('');*/
+        clearTimeout(this.data.timer);
+        clearTimeout(this.data.timer1);
+        clearTimeout(this.data.timer2);
         this.doms.leftLink.attr('href', '');
         this.doms.rightLink.attr('href', '');
         this.doms.topLink.attr('href', '');
@@ -52,6 +110,7 @@ define(function(require, exports, module) {
 
         _this.doms = {
             wrapper: _this.wrapper,
+            middleBlock: _this.wrapper.find('#middle-block'),
             title: _this.wrapper.find('#title'),
             info: _this.wrapper.find('#info'),
             content: _this.wrapper.find('#content'),
@@ -168,6 +227,7 @@ define(function(require, exports, module) {
     };
 
     Item.prototype.renderItemInfo = function(data){
+        pageTitle.text(data.item.title);
         this.doms.title.html(genItemTitle(data));
         this.doms.info.html(genItemInfo(data));
         this.doms.content.html(genItemContent(data));
