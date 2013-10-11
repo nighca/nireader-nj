@@ -8,19 +8,20 @@ define(function(require, exports, module){
     var storage = {};
     var hotList = [];
 
-    window.storage = storage;
-    window.hotList = hotList;
-
     var touch = function(name, remove){
-        var pos = hotList.indexOf(name),
-            lastPos = hotList.length - 1;
+        var pos = hotList.indexOf(name);
 
-        if(pos >= 0 && pos != lastPos){
+        console.log(hotList);//----------------------------------------
+        console.log(name);
+        console.log(pos);
+
+        if(pos >= 0){
             hotList.splice(pos, 1);
         }
         if(!remove){
             hotList.push(name);
         }
+        console.log(hotList);//----------------------------------------
     };
 
     var set = function(name, obj, lifetime){
