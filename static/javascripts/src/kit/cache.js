@@ -11,17 +11,12 @@ define(function(require, exports, module){
     var touch = function(name, remove){
         var pos = hotList.indexOf(name);
 
-        console.log(hotList);//----------------------------------------
-        console.log(name);
-        console.log(pos);
-
         if(pos >= 0){
             hotList.splice(pos, 1);
         }
         if(!remove){
             hotList.push(name);
         }
-        console.log(hotList);//----------------------------------------
     };
 
     var set = function(name, obj, lifetime){

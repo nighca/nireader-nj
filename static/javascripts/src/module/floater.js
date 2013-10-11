@@ -202,6 +202,10 @@ define(function(require, exports, module) {
 
             //addTip('searching... ' + loadingIcon);
             resource.search('channel', realKeywords, 1, function(err, channels){
+                if(val !== currVal){
+                    return;
+                }
+
                 if(!err){
                     for (var i = 0, l = channels.length; i < l; i++) {
                         addResult(channels[i].title, pages.channel(channels[i].id), true);
