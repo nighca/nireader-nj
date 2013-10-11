@@ -15,7 +15,6 @@ exports.in = function(req, res){
             return;
         }
         req.session.uid = user.id;
-        //req.session.cookie.maxAge = 300000;
 
         if(!req.get('isAjax')){
             res.redirect(req.body.target || '/');
@@ -32,7 +31,6 @@ exports.in = function(req, res){
 
 exports.out = function(req, res){
     req.session = null;
-    res.clearCookie('connect.sid');
 
     res.json({
         err: null,

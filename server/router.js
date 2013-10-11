@@ -57,7 +57,6 @@ var notFound = function(req, res){
 };
 var needAuth = function(handler){
     return function (req, res) {
-        //req.session.uid = 1; //-------------------------------------
         if(!req.session.uid){
             if(req.get('isAjax')){
                 res.json({
