@@ -487,6 +487,11 @@ define("nireader/nireader-fe/1.0.0/kit/resource-debug", [ "nireader/nireader-fe/
     var cache = require("nireader/nireader-fe/1.0.0/kit/cache-debug");
     var formatUrl = require("nireader/nireader-fe/1.0.0/kit/url-debug").format;
     var apis = require("nireader/nireader-fe/1.0.0/interface/index-debug").api;
+    var cacheLifetime = {
+        resource: 1e3 * 60 * 60,
+        // 1h
+        list: 1e3 * 60
+    };
     var resources = [ "item", "channel" ];
     var getUrl = {
         item: apis.item.get,
@@ -523,7 +528,7 @@ define("nireader/nireader-fe/1.0.0/kit/resource-debug", [ "nireader/nireader-fe/
         var url = getUrl[type];
         request.get(params, url, function(err, resource) {
             if (!err) {
-                cache.set(cacheKey, resource);
+                cache.set(cacheKey, resource, cacheLifetime.resource);
             }
             callback && callback(err, resource);
         });
@@ -549,7 +554,7 @@ define("nireader/nireader-fe/1.0.0/kit/resource-debug", [ "nireader/nireader-fe/
         var url = getUrl[type];
         request.get(params, url, function(err, resource) {
             if (!err) {
-                cache.set(cacheKey, resource);
+                cache.set(cacheKey, resource, cacheLifetime.resource);
             }
             callback && callback(err, resource);
         });
@@ -619,7 +624,7 @@ define("nireader/nireader-fe/1.0.0/kit/resource-debug", [ "nireader/nireader-fe/
         var url = listUrl[type];
         request.get(params, url, function(err, list) {
             if (!err) {
-                cache.set(cacheKey, list);
+                cache.set(cacheKey, list, cacheLifetime.list);
             }
             callback && callback(err, list);
         });
@@ -709,14 +714,16 @@ define("nireader/nireader-fe/1.0.0/kit/request-debug", [], function(require, exp
 
 define("nireader/nireader-fe/1.0.0/kit/cache-debug", [], function(require, exports, module) {
     var autoManageInterval = 1e3 * 60 * 1;
-    // 5min
-    var expireTime = 1e3 * 60 * 1;
     // 1min
-    var maxCacheNum = 50;
+    var defaultLifetime = 1e3 * 60 * 1;
+    // 1min
+    var maxCacheNum = 200;
     // temporarily use array to record hot list
     // todo: use sth more effective instead, such as heap
     var storage = {};
     var hotList = [];
+    window.storage = storage;
+    window.hotList = hotList;
     var touch = function(name, remove) {
         var pos = hotList.indexOf(name), lastPos = hotList.length - 1;
         if (pos >= 0 && pos != lastPos) {
@@ -726,13 +733,13 @@ define("nireader/nireader-fe/1.0.0/kit/cache-debug", [], function(require, expor
             hotList.push(name);
         }
     };
-    var set = function(name, obj) {
+    var set = function(name, obj, lifetime) {
         name = JSON.stringify(name);
         obj = JSON.stringify(obj);
         touch(name);
         storage[name] = {
             cnt: obj,
-            birth: Date.now()
+            doom: Date.now() + (lifetime || defaultLifetime)
         };
     };
     var get = function(name) {
@@ -752,7 +759,7 @@ define("nireader/nireader-fe/1.0.0/kit/cache-debug", [], function(require, expor
         var now = Date.now();
         for (var name in storage) {
             if (storage.hasOwnProperty(name)) {
-                if (now - storage[name].birth > expireTime) {
+                if (now > storage[name].doom) {
                     touch(name, true);
                     delete storage[name];
                 }
@@ -1239,7 +1246,7 @@ define("nireader/nireader-fe/1.0.0/content/channel-debug", [ "nireader/nireader-
                 timer = clearTimeout(timer);
             }
             var $this = $(this);
-            var iid = $this.attr("data-id");
+            var iid = parseInt($this.attr("data-id"), 10);
             _this.doms.sideBlock.attr("data-iid", iid);
             _this.sideBlockGoto($this);
             _this.sideBlockLoading();

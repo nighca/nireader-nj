@@ -4,6 +4,11 @@ define(function(require, exports, module){
     var formatUrl = require('./url').format;
     var apis = require('../interface/index').api;
 
+    var cacheLifetime = {
+        resource: 1000 * 60 * 60, // 1h
+        list: 1000 * 60 // 1min
+    };
+
     var resources = ['item', 'channel'];
 
     var getUrl = {
@@ -45,7 +50,7 @@ define(function(require, exports, module){
         var url = getUrl[type];
         request.get(params, url, function(err, resource){
             if(!err){
-                cache.set(cacheKey, resource)
+                cache.set(cacheKey, resource, cacheLifetime.resource)
             }
             callback && callback(err, resource);
         });
@@ -75,7 +80,7 @@ define(function(require, exports, module){
         var url = getUrl[type];
         request.get(params, url, function(err, resource){
             if(!err){
-                cache.set(cacheKey, resource)
+                cache.set(cacheKey, resource, cacheLifetime.resource)
             }
             callback && callback(err, resource);
         });
@@ -161,7 +166,7 @@ define(function(require, exports, module){
         var url = listUrl[type];
         request.get(params, url, function(err, list){
             if(!err){
-                cache.set(cacheKey, list)
+                cache.set(cacheKey, list, cacheLifetime.list)
             }
             callback && callback(err, list);
         });

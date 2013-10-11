@@ -188,8 +188,8 @@ define(function(require, exports, module) {
             }
 
             var $this = $(this);
-            var iid = $this.attr('data-id');
-            _this.doms.sideBlock.attr('data-iid', iid)
+            var iid = parseInt($this.attr('data-id'), 10);
+            _this.doms.sideBlock.attr('data-iid', iid);
             _this.sideBlockGoto($this);
             _this.sideBlockLoading();
 

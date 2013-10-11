@@ -1,12 +1,15 @@
 define(function(require, exports, module){
-    var autoManageInterval = 1000 * 60 * 1; // 5min
-    var expireTime = 1000 * 60 * 1; // 1min
-    var maxCacheNum = 50;
+    var autoManageInterval = 1000 * 60 * 1; // 1min
+    var defaultLifetime = 1000 * 60 * 1; // 1min
+    var maxCacheNum = 200;
     // temporarily use array to record hot list
     // todo: use sth more effective instead, such as heap
 
     var storage = {};
     var hotList = [];
+
+    window.storage = storage;
+    window.hotList = hotList;
 
     var touch = function(name, remove){
         var pos = hotList.indexOf(name),
@@ -20,7 +23,7 @@ define(function(require, exports, module){
         }
     };
 
-    var set = function(name, obj){
+    var set = function(name, obj, lifetime){
         name = JSON.stringify(name);
         obj = JSON.stringify(obj);
 
@@ -28,7 +31,7 @@ define(function(require, exports, module){
 
         storage[name] = {
             cnt: obj,
-            birth: Date.now()
+            doom: Date.now() + (lifetime || defaultLifetime)
         };
     };
 
@@ -55,7 +58,7 @@ define(function(require, exports, module){
         var now = Date.now();
         for(var name in storage){
             if(storage.hasOwnProperty(name)){
-                if(now - storage[name].birth > expireTime){
+                if(now > storage[name].doom){
                     touch(name, true);
                     delete storage[name];
                 }
