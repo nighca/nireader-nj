@@ -21,7 +21,7 @@ var routes = [
     ['get', '/', pages.home],
     ['get', '/welcome', pages.entrance],
     ['get', '/signin', pages.signin],
-    ['get', '/channel/:cid', pages.channel, true],
+    ['get', '/channel/:cid', pages.channel],
     ['get', '/item/:iid', pages.item],
 
     //method, path, handler, needAuth, devOnly
@@ -75,7 +75,7 @@ for (var i = 0, l = routes.length; i < l; i++) {
     route = routes[i];
 
     handler = route[3] ? needAuth(route[2]) : route[2];
-    handler = 
+    handler =
         !route[4] ?
         handler :
         isDEV ? handler : notFound;
@@ -85,6 +85,6 @@ for (var i = 0, l = routes.length; i < l; i++) {
         path: route[1],
         handler: handler
     };
-};
+}
 
 exports.routes = routes;

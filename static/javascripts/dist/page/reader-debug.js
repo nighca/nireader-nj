@@ -722,11 +722,9 @@ define("nireader/nireader-fe/1.0.0/kit/cache-debug", [], function(require, expor
     // todo: use sth more effective instead, such as heap
     var storage = {};
     var hotList = [];
-    window.storage = storage;
-    window.hotList = hotList;
     var touch = function(name, remove) {
-        var pos = hotList.indexOf(name), lastPos = hotList.length - 1;
-        if (pos >= 0 && pos != lastPos) {
+        var pos = hotList.indexOf(name);
+        if (pos >= 0) {
             hotList.splice(pos, 1);
         }
         if (!remove) {
@@ -1692,6 +1690,9 @@ define("nireader/nireader-fe/1.0.0/module/floater-debug", [ "nireader/nireader-f
             }
             //addTip('searching... ' + loadingIcon);
             resource.search("channel", realKeywords, 1, function(err, channels) {
+                if (val !== currVal) {
+                    return;
+                }
                 if (!err) {
                     for (var i = 0, l = channels.length; i < l; i++) {
                         addResult(channels[i].title, pages.channel(channels[i].id), true);
