@@ -87,7 +87,7 @@ exports.channel = function (req, res) {
         return;
     }
 
-    var sql = genSQLQuery(req.query, Channel, ['title', 'link', 'source', 'description']);
+    var sql = genSQLQuery(req.query, Channel, ['title', 'description']);
 
     doQuery(sql, function(err, items){
         if(err){

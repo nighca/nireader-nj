@@ -6,6 +6,8 @@ var http = require('http');
 var path = require('path');
 var routes = require('./router').routes;
 
+var dealSession = require('./middleware/dealSession');
+
 require('./task');
 
 var app = express();
@@ -19,8 +21,10 @@ app.use(express.bodyParser());
 
 //app.use(express.cookieParser('JustASimpleSecretForCookie'));
 //app.use(express.session({secret: 'JustASimpleSecretForSession'}));
-app.use(express.cookieParser());
+app.use(express.cookieParser('JustASimpleSecretForCookie'));
+app.use(dealSession());
 app.use(express.cookieSession({
+	key: 'WhoAmI',
 	secret: 'JustASimpleSecretForSession',
 	cookie: {
 		maxAge: 1000 * 60 * 60 * 24 * 7
