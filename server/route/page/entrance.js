@@ -3,5 +3,5 @@ module.exports = function(req, res){
         res.redirect('/');
     }else{
         res.render('entrance', {title: 'welcome'});
-    }  
+    }
 };

@@ -12,6 +12,7 @@ var apis = {
     subscription: require('./route/api/subscription'),
     user: require('./route/api/user'),
     list: require('./route/api/list'),
+    search: require('./route/api/search'),
     auth: require('./route/api/auth')
 };
 
@@ -20,7 +21,7 @@ var routes = [
     ['get', '/', pages.home],
     ['get', '/welcome', pages.entrance],
     ['get', '/signin', pages.signin],
-    ['get', '/channel/:cid', pages.channel, true],
+    ['get', '/channel/:cid', pages.channel],
     ['get', '/item/:iid', pages.item],
 
     //method, path, handler, needAuth, devOnly
@@ -42,7 +43,10 @@ var routes = [
     //method, path, handler, needAuth, devOnly
     ['get', '/api/list/item', apis.list.item],
     ['get', '/api/list/channel', apis.list.channel],
-    ['get', '/api/list/subscription', apis.list.subscription, true]
+    ['get', '/api/list/subscription', apis.list.subscription, true],
+
+    //method, path, handler, needAuth, devOnly
+    ['get', '/api/search/channel', apis.search.channel]
 ];
 
 
@@ -53,7 +57,6 @@ var notFound = function(req, res){
 };
 var needAuth = function(handler){
     return function (req, res) {
-        //req.session.uid = 1; //-------------------------------------
         if(!req.session.uid){
             if(req.get('isAjax')){
                 res.json({
@@ -71,7 +74,7 @@ for (var i = 0, l = routes.length; i < l; i++) {
     route = routes[i];
 
     handler = route[3] ? needAuth(route[2]) : route[2];
-    handler = 
+    handler =
         !route[4] ?
         handler :
         isDEV ? handler : notFound;
@@ -81,6 +84,6 @@ for (var i = 0, l = routes.length; i < l; i++) {
         path: route[1],
         handler: handler
     };
-};
+}
 
 exports.routes = routes;

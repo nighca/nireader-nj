@@ -4,6 +4,11 @@ define(function(require, exports, module){
     var formatUrl = require('./url').format;
     var apis = require('../interface/index').api;
 
+    var cacheLifetime = {
+        resource: 1000 * 60 * 60, // 1h
+        list: 1000 * 60 // 1min
+    };
+
     var resources = ['item', 'channel'];
 
     var getUrl = {
@@ -45,7 +50,7 @@ define(function(require, exports, module){
         var url = getUrl[type];
         request.get(params, url, function(err, resource){
             if(!err){
-                cache.set(cacheKey, resource)
+                cache.set(cacheKey, resource, cacheLifetime.resource)
             }
             callback && callback(err, resource);
         });
@@ -57,6 +62,7 @@ define(function(require, exports, module){
         }
 
         var cachedResult, cacheKey = {
+            cache: 'resource',
             type: type,
             opt: opt,
             sort: sort
@@ -74,7 +80,7 @@ define(function(require, exports, module){
         var url = getUrl[type];
         request.get(params, url, function(err, resource){
             if(!err){
-                cache.set(cacheKey, resource)
+                cache.set(cacheKey, resource, cacheLifetime.resource)
             }
             callback && callback(err, resource);
         });
@@ -122,8 +128,19 @@ define(function(require, exports, module){
         subscription: 20
     };
 
-    var listResource = function(type, opt, page, callback, sort, fields){
+    var listResource = function(type, opt, page, callback, sort, fields, refresh){
         if(!type || typeof type !== 'string'){
+            return;
+        }
+
+        var cachedResult, cacheKey = {
+            cache: 'list',
+            type: type,
+            opt: opt,
+            sort: sort
+        };
+        if(!refresh && (cachedResult = cache.get(cacheKey))){
+            callback && callback(null, cachedResult);
             return;
         }
 
@@ -147,17 +164,63 @@ define(function(require, exports, module){
         };
 
         var url = listUrl[type];
+        request.get(params, url, function(err, list){
+            if(!err){
+                cache.set(cacheKey, list, cacheLifetime.list)
+            }
+            callback && callback(err, list);
+        });
+    };
+
+    var makeCertainList = function(type, opt, callback, sort, fields, refresh){
+        return function(page){
+            return listResource(type, opt, page, callback, sort, fields, refresh);
+        }
+    };
+
+    var searchUrl = {
+        item: apis.item.search,
+        channel: apis.channel.search,
+        subscription: apis.subscription.search
+    };
+    var searchResource = function(type, keywords, page, callback, sort, fields){
+        if(!type || typeof type !== 'string'){
+            return;
+        }
+
+        var numInPage = listNumInPage[type];
+
+        var limit;
+        if(typeof page === 'object'){
+            limit = page;
+        }
+
+        var params = {
+            keywords: keywords,
+            fields: fields || listFields[type],
+            sort: sort || listSort[type],
+            limit:
+                limit ||
+                (numInPage ? {
+                    from: numInPage * (page - 1),
+                    num: numInPage
+                } : null)
+        };
+
+        var url = searchUrl[type];
         request.get(params, url, callback);
     };
 
-    var makeCertainList = function(type, opt, callback, sort, fields){
+    var makeCertainSearch = function(type, opt, callback, sort, fields){
         return function(page){
-            return listResource(type, opt, page, callback, sort, fields);
+            return searchResource(type, opt, page, callback, sort, fields);
         }
     };
 
     exports.refresh = refreshResource;
     exports.get = getResource;
     exports.list = listResource;
+    exports.search = searchResource;
     exports.makeList = makeCertainList;
+    exports.makeSearch = makeCertainSearch;
 });

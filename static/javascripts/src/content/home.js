@@ -2,15 +2,21 @@ define(function(require, exports, module) {
     var resource = require('../kit/resource');
     var request = require('../kit/request');
     var notice = require('../kit/notice');
+    var userinfo = require('../kit/userinfo');
     var eventList = require('../kit/eventList').create('content/home');
     var addEvent = eventList.add;
-    var apis = require('../interface/index').api;
+    var customEvent = require('../kit/customEvent');
+    var interfaces = require('../interface/index');
+    var apis = interfaces.api;
+    var pages = interfaces.page;
 
     var genHomeTitle = require('../template/home/title');
     var genHomeInfo = require('../template/home/info');
     var genSubscriptionList = require('../template/home/subscriptionList');
     var genRecommendList = require('../template/home/recommendList');
     var genChannelInfo = require('../template/home/channelInfo');
+
+    var pageTitle = $('title');
 
     var Home = function(opt){
         this.url = opt.url;
@@ -20,10 +26,16 @@ define(function(require, exports, module) {
     };
 
     Home.prototype.init = function(){
+        userinfo.isLogin(function(isIn){
+            if(!isIn){
+                location.href = pages.entrance;
+            }
+        });
+
         this.prepareInfo();
         this.initDoms();
 
-        this.getSubscriptionListByPage(1);
+        this.getAllSubscriptionList();
         this.getRecommendList();
         this.getUserInfo();
         this.dealLinks();
@@ -31,7 +43,12 @@ define(function(require, exports, module) {
         this.bindEvent();
     };
 
-    Home.prototype.bindEvent = function(){};
+    Home.prototype.bindEvent = function(){
+        var _this = this;
+        addEvent(customEvent, 'userInfoUpdate', function(){
+            _this.refreshSubscriptionList();
+        });
+    };
 
     Home.prototype.clean = function(){
         eventList.clean();
@@ -144,6 +161,7 @@ define(function(require, exports, module) {
                         .addClass('icon-eye-close')
                         .removeClass('icon-eye-open');
                     _this.refreshSubscriptionList();
+                    hide();
                 }
             });
         };
@@ -241,9 +259,22 @@ define(function(require, exports, module) {
         })(page);
     };
 
+    Home.prototype.getAllSubscriptionList = function(refresh){
+        var _this = this;
+        resource.makeList('subscription', {
+        }, function(err, subscriptions){
+            if(err){
+                console.error(err);
+                return;
+            }
+            _this.dealSubscriptionList(subscriptions);
+        }, null, null, refresh)({});
+    };
+
     Home.prototype.refreshSubscriptionList = function(){
         this.doms.subscriptionList && this.doms.subscriptionList.remove();
-        this.getSubscriptionListByPage(this.data.subscriptionListPage);
+        //this.getSubscriptionListByPage(this.data.subscriptionListPage);
+        this.getAllSubscriptionList(true);
     };
 
     Home.prototype.dealSubscriptionList = function(subscriptions){
@@ -273,6 +304,7 @@ define(function(require, exports, module) {
     };
 
     Home.prototype.renderHomeInfo = function(data){
+        pageTitle.text(data.user.name + '\'s reader');
         this.doms.title.html(genHomeTitle(data));
         this.doms.info.html(genHomeInfo(data));
     };

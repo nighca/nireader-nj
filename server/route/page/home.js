@@ -3,5 +3,5 @@ module.exports = function(req, res){
         res.render('reader', {title: 'home'});
     }else{
         res.redirect('/welcome');
-    }  
+    }
 };
