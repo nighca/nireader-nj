@@ -29,6 +29,7 @@ define(function(require, exports, module) {
 
     var page = {
         home: '/',
+        entrance: '/welcome',
         channel: function(id){
             return '/channel/' + id;
         },

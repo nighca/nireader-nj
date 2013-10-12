@@ -5,6 +5,8 @@ define(function(require, exports, module) {
     var eventList = require('../kit/eventList').create('content/channel');
     var addEvent = eventList.add;
 
+    var userinfo = require('../kit/userinfo');
+
     var genChannelTitle = require('../template/channel/title');
     var genChannelInfo = require('../template/channel/info');
     var genItemList = require('../template/channel/itemList');
@@ -22,7 +24,16 @@ define(function(require, exports, module) {
         this.prepareInfo();
         this.getItemListByPage(1);
         this.getChannelInfo();
-        this.getNeighbourInfo();
+
+        var _this = this;
+        userinfo.isLogin(function(isIn){
+            if(isIn){
+                _this.getNeighbourInfo();
+            }else{
+                _this.dealNoUserinfo();
+            }
+        });
+
 
         this.bindEvent();
     };
@@ -138,6 +149,14 @@ define(function(require, exports, module) {
             this.doms.rightLink
                 .hide();
         }
+    };
+
+    Channel.prototype.dealNoUserinfo = function(){
+        this.doms.topLink
+            .attr('href', pagePath.home)
+            .attr('title', 'Home');
+        this.doms.leftLink.hide();
+        this.doms.rightLink.hide();
     };
 
     Channel.prototype.dealItemList = function(items){

@@ -2,10 +2,13 @@ define(function(require, exports, module) {
     var resource = require('../kit/resource');
     var request = require('../kit/request');
     var notice = require('../kit/notice');
+    var userinfo = require('../kit/userinfo');
     var eventList = require('../kit/eventList').create('content/home');
     var addEvent = eventList.add;
     var customEvent = require('../kit/customEvent');
-    var apis = require('../interface/index').api;
+    var interfaces = require('../interface/index');
+    var apis = interfaces.api;
+    var pages = interfaces.page;
 
     var genHomeTitle = require('../template/home/title');
     var genHomeInfo = require('../template/home/info');
@@ -23,6 +26,12 @@ define(function(require, exports, module) {
     };
 
     Home.prototype.init = function(){
+        userinfo.isLogin(function(isIn){
+            if(!isIn){
+                location.href = pages.entrance;
+            }
+        });
+
         this.prepareInfo();
         this.initDoms();
 

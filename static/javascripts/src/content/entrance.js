@@ -2,11 +2,18 @@ define(function(require, exports, module) {
     var request = require('../kit/request');
     var customEvent = require('../kit/customEvent');
     var notice = require('../kit/notice');
+    var userinfo = require('../kit/userinfo');
     var eventList = require('../kit/eventList').create('content/entrance');
     var addEvent = eventList.add;
-    var apis = require('../interface/index').api;
+    var interfaces = require('../interface/index');
+    var apis = interfaces.api;
+    var pages = interfaces.page;
 
     var pageTitle = $('title');
+
+    var goHome = function(){
+        customEvent.trigger('goto', pages.home);
+    };
 
     var Entrance = function(opt){
         this.url = opt.url;
@@ -16,8 +23,15 @@ define(function(require, exports, module) {
     };
 
     Entrance.prototype.init = function(){
+        userinfo.isLogin(function(isIn){
+            if(isIn){
+                goHome();
+            }
+        });
+
         this.prepareInfo();
         pageTitle.text('Welcome');
+
         this.dealLinks();
 
         this.bindEvent();
@@ -66,7 +80,7 @@ define(function(require, exports, module) {
                 notice(err);
                 return;
             }
-            customEvent.trigger('goto', '/');
+            goHome();
         });
     };
 
