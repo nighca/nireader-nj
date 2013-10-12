@@ -27,7 +27,8 @@ app.use(express.cookieSession({
 	key: 'WhoAmI',
 	secret: 'JustASimpleSecretForSession',
 	cookie: {
-		maxAge: 1000 * 60 * 60 * 24 * 7
+		maxAge: 1000 * 60 * 60 * 24 * 7,
+		httpOnly: false
 	}
 }));
 
