@@ -1,12 +1,27 @@
 define(function(require, exports, module){
-    var autoManageInterval = 1000 * 60 * 1; // 1min
-    var defaultLifetime = 1000 * 60 * 1; // 1min
-    var maxCacheNum = 200;
+    var config = require('../config').cache;
+    var autoManageInterval = config.manageInterval;
+    var defaultLifetime = config.lifetime;
+    var maxCacheNum = config.maxNum;
+
     // temporarily use array to record hot list
     // todo: use sth more effective instead, such as heap
 
     var storage = {};
     var hotList = [];
+
+    var timer;
+    var cacheStatus = function(){
+        window.LOG.apply(window, arguments);
+
+        if(timer){
+            clearTimeout(timer);
+        }
+        timer = setTimeout(function(){
+            window.LOG('storage: ', storage, 'hotList: ', hotList);
+            timer = null;
+        }, 10);
+    };
 
     var touch = function(name, remove){
         var pos = hotList.indexOf(name);
@@ -25,6 +40,8 @@ define(function(require, exports, module){
 
         touch(name);
 
+        cacheStatus('cache: ', name);
+
         storage[name] = {
             cnt: obj,
             doom: Date.now() + (lifetime || defaultLifetime)
@@ -34,11 +51,12 @@ define(function(require, exports, module){
     var get = function(name){
         name = JSON.stringify(name);
 
-        touch(name);
-
         var obj = storage[name];
 
+        cacheStatus((obj ? 'catch': 'miss') + ' in cache: ', name);
+
         if(obj){
+            touch(name);
             return JSON.parse(obj.cnt);
         }
     };
@@ -47,15 +65,24 @@ define(function(require, exports, module){
         name = JSON.stringify(name);
 
         touch(name, true);
+
+        cacheStatus('remove cache: ', name);
+
         return (delete storage[name]);
     };
 
     var manage = function(){
+
+        cacheStatus('manage cache...');
+
         var now = Date.now();
         for(var name in storage){
             if(storage.hasOwnProperty(name)){
                 if(now > storage[name].doom){
                     touch(name, true);
+
+                    cacheStatus('cache expired: ', name);
+
                     delete storage[name];
                 }
             }
@@ -64,10 +91,15 @@ define(function(require, exports, module){
         var overNum = hotList.length - maxCacheNum;
         for (var i = 0, name; i < overNum; i++) {
             name = hotList[i];
+
+            cacheStatus('cache over num: ', name); 
+
             delete storage[name];
         }
 
         hotList = hotList.slice(overNum, hotList.length);
+
+        cacheStatus('manage cache end.');
     };
 
     var autoManage = function(){

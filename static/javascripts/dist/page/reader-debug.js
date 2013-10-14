@@ -1,16 +1,15 @@
-define("nireader/nireader-fe/2.0.0/page/reader-debug", [ "../module/stateManager-debug", "../kit/url-debug", "../kit/customEvent-debug", "../module/page-debug", "../module/createContent-debug", "../content/home-debug", "../kit/resource-debug", "../kit/request-debug", "../kit/cache-debug", "../interface/index-debug", "../kit/notice-debug", "../kit/userinfo-debug", "../kit/cookie-debug", "../kit/eventList-debug", "../template/home/title-debug", "../template/template-debug", "../kit/time-debug", "../kit/num-debug", "../template/home/info-debug", "../template/home/subscriptionList-debug", "../template/home/recommendList-debug", "../template/home/channelInfo-debug", "../content/entrance-debug", "../content/channel-debug", "../template/channel/title-debug", "../template/channel/info-debug", "../template/channel/itemList-debug", "../content/item-debug", "../template/item/title-debug", "../template/item/info-debug", "../template/item/content-debug", "../template/item/channelTitle-debug", "../kit/testScroll-debug", "../module/floater-debug", "../kit/keypress-debug", "../kit/pattern-debug", "../template/common/result-debug", "../template/common/tip-debug", "../template/common/loadingIcon-debug" ], function(require, exports, module) {
+define("nireader/nireader-fe/2.0.0/page/reader-debug", [ "../module/stateManager-debug", "../kit/url-debug", "../kit/customEvent-debug", "../module/page-debug", "../module/createContent-debug", "../content/home-debug", "../kit/resource-debug", "../kit/request-debug", "../kit/cache-debug", "../config-debug", "../interface/index-debug", "../kit/notice-debug", "../kit/userinfo-debug", "../kit/cookie-debug", "../kit/eventList-debug", "../template/home/title-debug", "../template/template-debug", "../kit/time-debug", "../kit/num-debug", "../template/home/info-debug", "../template/home/subscriptionList-debug", "../template/home/recommendList-debug", "../template/home/channelInfo-debug", "../content/entrance-debug", "../content/channel-debug", "../template/channel/title-debug", "../template/channel/info-debug", "../template/channel/itemList-debug", "../content/item-debug", "../template/item/title-debug", "../template/item/info-debug", "../template/item/content-debug", "../template/item/channelTitle-debug", "../kit/testScroll-debug", "../module/floater-debug", "../kit/keypress-debug", "../kit/pattern-debug", "../template/common/result-debug", "../template/common/tip-debug", "../template/common/loadingIcon-debug" ], function(require, exports, module) {
     var stateManager = require("../module/stateManager-debug");
     var page = require("../module/page-debug");
     var floater = require("../module/floater-debug");
-    var bind = function() {
+    var init = function() {
         stateManager.on("checkout", function(info) {
             page.checkout(info);
         });
     };
-    //bind();
     module.exports = {
         name: "reader",
-        bind: bind
+        init: init
     };
 });
 
@@ -137,8 +136,12 @@ define("nireader/nireader-fe/2.0.0/kit/customEvent-debug", [], function(require,
     var lists = {};
     module.exports = {
         on: function(event, handler) {
-            lists[event] = lists[event] || [];
-            lists[event].push(handler);
+            var list = lists[event] = lists[event] || [];
+            // avoid repeated bind
+            if (list.indexOf(handler) >= 0) {
+                return;
+            }
+            list.push(handler);
         },
         off: function(event, handler) {
             var list, pos;
@@ -163,7 +166,7 @@ define("nireader/nireader-fe/2.0.0/kit/customEvent-debug", [], function(require,
     };
 });
 
-define("nireader/nireader-fe/2.0.0/module/page-debug", [ "nireader/nireader-fe/2.0.0/module/createContent-debug", "nireader/nireader-fe/2.0.0/kit/url-debug", "nireader/nireader-fe/2.0.0/content/home-debug", "nireader/nireader-fe/2.0.0/kit/resource-debug", "nireader/nireader-fe/2.0.0/kit/request-debug", "nireader/nireader-fe/2.0.0/kit/cache-debug", "nireader/nireader-fe/2.0.0/interface/index-debug", "nireader/nireader-fe/2.0.0/kit/notice-debug", "nireader/nireader-fe/2.0.0/kit/userinfo-debug", "nireader/nireader-fe/2.0.0/kit/cookie-debug", "nireader/nireader-fe/2.0.0/kit/eventList-debug", "nireader/nireader-fe/2.0.0/kit/customEvent-debug", "nireader/nireader-fe/2.0.0/template/home/title-debug", "nireader/nireader-fe/2.0.0/template/template-debug", "nireader/nireader-fe/2.0.0/kit/time-debug", "nireader/nireader-fe/2.0.0/kit/num-debug", "nireader/nireader-fe/2.0.0/template/home/info-debug", "nireader/nireader-fe/2.0.0/template/home/subscriptionList-debug", "nireader/nireader-fe/2.0.0/template/home/recommendList-debug", "nireader/nireader-fe/2.0.0/template/home/channelInfo-debug", "nireader/nireader-fe/2.0.0/content/entrance-debug", "nireader/nireader-fe/2.0.0/content/channel-debug", "nireader/nireader-fe/2.0.0/template/channel/title-debug", "nireader/nireader-fe/2.0.0/template/channel/info-debug", "nireader/nireader-fe/2.0.0/template/channel/itemList-debug", "nireader/nireader-fe/2.0.0/content/item-debug", "nireader/nireader-fe/2.0.0/template/item/title-debug", "nireader/nireader-fe/2.0.0/template/item/info-debug", "nireader/nireader-fe/2.0.0/template/item/content-debug", "nireader/nireader-fe/2.0.0/template/item/channelTitle-debug", "nireader/nireader-fe/2.0.0/kit/testScroll-debug" ], function(require, exports, module) {
+define("nireader/nireader-fe/2.0.0/module/page-debug", [ "nireader/nireader-fe/2.0.0/module/createContent-debug", "nireader/nireader-fe/2.0.0/kit/url-debug", "nireader/nireader-fe/2.0.0/content/home-debug", "nireader/nireader-fe/2.0.0/kit/resource-debug", "nireader/nireader-fe/2.0.0/kit/request-debug", "nireader/nireader-fe/2.0.0/kit/cache-debug", "nireader/nireader-fe/2.0.0/config-debug", "nireader/nireader-fe/2.0.0/interface/index-debug", "nireader/nireader-fe/2.0.0/kit/notice-debug", "nireader/nireader-fe/2.0.0/kit/userinfo-debug", "nireader/nireader-fe/2.0.0/kit/cookie-debug", "nireader/nireader-fe/2.0.0/kit/eventList-debug", "nireader/nireader-fe/2.0.0/kit/customEvent-debug", "nireader/nireader-fe/2.0.0/template/home/title-debug", "nireader/nireader-fe/2.0.0/template/template-debug", "nireader/nireader-fe/2.0.0/kit/time-debug", "nireader/nireader-fe/2.0.0/kit/num-debug", "nireader/nireader-fe/2.0.0/template/home/info-debug", "nireader/nireader-fe/2.0.0/template/home/subscriptionList-debug", "nireader/nireader-fe/2.0.0/template/home/recommendList-debug", "nireader/nireader-fe/2.0.0/template/home/channelInfo-debug", "nireader/nireader-fe/2.0.0/content/entrance-debug", "nireader/nireader-fe/2.0.0/content/channel-debug", "nireader/nireader-fe/2.0.0/template/channel/title-debug", "nireader/nireader-fe/2.0.0/template/channel/info-debug", "nireader/nireader-fe/2.0.0/template/channel/itemList-debug", "nireader/nireader-fe/2.0.0/content/item-debug", "nireader/nireader-fe/2.0.0/template/item/title-debug", "nireader/nireader-fe/2.0.0/template/item/info-debug", "nireader/nireader-fe/2.0.0/template/item/content-debug", "nireader/nireader-fe/2.0.0/template/item/channelTitle-debug", "nireader/nireader-fe/2.0.0/kit/testScroll-debug" ], function(require, exports, module) {
     var createContent = require("nireader/nireader-fe/2.0.0/module/createContent-debug");
     var URL = require("nireader/nireader-fe/2.0.0/kit/url-debug");
     var page = {
@@ -200,7 +203,7 @@ define("nireader/nireader-fe/2.0.0/module/page-debug", [ "nireader/nireader-fe/2
     module.exports = page;
 });
 
-define("nireader/nireader-fe/2.0.0/module/createContent-debug", [ "nireader/nireader-fe/2.0.0/kit/url-debug", "nireader/nireader-fe/2.0.0/content/home-debug", "nireader/nireader-fe/2.0.0/kit/resource-debug", "nireader/nireader-fe/2.0.0/kit/request-debug", "nireader/nireader-fe/2.0.0/kit/cache-debug", "nireader/nireader-fe/2.0.0/interface/index-debug", "nireader/nireader-fe/2.0.0/kit/notice-debug", "nireader/nireader-fe/2.0.0/kit/userinfo-debug", "nireader/nireader-fe/2.0.0/kit/cookie-debug", "nireader/nireader-fe/2.0.0/kit/eventList-debug", "nireader/nireader-fe/2.0.0/kit/customEvent-debug", "nireader/nireader-fe/2.0.0/template/home/title-debug", "nireader/nireader-fe/2.0.0/template/template-debug", "nireader/nireader-fe/2.0.0/kit/time-debug", "nireader/nireader-fe/2.0.0/kit/num-debug", "nireader/nireader-fe/2.0.0/template/home/info-debug", "nireader/nireader-fe/2.0.0/template/home/subscriptionList-debug", "nireader/nireader-fe/2.0.0/template/home/recommendList-debug", "nireader/nireader-fe/2.0.0/template/home/channelInfo-debug", "nireader/nireader-fe/2.0.0/content/entrance-debug", "nireader/nireader-fe/2.0.0/content/channel-debug", "nireader/nireader-fe/2.0.0/template/channel/title-debug", "nireader/nireader-fe/2.0.0/template/channel/info-debug", "nireader/nireader-fe/2.0.0/template/channel/itemList-debug", "nireader/nireader-fe/2.0.0/content/item-debug", "nireader/nireader-fe/2.0.0/template/item/title-debug", "nireader/nireader-fe/2.0.0/template/item/info-debug", "nireader/nireader-fe/2.0.0/template/item/content-debug", "nireader/nireader-fe/2.0.0/template/item/channelTitle-debug", "nireader/nireader-fe/2.0.0/kit/testScroll-debug" ], function(require, exports, module) {
+define("nireader/nireader-fe/2.0.0/module/createContent-debug", [ "nireader/nireader-fe/2.0.0/kit/url-debug", "nireader/nireader-fe/2.0.0/content/home-debug", "nireader/nireader-fe/2.0.0/kit/resource-debug", "nireader/nireader-fe/2.0.0/kit/request-debug", "nireader/nireader-fe/2.0.0/kit/cache-debug", "nireader/nireader-fe/2.0.0/config-debug", "nireader/nireader-fe/2.0.0/interface/index-debug", "nireader/nireader-fe/2.0.0/kit/notice-debug", "nireader/nireader-fe/2.0.0/kit/userinfo-debug", "nireader/nireader-fe/2.0.0/kit/cookie-debug", "nireader/nireader-fe/2.0.0/kit/eventList-debug", "nireader/nireader-fe/2.0.0/kit/customEvent-debug", "nireader/nireader-fe/2.0.0/template/home/title-debug", "nireader/nireader-fe/2.0.0/template/template-debug", "nireader/nireader-fe/2.0.0/kit/time-debug", "nireader/nireader-fe/2.0.0/kit/num-debug", "nireader/nireader-fe/2.0.0/template/home/info-debug", "nireader/nireader-fe/2.0.0/template/home/subscriptionList-debug", "nireader/nireader-fe/2.0.0/template/home/recommendList-debug", "nireader/nireader-fe/2.0.0/template/home/channelInfo-debug", "nireader/nireader-fe/2.0.0/content/entrance-debug", "nireader/nireader-fe/2.0.0/content/channel-debug", "nireader/nireader-fe/2.0.0/template/channel/title-debug", "nireader/nireader-fe/2.0.0/template/channel/info-debug", "nireader/nireader-fe/2.0.0/template/channel/itemList-debug", "nireader/nireader-fe/2.0.0/content/item-debug", "nireader/nireader-fe/2.0.0/template/item/title-debug", "nireader/nireader-fe/2.0.0/template/item/info-debug", "nireader/nireader-fe/2.0.0/template/item/content-debug", "nireader/nireader-fe/2.0.0/template/item/channelTitle-debug", "nireader/nireader-fe/2.0.0/kit/testScroll-debug" ], function(require, exports, module) {
     var URL = require("nireader/nireader-fe/2.0.0/kit/url-debug");
     var Contents = {
         home: require("nireader/nireader-fe/2.0.0/content/home-debug"),
@@ -216,13 +219,12 @@ define("nireader/nireader-fe/2.0.0/module/createContent-debug", [ "nireader/nire
     module.exports = createContent;
 });
 
-define("nireader/nireader-fe/2.0.0/content/home-debug", [ "nireader/nireader-fe/2.0.0/kit/resource-debug", "nireader/nireader-fe/2.0.0/kit/request-debug", "nireader/nireader-fe/2.0.0/kit/cache-debug", "nireader/nireader-fe/2.0.0/kit/url-debug", "nireader/nireader-fe/2.0.0/interface/index-debug", "nireader/nireader-fe/2.0.0/kit/notice-debug", "nireader/nireader-fe/2.0.0/kit/userinfo-debug", "nireader/nireader-fe/2.0.0/kit/cookie-debug", "nireader/nireader-fe/2.0.0/kit/eventList-debug", "nireader/nireader-fe/2.0.0/kit/customEvent-debug", "nireader/nireader-fe/2.0.0/template/home/title-debug", "nireader/nireader-fe/2.0.0/template/template-debug", "nireader/nireader-fe/2.0.0/kit/time-debug", "nireader/nireader-fe/2.0.0/kit/num-debug", "nireader/nireader-fe/2.0.0/template/home/info-debug", "nireader/nireader-fe/2.0.0/template/home/subscriptionList-debug", "nireader/nireader-fe/2.0.0/template/home/recommendList-debug", "nireader/nireader-fe/2.0.0/template/home/channelInfo-debug" ], function(require, exports, module) {
+define("nireader/nireader-fe/2.0.0/content/home-debug", [ "nireader/nireader-fe/2.0.0/kit/resource-debug", "nireader/nireader-fe/2.0.0/kit/request-debug", "nireader/nireader-fe/2.0.0/kit/cache-debug", "nireader/nireader-fe/2.0.0/config-debug", "nireader/nireader-fe/2.0.0/kit/url-debug", "nireader/nireader-fe/2.0.0/interface/index-debug", "nireader/nireader-fe/2.0.0/kit/notice-debug", "nireader/nireader-fe/2.0.0/kit/userinfo-debug", "nireader/nireader-fe/2.0.0/kit/cookie-debug", "nireader/nireader-fe/2.0.0/kit/eventList-debug", "nireader/nireader-fe/2.0.0/kit/customEvent-debug", "nireader/nireader-fe/2.0.0/template/home/title-debug", "nireader/nireader-fe/2.0.0/template/template-debug", "nireader/nireader-fe/2.0.0/kit/time-debug", "nireader/nireader-fe/2.0.0/kit/num-debug", "nireader/nireader-fe/2.0.0/template/home/info-debug", "nireader/nireader-fe/2.0.0/template/home/subscriptionList-debug", "nireader/nireader-fe/2.0.0/template/home/recommendList-debug", "nireader/nireader-fe/2.0.0/template/home/channelInfo-debug" ], function(require, exports, module) {
     var resource = require("nireader/nireader-fe/2.0.0/kit/resource-debug");
     var request = require("nireader/nireader-fe/2.0.0/kit/request-debug");
     var notice = require("nireader/nireader-fe/2.0.0/kit/notice-debug");
     var userinfo = require("nireader/nireader-fe/2.0.0/kit/userinfo-debug");
-    var eventList = require("nireader/nireader-fe/2.0.0/kit/eventList-debug").create("content/home");
-    var addEvent = eventList.add;
+    var eventList = require("nireader/nireader-fe/2.0.0/kit/eventList-debug");
     var customEvent = require("nireader/nireader-fe/2.0.0/kit/customEvent-debug");
     var interfaces = require("nireader/nireader-fe/2.0.0/interface/index-debug");
     var apis = interfaces.api;
@@ -236,6 +238,7 @@ define("nireader/nireader-fe/2.0.0/content/home-debug", [ "nireader/nireader-fe/
     var Home = function(opt) {
         this.url = opt.url;
         this.wrapper = opt.wrapper;
+        this.eventList = eventList.create("content/home");
         this.type = "home";
     };
     Home.prototype.init = function() {
@@ -254,12 +257,12 @@ define("nireader/nireader-fe/2.0.0/content/home-debug", [ "nireader/nireader-fe/
     };
     Home.prototype.bindEvent = function() {
         var _this = this;
-        addEvent(customEvent, "userInfoUpdate", function() {
+        this.eventList.add(customEvent, "userInfoUpdate", function() {
             _this.refreshSubscriptionList();
         });
     };
     Home.prototype.clean = function() {
-        eventList.clean();
+        this.eventList.clean();
         /*this.doms.content.html('');
         this.doms.title.html('');
         this.doms.info.html('');*/
@@ -349,7 +352,7 @@ define("nireader/nireader-fe/2.0.0/content/home-debug", [ "nireader/nireader-fe/
         };
         var bindSubscribe = function(cid) {
             var icon = sideBlock.find("#channel-subscribed");
-            addEvent(icon, "click", function(e) {
+            _this.eventList.add(icon, "click", function(e) {
                 (icon.hasClass("icon-eye-open") ? cancelSubscribe : subscribe)(cid, icon);
             });
         };
@@ -383,11 +386,11 @@ define("nireader/nireader-fe/2.0.0/content/home-debug", [ "nireader/nireader-fe/
             });
         };
         var bind = function(list) {
-            addEvent(list.find(".item"), "mouseenter", getInfoAndRender);
-            addEvent(list, "mouseleave", hide);
+            _this.eventList.add(list.find(".item"), "mouseenter", getInfoAndRender);
+            _this.eventList.add(list, "mouseleave", hide);
         };
-        addEvent(sideBlock, "mouseenter", stopHide);
-        addEvent(sideBlock, "mouseleave", hide);
+        _this.eventList.add(sideBlock, "mouseenter", stopHide);
+        _this.eventList.add(sideBlock, "mouseleave", hide);
         //channel-subscribed
         return {
             bind: bind
@@ -490,7 +493,7 @@ define("nireader/nireader-fe/2.0.0/content/home-debug", [ "nireader/nireader-fe/
     module.exports = Home;
 });
 
-define("nireader/nireader-fe/2.0.0/kit/resource-debug", [ "nireader/nireader-fe/2.0.0/kit/request-debug", "nireader/nireader-fe/2.0.0/kit/cache-debug", "nireader/nireader-fe/2.0.0/kit/url-debug", "nireader/nireader-fe/2.0.0/interface/index-debug" ], function(require, exports, module) {
+define("nireader/nireader-fe/2.0.0/kit/resource-debug", [ "nireader/nireader-fe/2.0.0/kit/request-debug", "nireader/nireader-fe/2.0.0/kit/cache-debug", "nireader/nireader-fe/2.0.0/config-debug", "nireader/nireader-fe/2.0.0/kit/url-debug", "nireader/nireader-fe/2.0.0/interface/index-debug" ], function(require, exports, module) {
     var request = require("nireader/nireader-fe/2.0.0/kit/request-debug");
     var cache = require("nireader/nireader-fe/2.0.0/kit/cache-debug");
     var formatUrl = require("nireader/nireader-fe/2.0.0/kit/url-debug").format;
@@ -720,16 +723,26 @@ define("nireader/nireader-fe/2.0.0/kit/request-debug", [], function(require, exp
     };
 });
 
-define("nireader/nireader-fe/2.0.0/kit/cache-debug", [], function(require, exports, module) {
-    var autoManageInterval = 1e3 * 60 * 1;
-    // 1min
-    var defaultLifetime = 1e3 * 60 * 1;
-    // 1min
-    var maxCacheNum = 200;
+define("nireader/nireader-fe/2.0.0/kit/cache-debug", [ "nireader/nireader-fe/2.0.0/config-debug" ], function(require, exports, module) {
+    var config = require("nireader/nireader-fe/2.0.0/config-debug").cache;
+    var autoManageInterval = config.manageInterval;
+    var defaultLifetime = config.lifetime;
+    var maxCacheNum = config.maxNum;
     // temporarily use array to record hot list
     // todo: use sth more effective instead, such as heap
     var storage = {};
     var hotList = [];
+    var timer;
+    var cacheStatus = function() {
+        window.LOG.apply(window, arguments);
+        if (timer) {
+            clearTimeout(timer);
+        }
+        timer = setTimeout(function() {
+            window.LOG("storage: ", storage, "hotList: ", hotList);
+            timer = null;
+        }, 10);
+    };
     var touch = function(name, remove) {
         var pos = hotList.indexOf(name);
         if (pos >= 0) {
@@ -743,6 +756,7 @@ define("nireader/nireader-fe/2.0.0/kit/cache-debug", [], function(require, expor
         name = JSON.stringify(name);
         obj = JSON.stringify(obj);
         touch(name);
+        cacheStatus("cache: ", name);
         storage[name] = {
             cnt: obj,
             doom: Date.now() + (lifetime || defaultLifetime)
@@ -750,23 +764,27 @@ define("nireader/nireader-fe/2.0.0/kit/cache-debug", [], function(require, expor
     };
     var get = function(name) {
         name = JSON.stringify(name);
-        touch(name);
         var obj = storage[name];
+        cacheStatus((obj ? "catch" : "miss") + " in cache: ", name);
         if (obj) {
+            touch(name);
             return JSON.parse(obj.cnt);
         }
     };
     var remove = function(name) {
         name = JSON.stringify(name);
         touch(name, true);
+        cacheStatus("remove cache: ", name);
         return delete storage[name];
     };
     var manage = function() {
+        cacheStatus("manage cache...");
         var now = Date.now();
         for (var name in storage) {
             if (storage.hasOwnProperty(name)) {
                 if (now > storage[name].doom) {
                     touch(name, true);
+                    cacheStatus("cache expired: ", name);
                     delete storage[name];
                 }
             }
@@ -774,9 +792,11 @@ define("nireader/nireader-fe/2.0.0/kit/cache-debug", [], function(require, expor
         var overNum = hotList.length - maxCacheNum;
         for (var i = 0, name; i < overNum; i++) {
             name = hotList[i];
+            cacheStatus("cache over num: ", name);
             delete storage[name];
         }
         hotList = hotList.slice(overNum, hotList.length);
+        cacheStatus("manage cache end.");
     };
     var autoManage = function() {
         setInterval(manage, autoManageInterval);
@@ -785,6 +805,18 @@ define("nireader/nireader-fe/2.0.0/kit/cache-debug", [], function(require, expor
     module.exports = {
         set: set,
         get: get
+    };
+});
+
+define("nireader/nireader-fe/2.0.0/config-debug", [], function(require, exports, module) {
+    module.exports = {
+        cache: {
+            manageInterval: 1e3 * 60 * 1,
+            // 1min
+            lifetime: 1e3 * 60 * 1,
+            // 1min
+            maxNum: 200
+        }
     };
 });
 
@@ -837,7 +869,7 @@ define("nireader/nireader-fe/2.0.0/kit/notice-debug", [], function(require, expo
         if (typeof word !== "string") {
             word = JSON.stringify(word);
         }
-        alert(word);
+        console.log(word);
     };
 });
 
@@ -903,12 +935,17 @@ define("nireader/nireader-fe/2.0.0/kit/cookie-debug", [], function(require, expo
 
 define("nireader/nireader-fe/2.0.0/kit/eventList-debug", [], function(require, exports, module) {
     var lists = {};
+    window.lists = lists;
+    //------------------------
     var create = function(name) {
+        name += (Math.random() + "").slice(2);
         var list = lists[name] = [];
+        LOG("create eventList: ", name);
         return {
             name: name,
             list: list,
             add: function(dom, event, handler) {
+                LOG("add event: ", event, " to ", this);
                 for (var i = list.length - 1; i >= 0; i--) {
                     if (list[i].dom === dom && list[i].event === event && list[i].handler === handler) {
                         return;
@@ -927,6 +964,7 @@ define("nireader/nireader-fe/2.0.0/kit/eventList-debug", [], function(require, e
                 return list;
             },
             remove: function(dom, event, handler) {
+                LOG("remove event: ", event, " from ", this);
                 for (var i = list.length - 1; i >= 0; i--) {
                     if (list[i].dom === dom && list[i].event === event && list[i].handler === handler) {
                         try {
@@ -940,6 +978,7 @@ define("nireader/nireader-fe/2.0.0/kit/eventList-debug", [], function(require, e
                 }
             },
             clean: function() {
+                LOG("clean eventList: ", this);
                 for (var i = list.length - 1, record; i >= 0; i--) {
                     try {
                         record = list[i];
@@ -949,6 +988,7 @@ define("nireader/nireader-fe/2.0.0/kit/eventList-debug", [], function(require, e
                     }
                 }
                 list = lists[name] = [];
+                delete lists[name];
             }
         };
     };
@@ -1086,8 +1126,7 @@ define("nireader/nireader-fe/2.0.0/content/entrance-debug", [ "nireader/nireader
     var customEvent = require("nireader/nireader-fe/2.0.0/kit/customEvent-debug");
     var notice = require("nireader/nireader-fe/2.0.0/kit/notice-debug");
     var userinfo = require("nireader/nireader-fe/2.0.0/kit/userinfo-debug");
-    var eventList = require("nireader/nireader-fe/2.0.0/kit/eventList-debug").create("content/entrance");
-    var addEvent = eventList.add;
+    var eventList = require("nireader/nireader-fe/2.0.0/kit/eventList-debug");
     var interfaces = require("nireader/nireader-fe/2.0.0/interface/index-debug");
     var apis = interfaces.api;
     var pages = interfaces.page;
@@ -1098,6 +1137,7 @@ define("nireader/nireader-fe/2.0.0/content/entrance-debug", [ "nireader/nireader
     var Entrance = function(opt) {
         this.url = opt.url;
         //this.wrapper = opt.wrapper;
+        this.eventList = eventList.create("content/entrance");
         this.type = "entrance";
     };
     Entrance.prototype.init = function() {
@@ -1119,14 +1159,14 @@ define("nireader/nireader-fe/2.0.0/content/entrance-debug", [ "nireader/nireader
     Entrance.prototype.bindEvent = function() {
         var _this = this;
         var doms = this.doms;
-        addEvent(doms.signin, "click", function() {
+        this.eventList.add(doms.signin, "click", function() {
             doms.signinBlock.fadeIn();
             return false;
         });
-        addEvent(doms.submit, "click", function(e) {
+        this.eventList.add(doms.submit, "click", function(e) {
             _this.signIn();
         });
-        addEvent(doms.passwordIN, "keyup", function(e) {
+        this.eventList.add(doms.passwordIN, "keyup", function(e) {
             if (e.which === 13) {
                 // Enter
                 _this.signIn();
@@ -1151,7 +1191,7 @@ define("nireader/nireader-fe/2.0.0/content/entrance-debug", [ "nireader/nireader
         });
     };
     Entrance.prototype.clean = function() {
-        eventList.clean();
+        this.eventList.clean();
         this.doms.wrapper.animate({
             marginTop: -this.doms.wrapper.height() + "px"
         }, 1e3, function() {
@@ -1174,12 +1214,11 @@ define("nireader/nireader-fe/2.0.0/content/entrance-debug", [ "nireader/nireader
     module.exports = Entrance;
 });
 
-define("nireader/nireader-fe/2.0.0/content/channel-debug", [ "nireader/nireader-fe/2.0.0/kit/resource-debug", "nireader/nireader-fe/2.0.0/kit/request-debug", "nireader/nireader-fe/2.0.0/kit/cache-debug", "nireader/nireader-fe/2.0.0/kit/url-debug", "nireader/nireader-fe/2.0.0/interface/index-debug", "nireader/nireader-fe/2.0.0/kit/eventList-debug", "nireader/nireader-fe/2.0.0/kit/userinfo-debug", "nireader/nireader-fe/2.0.0/kit/cookie-debug", "nireader/nireader-fe/2.0.0/template/channel/title-debug", "nireader/nireader-fe/2.0.0/template/template-debug", "nireader/nireader-fe/2.0.0/kit/time-debug", "nireader/nireader-fe/2.0.0/kit/num-debug", "nireader/nireader-fe/2.0.0/template/channel/info-debug", "nireader/nireader-fe/2.0.0/template/channel/itemList-debug" ], function(require, exports, module) {
+define("nireader/nireader-fe/2.0.0/content/channel-debug", [ "nireader/nireader-fe/2.0.0/kit/resource-debug", "nireader/nireader-fe/2.0.0/kit/request-debug", "nireader/nireader-fe/2.0.0/kit/cache-debug", "nireader/nireader-fe/2.0.0/config-debug", "nireader/nireader-fe/2.0.0/kit/url-debug", "nireader/nireader-fe/2.0.0/interface/index-debug", "nireader/nireader-fe/2.0.0/kit/eventList-debug", "nireader/nireader-fe/2.0.0/kit/userinfo-debug", "nireader/nireader-fe/2.0.0/kit/cookie-debug", "nireader/nireader-fe/2.0.0/template/channel/title-debug", "nireader/nireader-fe/2.0.0/template/template-debug", "nireader/nireader-fe/2.0.0/kit/time-debug", "nireader/nireader-fe/2.0.0/kit/num-debug", "nireader/nireader-fe/2.0.0/template/channel/info-debug", "nireader/nireader-fe/2.0.0/template/channel/itemList-debug" ], function(require, exports, module) {
     var resource = require("nireader/nireader-fe/2.0.0/kit/resource-debug");
     var pagePath = require("nireader/nireader-fe/2.0.0/interface/index-debug").page;
     var URL = require("nireader/nireader-fe/2.0.0/kit/url-debug");
-    var eventList = require("nireader/nireader-fe/2.0.0/kit/eventList-debug").create("content/channel");
-    var addEvent = eventList.add;
+    var eventList = require("nireader/nireader-fe/2.0.0/kit/eventList-debug");
     var userinfo = require("nireader/nireader-fe/2.0.0/kit/userinfo-debug");
     var genChannelTitle = require("nireader/nireader-fe/2.0.0/template/channel/title-debug");
     var genChannelInfo = require("nireader/nireader-fe/2.0.0/template/channel/info-debug");
@@ -1188,6 +1227,7 @@ define("nireader/nireader-fe/2.0.0/content/channel-debug", [ "nireader/nireader-
     var Channel = function(opt) {
         this.url = opt.url;
         this.wrapper = opt.wrapper;
+        this.eventList = eventList.create("content/channel");
         this.type = "channel";
     };
     Channel.prototype.init = function() {
@@ -1206,7 +1246,7 @@ define("nireader/nireader-fe/2.0.0/content/channel-debug", [ "nireader/nireader-
     };
     Channel.prototype.bindEvent = function() {};
     Channel.prototype.clean = function() {
-        eventList.clean();
+        this.eventList.clean();
         /*this.doms.content.html('');
         this.doms.title.html('');
         this.doms.info.html('');*/
@@ -1332,7 +1372,7 @@ define("nireader/nireader-fe/2.0.0/content/channel-debug", [ "nireader/nireader-
         var _this = this;
         _this.doms.content.html(genItemList(data));
         var timer;
-        addEvent(_this.doms.content.find(".item"), "mouseenter", function() {
+        this.eventList.add(_this.doms.content.find(".item"), "mouseenter", function() {
             if (timer) {
                 timer = clearTimeout(timer);
             }
@@ -1354,7 +1394,7 @@ define("nireader/nireader-fe/2.0.0/content/channel-debug", [ "nireader/nireader-
                 _this.sideBlockLoad(item.content);
             });
         });
-        addEvent(_this.doms.content, "mouseleave", function() {
+        this.eventList.add(_this.doms.content, "mouseleave", function() {
             timer = setTimeout(function() {
                 _this.doms.sideBlock.hide();
             }, 200);
@@ -1381,13 +1421,11 @@ define("nireader/nireader-fe/2.0.0/template/channel/itemList-debug", [ "nireader
     module.exports = template.compile(tmpl);
 });
 
-define("nireader/nireader-fe/2.0.0/content/item-debug", [ "nireader/nireader-fe/2.0.0/kit/resource-debug", "nireader/nireader-fe/2.0.0/kit/request-debug", "nireader/nireader-fe/2.0.0/kit/cache-debug", "nireader/nireader-fe/2.0.0/kit/url-debug", "nireader/nireader-fe/2.0.0/interface/index-debug", "nireader/nireader-fe/2.0.0/kit/eventList-debug", "nireader/nireader-fe/2.0.0/template/item/title-debug", "nireader/nireader-fe/2.0.0/template/template-debug", "nireader/nireader-fe/2.0.0/kit/time-debug", "nireader/nireader-fe/2.0.0/kit/num-debug", "nireader/nireader-fe/2.0.0/template/item/info-debug", "nireader/nireader-fe/2.0.0/template/item/content-debug", "nireader/nireader-fe/2.0.0/template/item/channelTitle-debug", "nireader/nireader-fe/2.0.0/kit/testScroll-debug" ], function(require, exports, module) {
+define("nireader/nireader-fe/2.0.0/content/item-debug", [ "nireader/nireader-fe/2.0.0/kit/resource-debug", "nireader/nireader-fe/2.0.0/kit/request-debug", "nireader/nireader-fe/2.0.0/kit/cache-debug", "nireader/nireader-fe/2.0.0/config-debug", "nireader/nireader-fe/2.0.0/kit/url-debug", "nireader/nireader-fe/2.0.0/interface/index-debug", "nireader/nireader-fe/2.0.0/kit/eventList-debug", "nireader/nireader-fe/2.0.0/template/item/title-debug", "nireader/nireader-fe/2.0.0/template/template-debug", "nireader/nireader-fe/2.0.0/kit/time-debug", "nireader/nireader-fe/2.0.0/kit/num-debug", "nireader/nireader-fe/2.0.0/template/item/info-debug", "nireader/nireader-fe/2.0.0/template/item/content-debug", "nireader/nireader-fe/2.0.0/template/item/channelTitle-debug", "nireader/nireader-fe/2.0.0/kit/testScroll-debug" ], function(require, exports, module) {
     var resource = require("nireader/nireader-fe/2.0.0/kit/resource-debug");
     var pagePath = require("nireader/nireader-fe/2.0.0/interface/index-debug").page;
     var URL = require("nireader/nireader-fe/2.0.0/kit/url-debug");
-    var eventList = require("nireader/nireader-fe/2.0.0/kit/eventList-debug").create("content/item");
-    var addEvent = eventList.add;
-    var removeEvent = eventList.remove;
+    var eventList = require("nireader/nireader-fe/2.0.0/kit/eventList-debug");
     var genItemTitle = require("nireader/nireader-fe/2.0.0/template/item/title-debug");
     var genItemInfo = require("nireader/nireader-fe/2.0.0/template/item/info-debug");
     var genItemContent = require("nireader/nireader-fe/2.0.0/template/item/content-debug");
@@ -1399,6 +1437,7 @@ define("nireader/nireader-fe/2.0.0/content/item-debug", [ "nireader/nireader-fe/
     var Item = function(opt) {
         this.url = opt.url;
         this.wrapper = opt.wrapper;
+        this.eventList = eventList.create("content/item");
         this.type = "item";
     };
     Item.prototype.init = function() {
@@ -1418,6 +1457,7 @@ define("nireader/nireader-fe/2.0.0/content/item-debug", [ "nireader/nireader-fe/
         var leftLink = this.doms.leftLink;
         var rightLink = this.doms.rightLink;
         var checkoutDelay = 300;
+        var addEvent = this.eventList.add, removeEvent = this.eventList.remove;
         var topScroll = function(e, delta, deltaX, deltaY) {
             if (deltaY > 0) {
                 leftLink.css("display") !== "none" && leftLink.click();
@@ -1428,10 +1468,14 @@ define("nireader/nireader-fe/2.0.0/content/item-debug", [ "nireader/nireader-fe/
                 rightLink.css("display") !== "none" && rightLink.click();
             }
         };
+        var initScroll = true;
         addEvent(middleBlock, "mousewheel", function(e, delta, deltaX, deltaY) {
             removeEvent(middleBlock, "mousewheel", topScroll);
             removeEvent(middleBlock, "mousewheel", bottomScroll);
-            // !!! Bug exists, but i don't know why.
+            if (initScroll) {
+                initScroll = false;
+                return;
+            }
             if (deltaY > 0 && testTop(middleBlock)) {
                 data.timer1 = data.timer1 || setTimeout(function() {
                     addEvent(middleBlock, "mousewheel", topScroll);
@@ -1447,7 +1491,7 @@ define("nireader/nireader-fe/2.0.0/content/item-debug", [ "nireader/nireader-fe/
         });
     };
     Item.prototype.clean = function() {
-        eventList.clean();
+        this.eventList.clean();
         /*this.doms.content.html('');
         this.doms.title.html('');
         this.doms.info.html('');*/
@@ -1614,7 +1658,7 @@ define("nireader/nireader-fe/2.0.0/kit/testScroll-debug", [], function(require, 
     };
 });
 
-define("nireader/nireader-fe/2.0.0/module/floater-debug", [ "nireader/nireader-fe/2.0.0/kit/keypress-debug", "nireader/nireader-fe/2.0.0/kit/pattern-debug", "nireader/nireader-fe/2.0.0/kit/request-debug", "nireader/nireader-fe/2.0.0/kit/resource-debug", "nireader/nireader-fe/2.0.0/kit/cache-debug", "nireader/nireader-fe/2.0.0/kit/url-debug", "nireader/nireader-fe/2.0.0/interface/index-debug", "nireader/nireader-fe/2.0.0/kit/notice-debug", "nireader/nireader-fe/2.0.0/kit/customEvent-debug", "nireader/nireader-fe/2.0.0/template/common/result-debug", "nireader/nireader-fe/2.0.0/template/template-debug", "nireader/nireader-fe/2.0.0/kit/time-debug", "nireader/nireader-fe/2.0.0/kit/num-debug", "nireader/nireader-fe/2.0.0/template/common/tip-debug", "nireader/nireader-fe/2.0.0/template/common/loadingIcon-debug" ], function(require, exports, module) {
+define("nireader/nireader-fe/2.0.0/module/floater-debug", [ "nireader/nireader-fe/2.0.0/kit/keypress-debug", "nireader/nireader-fe/2.0.0/kit/pattern-debug", "nireader/nireader-fe/2.0.0/kit/request-debug", "nireader/nireader-fe/2.0.0/kit/resource-debug", "nireader/nireader-fe/2.0.0/kit/cache-debug", "nireader/nireader-fe/2.0.0/config-debug", "nireader/nireader-fe/2.0.0/kit/url-debug", "nireader/nireader-fe/2.0.0/interface/index-debug", "nireader/nireader-fe/2.0.0/kit/notice-debug", "nireader/nireader-fe/2.0.0/kit/customEvent-debug", "nireader/nireader-fe/2.0.0/template/common/result-debug", "nireader/nireader-fe/2.0.0/template/template-debug", "nireader/nireader-fe/2.0.0/kit/time-debug", "nireader/nireader-fe/2.0.0/kit/num-debug", "nireader/nireader-fe/2.0.0/template/common/tip-debug", "nireader/nireader-fe/2.0.0/template/common/loadingIcon-debug" ], function(require, exports, module) {
     var keypress = require("nireader/nireader-fe/2.0.0/kit/keypress-debug");
     var pattern = require("nireader/nireader-fe/2.0.0/kit/pattern-debug");
     var request = require("nireader/nireader-fe/2.0.0/kit/request-debug");

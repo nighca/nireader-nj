@@ -2,8 +2,7 @@ define(function(require, exports, module) {
     var resource = require('../kit/resource');
     var pagePath = require('../interface/index').page;
     var URL = require('../kit/url');
-    var eventList = require('../kit/eventList').create('content/channel');
-    var addEvent = eventList.add;
+    var eventList = require('../kit/eventList');
 
     var userinfo = require('../kit/userinfo');
 
@@ -16,7 +15,8 @@ define(function(require, exports, module) {
     var Channel = function(opt){
         this.url = opt.url;
         this.wrapper = opt.wrapper;
-        
+        this.eventList = eventList.create('content/channel');
+
         this.type = 'channel';
     };
 
@@ -41,7 +41,7 @@ define(function(require, exports, module) {
     Channel.prototype.bindEvent = function(){};
 
     Channel.prototype.clean = function(){
-        eventList.clean();
+        this.eventList.clean();
         /*this.doms.content.html('');
         this.doms.title.html('');
         this.doms.info.html('');*/
@@ -201,7 +201,7 @@ define(function(require, exports, module) {
         var _this = this;
         _this.doms.content.html(genItemList(data));
         var timer;
-        addEvent(_this.doms.content.find('.item'), 'mouseenter', function(){
+        this.eventList.add(_this.doms.content.find('.item'), 'mouseenter', function(){
             if(timer){
                 timer = clearTimeout(timer);
             }
@@ -225,7 +225,7 @@ define(function(require, exports, module) {
                 _this.sideBlockLoad(item.content);
             });
         });
-        addEvent(_this.doms.content, 'mouseleave', function(){
+        this.eventList.add(_this.doms.content, 'mouseleave', function(){
             timer = setTimeout(function(){
                 _this.doms.sideBlock.hide();
             }, 200);

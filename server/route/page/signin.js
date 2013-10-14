@@ -3,5 +3,5 @@ module.exports = function(req, res){
         res.redirect('/');
         return;
     }
-    res.render('signin', {title: 'signin', target:req.query.target});
+    res.render('signin', {title: 'nireader', target:req.query.target});
 };

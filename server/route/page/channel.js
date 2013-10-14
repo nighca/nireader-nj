@@ -1,3 +1,3 @@
 module.exports = function(req, res){
-    res.render('reader', {title: 'channel'});
+    res.render('reader', {title: 'nireader'});
 };
