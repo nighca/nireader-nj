@@ -1469,26 +1469,28 @@ define("nireader/nireader-fe/2.0.0/content/item-debug", [ "nireader/nireader-fe/
             }
         };
         var initScroll = true;
-        addEvent(middleBlock, "mousewheel", function(e, delta, deltaX, deltaY) {
-            removeEvent(middleBlock, "mousewheel", topScroll);
-            removeEvent(middleBlock, "mousewheel", bottomScroll);
-            if (initScroll) {
-                initScroll = false;
-                return;
-            }
-            if (deltaY > 0 && testTop(middleBlock)) {
-                data.timer1 = data.timer1 || setTimeout(function() {
-                    addEvent(middleBlock, "mousewheel", topScroll);
-                    data.timer1 = null;
-                }, checkoutDelay);
-            }
-            if (deltaY < 0 && testBottom(middleBlock)) {
-                data.timer2 = data.timer2 || setTimeout(function() {
-                    addEvent(middleBlock, "mousewheel", bottomScroll);
-                    data.timer2 = null;
-                }, checkoutDelay);
-            }
-        });
+        setTimeout(function() {
+            addEvent(middleBlock, "mousewheel", function(e, delta, deltaX, deltaY) {
+                removeEvent(middleBlock, "mousewheel", topScroll);
+                removeEvent(middleBlock, "mousewheel", bottomScroll);
+                if (initScroll) {
+                    initScroll = false;
+                    return;
+                }
+                if (deltaY > 0 && testTop(middleBlock)) {
+                    data.timer1 = data.timer1 || setTimeout(function() {
+                        addEvent(middleBlock, "mousewheel", topScroll);
+                        data.timer1 = null;
+                    }, checkoutDelay);
+                }
+                if (deltaY < 0 && testBottom(middleBlock)) {
+                    data.timer2 = data.timer2 || setTimeout(function() {
+                        addEvent(middleBlock, "mousewheel", bottomScroll);
+                        data.timer2 = null;
+                    }, checkoutDelay);
+                }
+            });
+        }, 200);
     };
     Item.prototype.clean = function() {
         this.eventList.clean();
