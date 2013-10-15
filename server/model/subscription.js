@@ -4,10 +4,11 @@ var Item = require('./item');
 
 var tableName = 'subscription';
 var struct = {
-    description : 'text',
-    subscribeDate : 'time',
-    subscriber : 'number',
-    subscribee : 'number'
+    description: 'text',
+    subscribeDate: 'time',
+    subscriber: 'number',
+    subscribee: 'number',
+    lastReadDate: 'time'
 };
 
 db.initTable(tableName, struct, function(err, result){
