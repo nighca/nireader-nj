@@ -244,7 +244,9 @@
         }
     }
 
-    pre{
+    pre, code{
+        .inline-block;
+        width: 98%;
         padding: 2px;
         margin-bottom: 0.6em;
         overflow-x: scroll;
@@ -269,6 +271,19 @@
                 background-color: rgba(150, 150, 150, 0.8);
             }
         }
+
+        a{
+            color: lighten(@themeColor, 40%);
+        }
+    }
+
+    blockquote{
+        padding: 0px 1em;
+        margin-bottom: 0.6em;
+
+        border-left: 4px solid fadeout(@themeColor, 50%);
+        color: lighten(#333, 20%);
+        font-size: 0.8em;
     }
 
     ul{
