@@ -118,7 +118,10 @@ var useItem = function(item, channel){
     if(!channel.lastFetchDate){
         return true;
     }
-    return item.pubDate > channel.lastFetchDate;
+    //sometimes this judge will take new items as old items, temporarily stopped until it works just fine
+    //console.log(item.pubDate, channel.lastFetchDate);//--------------------------
+    //return item.pubDate > channel.lastFetchDate;
+    return true;
 };
 Channel.prototype.updateFromMeta = function(meta){
     var channel = this;
@@ -141,6 +144,7 @@ Channel.prototype.updateFromMeta = function(meta){
 var saveItemIfNotExist = function(item, callback){
     Item.ifExist(item, function(err, exist){
         if(err || exist){
+            //if(!err) console.log("Exist Item: " + item.title);//---------------------
             callback && callback(err, exist);
             return;
         }
