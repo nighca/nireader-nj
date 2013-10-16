@@ -1,4 +1,5 @@
 define(function(require, exports, module){
+    var local = require('./local').create('cache');
     var config = require('../config').cache;
     var autoManageInterval = config.manageInterval;
     var defaultLifetime = config.lifetime;
@@ -71,6 +72,41 @@ define(function(require, exports, module){
         return (delete storage[name]);
     };
 
+    // persistence with localStorage
+    var saveToLocal = function(){
+        LOG('save to local begin: ', storage);
+        local.clear();
+        for(var name in storage){
+            if(storage.hasOwnProperty(name)){
+                local.set(name, JSON.stringify(storage[name]));
+            }
+        }
+        LOG('save to local: ', storage);
+
+        setTimeout(function(){
+            LOG('local size: ', local.getSize());
+        }, 100);
+    };
+    var loadFromLocal = function(){
+        LOG('load from local begin: ', storage);
+        var all = local.getAll();
+        var item;
+        var now = Date.now();
+        for(var name in all){
+            if(all.hasOwnProperty(name)){
+                item = JSON.parse(all[name]);
+                if(now < item.doom){
+                    storage[name] = item;
+                }
+            }
+        }
+        LOG('load from local: ', storage);
+    };
+    window.saveToLocal = saveToLocal;
+    window.loadFromLocal = loadFromLocal;
+    window.storage = storage;
+    window.local = local;
+
     var manage = function(){
 
         cacheStatus('manage cache...');
@@ -100,12 +136,15 @@ define(function(require, exports, module){
         hotList = hotList.slice(overNum, hotList.length);
 
         cacheStatus('manage cache end.');
+
+        saveToLocal();
     };
 
     var autoManage = function(){
         setInterval(manage, autoManageInterval);
     };
 
+    loadFromLocal();
     autoManage();
 
     module.exports = {

@@ -1,6 +1,5 @@
 define(function(require, exports, module){
     var lists = {};
-    window.lists = lists;//------------------------
 
     var create = function(name){
         name += (Math.random() + '').slice(2);

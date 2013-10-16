@@ -3,11 +3,9 @@ define(function(require, exports, module){
     var cache = require('./cache');
     var formatUrl = require('./url').format;
     var apis = require('../interface/index').api;
+    var config = require('../config').resource;
 
-    var cacheLifetime = {
-        resource: 1000 * 60 * 60, // 1h
-        list: 1000 * 60 // 1min
-    };
+    var cacheLifetime = config.lifetime;
 
     var resources = ['item', 'channel'];
 
