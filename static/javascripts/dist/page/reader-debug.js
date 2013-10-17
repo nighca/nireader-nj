@@ -1614,6 +1614,12 @@ define("nireader/nireader-fe/2.0.0/content/item-debug", [ "nireader/nireader-fe/
                 }
             });
         }, 200);
+        this.doms.content.find("a").each(function(i, a) {
+            a = $(a);
+            if (!a.attr("data-link-async")) {
+                a.attr("target", "_blank");
+            }
+        });
     };
     Item.prototype.clean = function() {
         this.eventList.clean();

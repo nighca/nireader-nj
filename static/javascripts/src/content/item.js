@@ -86,6 +86,13 @@ define(function(require, exports, module) {
                 }
             });
         }, 200);
+
+        this.doms.content.find('a').each(function(i, a){
+            a = $(a);
+            if(!a.attr('data-link-async')){
+                a.attr('target', '_blank');
+            }
+        });
     };
 
     Item.prototype.clean = function(){
