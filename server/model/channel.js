@@ -4,7 +4,7 @@ var Item = require('./item');
 
 var tableName = 'channel';
 var struct = {
-    title : 'string',
+    title : 'longstring',
     link : 'longstring',
     source : 'longstring',
     description : 'text',

@@ -2,7 +2,7 @@ var db = require('../lib/data');
 
 var tableName = 'item';
 var struct = {
-    title : 'string',
+    title : 'longstring',
     link : 'longlongstring',
     description : 'text',
     author : 'string',
