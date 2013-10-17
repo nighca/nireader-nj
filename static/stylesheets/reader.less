@@ -244,38 +244,36 @@
         }
     }
 
-    :not(pre){
-        &>pre, &>code{
-            .inline-block;
-            width: 98%;
-            padding: 2px;
-            margin-bottom: 0.6em;
-            overflow-x: scroll;
+    & > pre, & > code, :not(pre) > pre, :not(pre) >code{
+        .inline-block;
+        width: 98%;
+        padding: 2px;
+        margin-bottom: 0.6em;
+        overflow-x: scroll;
 
-            background-color: #333;
-            color: #f9f9f9;
-            border-left: 4px solid @themeColor;
-            
-            line-height: 1.4em;
-            font-family: Monaco, Consolas, 'Andale Mono', 'DejaVu Sans Mono', monospace;
-            font-size: 0.8em;
+        background-color: #333;
+        color: #f9f9f9;
+        border-left: 4px solid @themeColor;
+        
+        line-height: 1.4em;
+        font-family: Monaco, Consolas, 'Andale Mono', 'DejaVu Sans Mono', monospace;
+        font-size: 0.8em;
 
-            &::-webkit-scrollbar {
-                width: 4px;
-                height: 4px;
+        &::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        &::-webkit-scrollbar-thumb:horizontal {
+            background-color: rgba(150, 150, 150, 0.4);
+            cursor: pointer;
+
+            &:hover{
+                background-color: rgba(150, 150, 150, 0.8);
             }
-            &::-webkit-scrollbar-thumb:horizontal {
-                background-color: rgba(150, 150, 150, 0.4);
-                cursor: pointer;
+        }
 
-                &:hover{
-                    background-color: rgba(150, 150, 150, 0.8);
-                }
-            }
-
-            a{
-                color: lighten(@themeColor, 40%);
-            }
+        a{
+            color: lighten(@themeColor, 40%);
         }
     }
 
