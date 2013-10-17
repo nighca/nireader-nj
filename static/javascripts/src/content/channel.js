@@ -3,6 +3,8 @@ define(function(require, exports, module) {
     var pagePath = require('../interface/index').page;
     var URL = require('../kit/url');
     var eventList = require('../kit/eventList');
+    var notice = require('../kit/notice').notice;
+    var customEvent = require('../kit/customEvent');
 
     var userinfo = require('../kit/userinfo');
 
@@ -89,7 +91,13 @@ define(function(require, exports, module) {
             id: _this.data.id
         }, function(err, channel){
             if(err){
-                console.error(err || 'No such channel');
+                if(err.status == 404){
+                    notice('No such channel!', function(){
+                        customEvent.trigger('goto', '/');
+                    });
+                }else{
+                    LOG(err);
+                }
                 return;
             }
             _this.dealChannelInfo(channel);

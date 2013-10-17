@@ -1,7 +1,7 @@
 define(function(require, exports, module) {
     var resource = require('../kit/resource');
     var request = require('../kit/request');
-    var notice = require('../kit/notice');
+    var notice = require('../kit/notice').notice;
     var userinfo = require('../kit/userinfo');
     var eventList = require('../kit/eventList');
     var customEvent = require('../kit/customEvent');
@@ -137,7 +137,7 @@ define(function(require, exports, module) {
                 icon.removeClass('icon-spinner icon-spin');
                 if(err){
                     notice('订阅失败');
-                    console.warn(err);
+                    LOG(err);
                 }else{
                     icon
                         .addClass('icon-eye-open')
@@ -156,7 +156,7 @@ define(function(require, exports, module) {
                 icon.removeClass('icon-spinner icon-spin');
                 if(err){
                     notice('取消订阅失败');
-                    console.warn(err);
+                    LOG(err);
                 }else{
                     icon
                         .addClass('icon-eye-close')

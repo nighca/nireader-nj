@@ -1,7 +1,7 @@
 define(function(require, exports, module) {
     var request = require('../kit/request');
     var customEvent = require('../kit/customEvent');
-    var notice = require('../kit/notice');
+    var notice = require('../kit/notice').notice;
     var userinfo = require('../kit/userinfo');
     var eventList = require('../kit/eventList');
     var interfaces = require('../interface/index');
@@ -77,7 +77,7 @@ define(function(require, exports, module) {
             password: password
         }, apis.auth.in, function(err, data){
             if(err){
-                notice(err);
+                notice('Wrong! Plz try again.');
                 return;
             }
             goHome();

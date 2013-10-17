@@ -3,6 +3,8 @@ define(function(require, exports, module) {
     var pagePath = require('../interface/index').page;
     var URL = require('../kit/url');
     var eventList = require('../kit/eventList');
+    var notice = require('../kit/notice').notice;
+    var customEvent = require('../kit/customEvent');
 
     var genItemTitle = require('../template/item/title');
     var genItemInfo = require('../template/item/info');
@@ -133,7 +135,13 @@ define(function(require, exports, module) {
             id: _this.data.id
         }, function(err, item){
             if(err){
-                console.error(err || 'No such item');
+                if(err.status == 404){
+                    notice('No such item!', function(){
+                        customEvent.trigger('goto', '/');
+                    });
+                }else{
+                    LOG(err);
+                }
                 return;
             }
             _this.dealItemInfo(item);

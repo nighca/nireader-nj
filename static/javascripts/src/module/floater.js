@@ -4,7 +4,7 @@ define(function(require, exports, module) {
     var pattern = require('../kit/pattern');
     var request = require('../kit/request');
     var resource = require('../kit/resource');
-    var notice = require('../kit/notice');
+    var notice = require('../kit/notice').notice;
     var URL = require('../kit/url');
     var customEvent = require('../kit/customEvent');
 
@@ -170,7 +170,8 @@ define(function(require, exports, module) {
             showTip('logout ing... ' + loadingIcon);
             request.get(apis.auth.out, function(err){
                 if(err){
-                    notice(err);
+                    notice('Wrong! Plz try again.');
+                    LOG(err);
                     return;
                 }
                 location.href = pages.home;
