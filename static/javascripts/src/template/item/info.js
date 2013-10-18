@@ -5,7 +5,7 @@ define(function(require, exports, module) {
             '@ <%=formatTime(item.pubDate)%>' +
         '</span>' +
         '<a class="mr40" href="<%=item.link%>" target="_blank" title="原文">' +
-            'ORIGIN' +
+            '原文' +
         '</a>';
 
     module.exports = template.compile(tmpl);
