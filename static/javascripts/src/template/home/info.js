@@ -7,8 +7,8 @@ define(function(require, exports, module) {
         '</span>' +
         '<% } %>' +
         '<% if(user.homepage){ %>' +
-        '<a class="mr20" href="<%=user.homepage%>" target="_blank" title="站點">' +
-            '站點' +
+        '<a class="mr20" href="<%=user.homepage%>" target="_blank" title="站点">' +
+            '站点' +
         '</a>' +
         '<% } %>';
 

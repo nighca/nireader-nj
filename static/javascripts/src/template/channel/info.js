@@ -7,10 +7,10 @@ define(function(require, exports, module) {
         '</span>' +
         '<% } %>' +
         '<span class="mr20">' +
-            '@ <%=formatTime(channel.pubDate)%>' +
+            '更新于<%=formatTime(channel.pubDate)%>' +
         '</span>' +
-        '<a class="mr20" href="<%=channel.link%>" target="_blank" title="访问网站">' +
-            '站點' +
+        '<a class="mr20" href="<%=channel.link%>" target="_blank" title="站点">' +
+            '站点' +
         '</a>';
 
     module.exports = template.compile(tmpl);

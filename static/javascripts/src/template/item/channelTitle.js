@@ -2,9 +2,9 @@ define(function(require, exports, module) {
     var template = require('../template');
     var tmpl =
         '<span class="">' +
-            'From ' +
+            '来自' +
             '<a href="<%=channel.pageUrl%>" title="<%=channel.description%>" data-link-async=true >' +
-            	'<%=channel.title%> ' +
+                '<%=channel.title%> ' +
             '</a>' +
         '</span>';
 

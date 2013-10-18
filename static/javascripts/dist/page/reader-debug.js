@@ -331,7 +331,7 @@ define("nireader/nireader-fe/2.0.0/content/home-debug", [ "nireader/nireader-fe/
             }, apis.subscription.add, function(err, subscription) {
                 icon.removeClass("icon-spinner icon-spin");
                 if (err) {
-                    notice("订阅失败");
+                    notice("没订阅成");
                     LOG(err);
                 } else {
                     icon.addClass("icon-eye-open").removeClass("icon-eye-close");
@@ -346,7 +346,7 @@ define("nireader/nireader-fe/2.0.0/content/home-debug", [ "nireader/nireader-fe/
             }, apis.subscription.remove, function(err, subscription) {
                 icon.removeClass("icon-spinner icon-spin");
                 if (err) {
-                    notice("取消订阅失败");
+                    notice("没能取消订阅");
                     LOG(err);
                 } else {
                     icon.addClass("icon-eye-close").removeClass("icon-eye-open");
@@ -1074,7 +1074,7 @@ define("nireader/nireader-fe/2.0.0/kit/notice-debug", [ "nireader/nireader-fe/2.
 
 define("nireader/nireader-fe/2.0.0/template/common/notice-debug", [ "nireader/nireader-fe/2.0.0/template/template-debug", "nireader/nireader-fe/2.0.0/kit/time-debug", "nireader/nireader-fe/2.0.0/kit/num-debug" ], function(require, exports, module) {
     var template = require("nireader/nireader-fe/2.0.0/template/template-debug");
-    var tmpl = '<p class="word">' + "<%==notice.word%>" + "</p>" + '<p class="op">' + '<button id="confirm">OK</button>' + "</p>";
+    var tmpl = '<p class="word">' + "<%==notice.word%>" + "</p>" + '<p class="op">' + '<button id="confirm">嗯</button>' + "</p>";
     module.exports = template.compile(tmpl);
 });
 
@@ -1305,19 +1305,19 @@ define("nireader/nireader-fe/2.0.0/template/home/title-debug", [ "nireader/nirea
 
 define("nireader/nireader-fe/2.0.0/template/home/info-debug", [ "nireader/nireader-fe/2.0.0/template/template-debug", "nireader/nireader-fe/2.0.0/kit/time-debug", "nireader/nireader-fe/2.0.0/kit/num-debug" ], function(require, exports, module) {
     var template = require("nireader/nireader-fe/2.0.0/template/template-debug");
-    var tmpl = "<% if(user.description){ %>" + '<span class="mr20 ml150" title="<%=user.description%>">' + "<%=user.description%>" + "</span>" + "<% } %>" + "<% if(user.homepage){ %>" + '<a class="mr20" href="<%=user.homepage%>" target="_blank" title="站點">' + "站點" + "</a>" + "<% } %>";
+    var tmpl = "<% if(user.description){ %>" + '<span class="mr20 ml150" title="<%=user.description%>">' + "<%=user.description%>" + "</span>" + "<% } %>" + "<% if(user.homepage){ %>" + '<a class="mr20" href="<%=user.homepage%>" target="_blank" title="站点">' + "站点" + "</a>" + "<% } %>";
     module.exports = template.compile(tmpl);
 });
 
 define("nireader/nireader-fe/2.0.0/template/home/subscriptionList-debug", [ "nireader/nireader-fe/2.0.0/template/template-debug", "nireader/nireader-fe/2.0.0/kit/time-debug", "nireader/nireader-fe/2.0.0/kit/num-debug" ], function(require, exports, module) {
     var template = require("nireader/nireader-fe/2.0.0/template/template-debug");
-    var tmpl = '<ul id="subscription-list" class="item-list">' + "<%if(subscriptions && subscriptions.length > 0){%>" + '<h6 class="sub-title">' + "Subscriptions: " + "</h6>" + "<%for(i = 0; i < subscriptions.length; i ++) {%>" + '<li class="item" data-id="<%=subscriptions[i].id%>">' + '<a data-link-async="true" href="<%=subscriptions[i].pageUrl%>">' + "<%=subscriptions[i].title%>" + "</a>" + '<span class="pubdate">' + '<%="更新于" + formatTime(subscriptions[i].pubDate, " ")%>' + "</span>" + "</li>" + "<%}%>" + "<%}else{%>" + '<h6 class="sub-title">' + "No subscription yet, " + "</h6>" + "<%}%>" + "</ul>";
+    var tmpl = '<ul id="subscription-list" class="item-list">' + "<%if(subscriptions && subscriptions.length > 0){%>" + '<h6 class="sub-title">' + "订阅：" + "</h6>" + "<%for(i = 0; i < subscriptions.length; i ++) {%>" + '<li class="item" data-id="<%=subscriptions[i].id%>">' + '<a data-link-async="true" href="<%=subscriptions[i].pageUrl%>">' + "<%=subscriptions[i].title%>" + "</a>" + '<span class="pubdate">' + '<%="更新于" + formatTime(subscriptions[i].pubDate, " ")%>' + "</span>" + "</li>" + "<%}%>" + "<%}else{%>" + '<h6 class="sub-title">' + "没有订阅，" + "</h6>" + "<%}%>" + "</ul>";
     module.exports = template.compile(tmpl);
 });
 
 define("nireader/nireader-fe/2.0.0/template/home/recommendList-debug", [ "nireader/nireader-fe/2.0.0/template/template-debug", "nireader/nireader-fe/2.0.0/kit/time-debug", "nireader/nireader-fe/2.0.0/kit/num-debug" ], function(require, exports, module) {
     var template = require("nireader/nireader-fe/2.0.0/template/template-debug");
-    var tmpl = '<h6 class="sub-title">' + "Here are some recommends:" + "</h6>" + '<ul id="recommend-list" class="item-list">' + "<%for(i = 0; i < recommends.length; i ++) {%>" + '<li class="item" data-id="<%=recommends[i].id%>">' + '<a data-link-async="true" href="<%=recommends[i].pageUrl%>">' + "<%=recommends[i].title%>" + "</a>" + '<span class="pubdate">' + '<%="更新于" + formatTime(recommends[i].pubDate, " ")%>' + "</span>" + "</li>" + "<%}%>" + "</ul>";
+    var tmpl = '<h6 class="sub-title">' + "推荐：" + "</h6>" + '<ul id="recommend-list" class="item-list">' + "<%for(i = 0; i < recommends.length; i ++) {%>" + '<li class="item" data-id="<%=recommends[i].id%>">' + '<a data-link-async="true" href="<%=recommends[i].pageUrl%>">' + "<%=recommends[i].title%>" + "</a>" + '<span class="pubdate">' + '<%="更新于" + formatTime(recommends[i].pubDate, " ")%>' + "</span>" + "</li>" + "<%}%>" + "</ul>";
     module.exports = template.compile(tmpl);
 });
 
@@ -1390,7 +1390,7 @@ define("nireader/nireader-fe/2.0.0/content/entrance-debug", [ "nireader/nireader
             password: password
         }, apis.auth.in, function(err, data) {
             if (err) {
-                notice("Wrong! Plz try again.");
+                notice("错了。");
                 return;
             }
             goHome();
@@ -1500,7 +1500,7 @@ define("nireader/nireader-fe/2.0.0/content/channel-debug", [ "nireader/nireader-
         }, function(err, channel) {
             if (err) {
                 if (err.status == 404) {
-                    notice("No such channel!", function() {
+                    notice("走错地方了", function() {
                         customEvent.trigger("goto", "/");
                     });
                 } else {
@@ -1519,7 +1519,7 @@ define("nireader/nireader-fe/2.0.0/content/channel-debug", [ "nireader/nireader-
     };
     Channel.prototype.getNeighbourInfo = function() {
         var _this = this;
-        var errorInfo = "Get aside channel info fail.";
+        var errorInfo = "不知道这是哪";
         var listName = _this.data.inSubscription ? "subscription" : "channel";
         resource.list(listName, null, null, function(err, channels) {
             if (err || channels.length < 1) {
@@ -1538,7 +1538,7 @@ define("nireader/nireader-fe/2.0.0/content/channel-debug", [ "nireader/nireader-
                 if (_this.data.inSubscription) {
                     customEvent.trigger("goto", _this.url.slice(inSubscriptionFlag.length - 1));
                 } else {
-                    notice("Can not get channel pos!", function() {
+                    notice(errorInfo, function() {
                         customEvent.trigger("goto", "/");
                     });
                 }
@@ -1644,7 +1644,7 @@ define("nireader/nireader-fe/2.0.0/template/channel/title-debug", [ "nireader/ni
 
 define("nireader/nireader-fe/2.0.0/template/channel/info-debug", [ "nireader/nireader-fe/2.0.0/template/template-debug", "nireader/nireader-fe/2.0.0/kit/time-debug", "nireader/nireader-fe/2.0.0/kit/num-debug" ], function(require, exports, module) {
     var template = require("nireader/nireader-fe/2.0.0/template/template-debug");
-    var tmpl = "<% if(channel.description){ %>" + '<span class="mr20 ml150" title="<%=channel.description%>">' + "<%=channel.description%>" + "</span>" + "<% } %>" + '<span class="mr20">' + "@ <%=formatTime(channel.pubDate)%>" + "</span>" + '<a class="mr20" href="<%=channel.link%>" target="_blank" title="访问网站">' + "站點" + "</a>";
+    var tmpl = "<% if(channel.description){ %>" + '<span class="mr20 ml150" title="<%=channel.description%>">' + "<%=channel.description%>" + "</span>" + "<% } %>" + '<span class="mr20">' + "更新于<%=formatTime(channel.pubDate)%>" + "</span>" + '<a class="mr20" href="<%=channel.link%>" target="_blank" title="站点">' + "站点" + "</a>";
     module.exports = template.compile(tmpl);
 });
 
@@ -1770,7 +1770,7 @@ define("nireader/nireader-fe/2.0.0/content/item-debug", [ "nireader/nireader-fe/
         }, function(err, item) {
             if (err) {
                 if (err.status == 404) {
-                    notice("No such item!", function() {
+                    notice("走错地方了。", function() {
                         customEvent.trigger("goto", "/");
                     });
                 } else {
@@ -1880,7 +1880,7 @@ define("nireader/nireader-fe/2.0.0/template/item/title-debug", [ "nireader/nirea
 
 define("nireader/nireader-fe/2.0.0/template/item/info-debug", [ "nireader/nireader-fe/2.0.0/template/template-debug", "nireader/nireader-fe/2.0.0/kit/time-debug", "nireader/nireader-fe/2.0.0/kit/num-debug" ], function(require, exports, module) {
     var template = require("nireader/nireader-fe/2.0.0/template/template-debug");
-    var tmpl = '<span class="mr40">' + "@ <%=formatTime(item.pubDate)%>" + "</span>" + '<a class="mr40" href="<%=item.link%>" target="_blank" title="原文">' + "原文" + "</a>";
+    var tmpl = '<span class="mr40">' + "于<%=formatTime(item.pubDate)%>" + "</span>" + '<a class="mr40" href="<%=item.link%>" target="_blank" title="原文">' + "原文" + "</a>";
     module.exports = template.compile(tmpl);
 });
 
@@ -1892,7 +1892,7 @@ define("nireader/nireader-fe/2.0.0/template/item/content-debug", [ "nireader/nir
 
 define("nireader/nireader-fe/2.0.0/template/item/channelTitle-debug", [ "nireader/nireader-fe/2.0.0/template/template-debug", "nireader/nireader-fe/2.0.0/kit/time-debug", "nireader/nireader-fe/2.0.0/kit/num-debug" ], function(require, exports, module) {
     var template = require("nireader/nireader-fe/2.0.0/template/template-debug");
-    var tmpl = '<span class="">' + "From " + '<a href="<%=channel.pageUrl%>" title="<%=channel.description%>" data-link-async=true >' + "<%=channel.title%> " + "</a>" + "</span>";
+    var tmpl = '<span class="">' + "来自" + '<a href="<%=channel.pageUrl%>" title="<%=channel.description%>" data-link-async=true >' + "<%=channel.title%> " + "</a>" + "</span>";
     module.exports = template.compile(tmpl);
 });
 
@@ -2011,33 +2011,33 @@ define("nireader/nireader-fe/2.0.0/module/floater-debug", [ "nireader/nireader-f
     };
     var dealFeed = function() {
         var url = globalInput.val();
-        showTip("A feed url? parsing... " + loadingIcon);
+        showTip("好像是个rss地址，等我解析下... " + loadingIcon);
         createChannel(url, function(err, channel) {
             if (url !== currVal) {
                 return;
             }
             cleanAll();
             if (err) {
-                showTip("Failed to parse, invalid feed url.");
+                showTip("没解析出来，地址不对。");
                 return;
             }
             var exist = !!channel.id;
-            showTip("Press <b>Enter</b> to " + (exist ? "" : "add & ") + "subscribe.");
+            showTip("用<b>Enter</b>" + (exist ? "" : "添加并") + "订阅");
             addResult(channel.title, exist ? pages.channel(channel.id) : channel.link, exist);
             enterHandler = function() {
                 saveChannel(channel, function(err, channel) {
                     if (err) {
-                        showTip("Failed to add channel. Please try again.");
+                        showTip("没添加成功。");
                         return;
                     }
-                    showTip("Channel " + channel.title + " added, subscribing... " + loadingIcon);
+                    showTip(channel.title + "添加好了，正在订阅... " + loadingIcon);
                     addSubscription(channel.id, function(err, subscription) {
                         if (err) {
-                            showTip("Failed to subscribe channel " + channel.title + ". Please try again.");
+                            showTip("订阅" + channel.title + "没成功。");
                             return;
                         }
                         cleanResult();
-                        showTip("Channel " + channel.title + " subscribed.");
+                        showTip("订阅了" + channel.title + "。");
                         reloadPage();
                     });
                 });
@@ -2045,12 +2045,12 @@ define("nireader/nireader-fe/2.0.0/module/floater-debug", [ "nireader/nireader-f
         });
     };
     var dealLogout = function() {
-        showTip("Press <b>Enter</b> to logout.");
+        showTip("按<b>Enter</b>登出。");
         enterHandler = function() {
-            showTip("logout ing... " + loadingIcon);
+            showTip("正在登出... " + loadingIcon);
             request.get(apis.auth.out, function(err) {
                 if (err) {
-                    notice("Wrong! Plz try again.");
+                    notice("出错了。");
                     LOG(err);
                     return;
                 }
@@ -2059,9 +2059,9 @@ define("nireader/nireader-fe/2.0.0/module/floater-debug", [ "nireader/nireader-f
         };
     };
     var dealHome = function() {
-        showTip("Press <b>Enter</b> to go to home ('/').");
+        showTip("按<b>Enter</b>去首页 ('/')。");
         enterHandler = function() {
-            showTip("going to home... " + loadingIcon);
+            showTip("正在去首页... " + loadingIcon);
             customEvent.trigger("goto", "/");
             cleanTip();
         };
@@ -2120,7 +2120,7 @@ define("nireader/nireader-fe/2.0.0/module/floater-debug", [ "nireader/nireader-f
             for (var c in cmds) {
                 if (cmds.hasOwnProperty(c) && (pos = c.indexOf(val)) >= 0) {
                     cmd = c;
-                    str = c.slice(0, pos) + "<b>" + val + "</b>" + c.slice(pos + val.length) + "	 ---- Use <b>Tab</b>";
+                    str = c.slice(0, pos) + "<b>" + val + "</b>" + c.slice(pos + val.length) + "	 ---- 用<b>Tab</b>补全";
                     addTip(str);
                 }
             }

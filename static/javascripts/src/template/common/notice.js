@@ -5,7 +5,7 @@ define(function(require, exports, module) {
             '<%==notice.word%>' +
         '</p>' +
         '<p class="op">' +
-            '<button id="confirm">OK</button>' +
+            '<button id="confirm">嗯</button>' +
         '</p>';
 
     module.exports = template.compile(tmpl);

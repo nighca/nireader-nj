@@ -2,7 +2,7 @@ define(function(require, exports, module) {
     var template = require('../template');
     var tmpl =
         '<h6 class="sub-title">' +
-            'Here are some recommends:' +
+            '推荐：' +
         '</h6>' +
         '<ul id="recommend-list" class="item-list">' +
             '<%for(i = 0; i < recommends.length; i ++) {%>' +

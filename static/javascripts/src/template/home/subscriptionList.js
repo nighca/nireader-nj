@@ -4,7 +4,7 @@ define(function(require, exports, module) {
         '<ul id="subscription-list" class="item-list">' +
         '<%if(subscriptions && subscriptions.length > 0){%>' +
             '<h6 class="sub-title">' +
-                'Subscriptions: ' +
+                '订阅：' +
             '</h6>' +
             '<%for(i = 0; i < subscriptions.length; i ++) {%>' +
                 '<li class="item" data-id="<%=subscriptions[i].id%>">' +
@@ -18,7 +18,7 @@ define(function(require, exports, module) {
             '<%}%>' +
         '<%}else{%>' +
         '<h6 class="sub-title">' +
-            'No subscription yet, ' +
+            '没有订阅，' +
         '</h6>' +
         '<%}%>' +
         '</ul>';

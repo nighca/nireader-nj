@@ -139,7 +139,7 @@ define(function(require, exports, module) {
         }, function(err, item){
             if(err){
                 if(err.status == 404){
-                    notice('No such item!', function(){
+                    notice('走错地方了。', function(){
                         customEvent.trigger('goto', '/');
                     });
                 }else{

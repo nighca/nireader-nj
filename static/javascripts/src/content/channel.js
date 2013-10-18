@@ -95,7 +95,7 @@ define(function(require, exports, module) {
         }, function(err, channel){
             if(err){
                 if(err.status == 404){
-                    notice('No such channel!', function(){
+                    notice('走错地方了', function(){
                         customEvent.trigger('goto', '/');
                     });
                 }else{
@@ -117,7 +117,7 @@ define(function(require, exports, module) {
     Channel.prototype.getNeighbourInfo = function(){
         var _this = this;
 
-        var errorInfo = 'Get aside channel info fail.';
+        var errorInfo = '不知道这是哪';
 
         var listName = _this.data.inSubscription ? 'subscription' : 'channel';
 
@@ -140,7 +140,7 @@ define(function(require, exports, module) {
                 if(_this.data.inSubscription){
                     customEvent.trigger('goto', _this.url.slice(inSubscriptionFlag.length - 1));
                 }else{
-                    notice('Can not get channel pos!', function(){
+                    notice(errorInfo, function(){
                         customEvent.trigger('goto', '/');
                     });
                 }
