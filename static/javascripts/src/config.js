@@ -3,7 +3,7 @@ define(function(require, exports, module){
         cache: {
             manageInterval: 1000 * 60 * 1, // 1min
             lifetime: 1000 * 60 * 1, // 1min
-            maxNum: 200
+            maxNum: 100
         },
         resource: {
             lifetime: {
