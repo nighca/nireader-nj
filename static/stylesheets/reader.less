@@ -152,6 +152,22 @@
     }
 }
 
+.mr40{
+    margin-right: 40px;
+}
+
+.mr20{
+    margin-right: 20px;
+}
+
+.ml40{
+    margin-left: 40px;
+}
+
+.ml20{
+    margin-left: 20px;
+}
+
 .title, .main-content, .sub-title{
     color: #333;
 }
@@ -183,14 +199,6 @@
         vertical-align: middle;
     }
 
-    .mr40{
-        margin-right: 40px;
-    }
-
-    .mr20{
-        margin-right: 20px;
-    }
-
     .ml150{
         .inline-block;
         max-width: 150px;
@@ -207,6 +215,14 @@
         .transition-duration(0.3s);
         &:hover{
             color: @themeColor;
+        }
+    }
+
+    .vote{
+        cursor: pointer;
+        .transition-duration(0.3s);
+        &:hover{
+            color: #666;
         }
     }
 }

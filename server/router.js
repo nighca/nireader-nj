@@ -30,6 +30,7 @@ var routes = [
     ['get', '/api/channel', apis.channel.get],
     ['post', '/api/channel/create', apis.channel.create],
     ['post', '/api/channel/save', apis.channel.save],
+    ['post', '/api/channel/vote', apis.channel.vote],
 
     ['get', '/api/item', apis.item.get],
     ['get', '/api/subscription', apis.subscription.get, true],

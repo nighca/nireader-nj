@@ -5,7 +5,8 @@ define(function(require, exports, module) {
             list: '/api/list/channel',
             search: '/api/search/channel',
             create: '/api/channel/create',
-            save: '/api/channel/save'
+            save: '/api/channel/save',
+            vote: '/api/channel/vote'
         },
         item: {
             get: '/api/item',

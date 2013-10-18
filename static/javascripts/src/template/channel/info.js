@@ -11,7 +11,10 @@ define(function(require, exports, module) {
         '</span>' +
         '<a class="mr20" href="<%=channel.link%>" target="_blank" title="站点">' +
             '站点' +
-        '</a>';
+        '</a>' +
+        '<span id="vote" class="vote">' +
+            '<i class="icon-thumbs-up-alt"></i>' +
+        '</span>';
 
     module.exports = template.compile(tmpl);
 });

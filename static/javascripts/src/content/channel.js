@@ -1,6 +1,9 @@
 define(function(require, exports, module) {
     var resource = require('../kit/resource');
-    var pagePath = require('../interface/index').page;
+    var request = require('../kit/request');
+    var interfaces = require('../interface/index');
+    var pagePath = interfaces.page;
+    var apiPath = interfaces.api;
     var URL = require('../kit/url');
     var eventList = require('../kit/eventList');
     var notice = require('../kit/notice').notice;
@@ -199,9 +202,33 @@ define(function(require, exports, module) {
     };
 
     Channel.prototype.renderChannelInfo = function(data){
-        this.doms.title.html(genChannelTitle(data));
-        this.doms.info.html(genChannelInfo(data));
+        var _this = this;
+        _this.doms.title.html(genChannelTitle(data));
+        _this.doms.info.html(genChannelInfo(data));
         pageTitle.text(data.channel.title);
+
+        _this.doms.info.find('#vote').on('click', function(e){
+            e.preventDefault();
+
+            var icon = $(this).find('i');
+            icon.removeClass('icon-thumbs-up-alt').addClass('icon-spinner icon-spin');
+            request.post({
+                cid:_this.data.id
+            }, apiPath.channel.vote, function(err){
+                icon.removeClass('icon-spinner icon-spin');
+                if(err){
+                    icon.addClass('icon-frown');
+                    setTimeout(function(){
+                        icon.removeClass('icon-frown').addClass('icon-thumbs-up-alt');
+                    }, 1000);
+                    return;
+                }
+                icon.addClass('icon-ok');
+                setTimeout(function(){
+                    icon.removeClass('icon-ok').hide();
+                }, 1000);
+            });
+        });
     };
 
     Channel.prototype.sideBlockLoading = function(){

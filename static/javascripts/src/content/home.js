@@ -295,6 +295,9 @@ define(function(require, exports, module) {
                 return;
             }
             _this.dealRecommendList(recommends);
+        }, {
+            order: 'score',
+            descrease: true
         })(1);
     };
 

@@ -466,6 +466,9 @@ define("nireader/nireader-fe/2.0.0/content/home-debug", [ "nireader/nireader-fe/
                 return;
             }
             _this.dealRecommendList(recommends);
+        }, {
+            order: "score",
+            descrease: true
         })(1);
     };
     Home.prototype.dealRecommendList = function(recommends) {
@@ -976,7 +979,8 @@ define("nireader/nireader-fe/2.0.0/interface/index-debug", [], function(require,
             list: "/api/list/channel",
             search: "/api/search/channel",
             create: "/api/channel/create",
-            save: "/api/channel/save"
+            save: "/api/channel/save",
+            vote: "/api/channel/vote"
         },
         item: {
             get: "/api/item",
@@ -1422,7 +1426,10 @@ define("nireader/nireader-fe/2.0.0/content/entrance-debug", [ "nireader/nireader
 
 define("nireader/nireader-fe/2.0.0/content/channel-debug", [ "nireader/nireader-fe/2.0.0/kit/resource-debug", "nireader/nireader-fe/2.0.0/kit/request-debug", "nireader/nireader-fe/2.0.0/kit/cache-debug", "nireader/nireader-fe/2.0.0/kit/local-debug", "nireader/nireader-fe/2.0.0/config-debug", "nireader/nireader-fe/2.0.0/kit/url-debug", "nireader/nireader-fe/2.0.0/interface/index-debug", "nireader/nireader-fe/2.0.0/kit/eventList-debug", "nireader/nireader-fe/2.0.0/kit/notice-debug", "nireader/nireader-fe/2.0.0/template/common/notice-debug", "nireader/nireader-fe/2.0.0/template/template-debug", "nireader/nireader-fe/2.0.0/kit/time-debug", "nireader/nireader-fe/2.0.0/kit/num-debug", "nireader/nireader-fe/2.0.0/kit/customEvent-debug", "nireader/nireader-fe/2.0.0/kit/userinfo-debug", "nireader/nireader-fe/2.0.0/kit/cookie-debug", "nireader/nireader-fe/2.0.0/template/channel/title-debug", "nireader/nireader-fe/2.0.0/template/channel/info-debug", "nireader/nireader-fe/2.0.0/template/channel/itemList-debug" ], function(require, exports, module) {
     var resource = require("nireader/nireader-fe/2.0.0/kit/resource-debug");
-    var pagePath = require("nireader/nireader-fe/2.0.0/interface/index-debug").page;
+    var request = require("nireader/nireader-fe/2.0.0/kit/request-debug");
+    var interfaces = require("nireader/nireader-fe/2.0.0/interface/index-debug");
+    var pagePath = interfaces.page;
+    var apiPath = interfaces.api;
     var URL = require("nireader/nireader-fe/2.0.0/kit/url-debug");
     var eventList = require("nireader/nireader-fe/2.0.0/kit/eventList-debug");
     var notice = require("nireader/nireader-fe/2.0.0/kit/notice-debug").notice;
@@ -1581,9 +1588,31 @@ define("nireader/nireader-fe/2.0.0/content/channel-debug", [ "nireader/nireader-
         });
     };
     Channel.prototype.renderChannelInfo = function(data) {
-        this.doms.title.html(genChannelTitle(data));
-        this.doms.info.html(genChannelInfo(data));
+        var _this = this;
+        _this.doms.title.html(genChannelTitle(data));
+        _this.doms.info.html(genChannelInfo(data));
         pageTitle.text(data.channel.title);
+        _this.doms.info.find("#vote").on("click", function(e) {
+            e.preventDefault();
+            var icon = $(this).find("i");
+            icon.removeClass("icon-thumbs-up-alt").addClass("icon-spinner icon-spin");
+            request.post({
+                cid: _this.data.id
+            }, apiPath.channel.vote, function(err) {
+                icon.removeClass("icon-spinner icon-spin");
+                if (err) {
+                    icon.addClass("icon-frown");
+                    setTimeout(function() {
+                        icon.removeClass("icon-frown").addClass("icon-thumbs-up-alt");
+                    }, 1e3);
+                    return;
+                }
+                icon.addClass("icon-ok");
+                setTimeout(function() {
+                    icon.removeClass("icon-ok").hide();
+                }, 1e3);
+            });
+        });
     };
     Channel.prototype.sideBlockLoading = function() {
         this.doms.sideBlock.addClass("loading");
@@ -1644,7 +1673,7 @@ define("nireader/nireader-fe/2.0.0/template/channel/title-debug", [ "nireader/ni
 
 define("nireader/nireader-fe/2.0.0/template/channel/info-debug", [ "nireader/nireader-fe/2.0.0/template/template-debug", "nireader/nireader-fe/2.0.0/kit/time-debug", "nireader/nireader-fe/2.0.0/kit/num-debug" ], function(require, exports, module) {
     var template = require("nireader/nireader-fe/2.0.0/template/template-debug");
-    var tmpl = "<% if(channel.description){ %>" + '<span class="mr20 ml150" title="<%=channel.description%>">' + "<%=channel.description%>" + "</span>" + "<% } %>" + '<span class="mr20">' + "更新于<%=formatTime(channel.pubDate)%>" + "</span>" + '<a class="mr20" href="<%=channel.link%>" target="_blank" title="站点">' + "站点" + "</a>";
+    var tmpl = "<% if(channel.description){ %>" + '<span class="mr20 ml150" title="<%=channel.description%>">' + "<%=channel.description%>" + "</span>" + "<% } %>" + '<span class="mr20">' + "更新于<%=formatTime(channel.pubDate)%>" + "</span>" + '<a class="mr20" href="<%=channel.link%>" target="_blank" title="站点">' + "站点" + "</a>" + '<span id="vote" class="vote">' + '<i class="icon-thumbs-up-alt"></i>' + "</span>";
     module.exports = template.compile(tmpl);
 });
 
