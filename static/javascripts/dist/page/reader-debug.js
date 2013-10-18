@@ -1425,7 +1425,6 @@ define("nireader/nireader-fe/2.0.0/content/channel-debug", [ "nireader/nireader-
     var notice = require("nireader/nireader-fe/2.0.0/kit/notice-debug").notice;
     var customEvent = require("nireader/nireader-fe/2.0.0/kit/customEvent-debug");
     var userinfo = require("nireader/nireader-fe/2.0.0/kit/userinfo-debug");
-    var local = require("nireader/nireader-fe/2.0.0/kit/local-debug").create("channel");
     var genChannelTitle = require("nireader/nireader-fe/2.0.0/template/channel/title-debug");
     var genChannelInfo = require("nireader/nireader-fe/2.0.0/template/channel/info-debug");
     var genItemList = require("nireader/nireader-fe/2.0.0/template/channel/itemList-debug");
