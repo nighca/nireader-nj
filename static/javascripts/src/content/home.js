@@ -249,8 +249,7 @@ define(function(require, exports, module) {
 
     Home.prototype.getSubscriptionListByPage = function(page){
         var _this = this;
-        resource.makeList('subscription', {
-        }, function(err, subscriptions){
+        resource.makeList('subscription', null, function(err, subscriptions){
             if(err){
                 console.error(err);
                 return;
@@ -262,14 +261,13 @@ define(function(require, exports, module) {
 
     Home.prototype.getAllSubscriptionList = function(refresh){
         var _this = this;
-        resource.makeList('subscription', {
-        }, function(err, subscriptions){
+        resource.makeList('subscription', null, function(err, subscriptions){
             if(err){
                 console.error(err);
                 return;
             }
             _this.dealSubscriptionList(subscriptions);
-        }, null, null, refresh)({});
+        }, null, null, refresh)();
     };
 
     Home.prototype.refreshSubscriptionList = function(){
@@ -279,6 +277,10 @@ define(function(require, exports, module) {
     };
 
     Home.prototype.dealSubscriptionList = function(subscriptions){
+        subscriptions.map(function(subscription){
+            subscription.pageUrl = pages.myChannel(subscription.id);
+            return subscription;
+        });
         this.data.subscriptions = subscriptions;
         this.renderSubscriptionList({
             subscriptions: subscriptions
@@ -287,8 +289,7 @@ define(function(require, exports, module) {
 
     Home.prototype.getRecommendList = function(){
         var _this = this;
-        resource.makeList('channel', {
-        }, function(err, recommends){
+        resource.makeList('channel', null, function(err, recommends){
             if(err){
                 console.error(err);
                 return;
@@ -298,6 +299,10 @@ define(function(require, exports, module) {
     };
 
     Home.prototype.dealRecommendList = function(recommends){
+        recommends.map(function(recommend){
+            recommend.pageUrl = pages.channel(recommend.id);
+            return recommend;
+        });
         this.data.recommends = recommends;
         this.renderRecommendList({
             recommends: recommends

@@ -7,7 +7,7 @@ define(function(require, exports, module) {
         '<ul id="recommend-list" class="item-list">' +
             '<%for(i = 0; i < recommends.length; i ++) {%>' +
                 '<li class="item" data-id="<%=recommends[i].id%>">' +
-                    '<a data-link-async="true" href="/channel/<%=recommends[i].id%>">' +
+                    '<a data-link-async="true" href="<%=recommends[i].pageUrl%>">' +
                         '<%=recommends[i].title%>' +
                     '</a>' +
                     '<span class="pubdate">' +

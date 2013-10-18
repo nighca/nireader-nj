@@ -101,9 +101,9 @@ define(function(require, exports, module){
         subscription: [
             'channel.id', 
             'channel.pubDate', 
-            'channel.title', 
-            'channel.description', 
-            'channel.generator'
+            'channel.title'
+            //'channel.description',
+            //'channel.generator'
         ]
     };
     var listSort = {
@@ -143,22 +143,24 @@ define(function(require, exports, module){
         }
 
         var numInPage = listNumInPage[type];
-
         var limit;
-        if(typeof page === 'object'){
+        if(!page){
+            limit = null;
+        }else if(typeof page === 'object'){
             limit = page;
+        }else{
+            limit = 
+                numInPage ? {
+                    from: numInPage * (page - 1),
+                    num: numInPage
+                } : null;
         }
 
         var params = {
             opt: opt,
             fields: fields || listFields[type],
             sort: sort || listSort[type],
-            limit:
-                limit ||
-                (numInPage ? {
-                    from: numInPage * (page - 1),
-                    num: numInPage
-                } : null)
+            limit: limit
         };
 
         var url = listUrl[type];

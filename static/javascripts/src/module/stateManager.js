@@ -28,7 +28,7 @@ define(function(require, exports, module) {
             e.preventDefault();
 
             var link = $(this);
-            if(link.attr('disabled')){
+            if(link.attr('disabled') || !link.attr('href')){
                 return false;
             }
 

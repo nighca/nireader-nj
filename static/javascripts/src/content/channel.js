@@ -14,6 +14,8 @@ define(function(require, exports, module) {
 
     var pageTitle = $('title');
 
+    var inSubscriptionFlag = '/my/';
+
     var Channel = function(opt){
         this.url = opt.url;
         this.wrapper = opt.wrapper;
@@ -36,11 +38,11 @@ define(function(require, exports, module) {
             }
         });
 
-
         this.bindEvent();
     };
 
-    Channel.prototype.bindEvent = function(){};
+    Channel.prototype.bindEvent = function(){
+    };
 
     Channel.prototype.clean = function(){
         this.eventList.clean();
@@ -58,7 +60,8 @@ define(function(require, exports, module) {
         var _this = this;
 
         _this.data = {
-            id: parseInt(URL.parse(_this.url).id, 10)
+            id: parseInt(URL.parse(_this.url).id, 10),
+            inSubscription: _this.url.indexOf(inSubscriptionFlag) === 0
         };
 
         _this.doms = {
@@ -113,11 +116,15 @@ define(function(require, exports, module) {
 
     Channel.prototype.getNeighbourInfo = function(){
         var _this = this;
-        resource.list('subscription', null, {
-            from: 0
-        }, function(err, channels){
+
+        var errorInfo = 'Get aside channel info fail.';
+
+        var listName = _this.data.inSubscription ? 'subscription' : 'channel';
+
+        resource.list(listName, null, null, function(err, channels){
             if(err || channels.length < 1){
-                console.error(err || 'Get aside channel info fail.');
+                notice(errorInfo);
+                LOG(err || errorInfo);
                 return;
             }
 
@@ -127,6 +134,17 @@ define(function(require, exports, module) {
                     pos = i;
                     break;
                 }
+            }
+
+            if(pos === -1){
+                if(_this.data.inSubscription){
+                    customEvent.trigger('goto', _this.url.slice(inSubscriptionFlag.length - 1));
+                }else{
+                    notice('Can not get channel pos!', function(){
+                        customEvent.trigger('goto', '/');
+                    });
+                }
+                return;
             }
 
             _this.dealNeighbourInfo({
@@ -139,9 +157,10 @@ define(function(require, exports, module) {
         this.doms.topLink
             .attr('href', pagePath.home)
             .attr('title', 'Home');
+        var getChannelUrl = this.data.inSubscription ? pagePath.myChannel : pagePath.channel;
         if(neighbours.prev){
             this.doms.leftLink
-                .attr('href', pagePath.channel(neighbours.prev.id))
+                .attr('href', getChannelUrl(neighbours.prev.id))
                 .attr('title', neighbours.prev.title)
                 .show();
         }else{
@@ -150,7 +169,7 @@ define(function(require, exports, module) {
         }
         if(neighbours.next){
             this.doms.rightLink
-                .attr('href', pagePath.channel(neighbours.next.id))
+                .attr('href', getChannelUrl(neighbours.next.id))
                 .attr('title', neighbours.next.title)
                 .show();
         }else{
@@ -168,6 +187,11 @@ define(function(require, exports, module) {
     };
 
     Channel.prototype.dealItemList = function(items){
+        var getItemUrl = this.data.inSubscription ? pagePath.myItem : pagePath.item;
+        items.map(function(item){
+            item.pageUrl = getItemUrl(item.id);
+            return item;
+        });
         this.data.items = items;
         this.renderItemList({
             items: items

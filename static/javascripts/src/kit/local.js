@@ -26,6 +26,11 @@ define(function(require, exports, module){
         return localStorage[key];
     };
 
+    var remove = function(domain, key){
+        key = encodeKey(key, domain);
+        localStorage.removeItem(key);
+    };
+
     var getAll = function(domain){
         var all = {};
         for(var i = 0, l = localStorage.length, key, val; i < l; i++){
@@ -75,6 +80,9 @@ define(function(require, exports, module){
         return {
             get: function(key){
                 return get(domain, key);
+            },
+            remove: function(key){
+                return remove(domain, key);
             },
             set: function(key, val){
                 return set(domain, key, val);

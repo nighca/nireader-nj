@@ -8,7 +8,7 @@ define(function(require, exports, module) {
             '</h6>' +
             '<%for(i = 0; i < subscriptions.length; i ++) {%>' +
                 '<li class="item" data-id="<%=subscriptions[i].id%>">' +
-                    '<a data-link-async="true" href="/channel/<%=subscriptions[i].id%>">' +
+                    '<a data-link-async="true" href="<%=subscriptions[i].pageUrl%>">' +
                         '<%=subscriptions[i].title%>' +
                     '</a>' +
                     '<span class="pubdate">' +

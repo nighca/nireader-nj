@@ -13,6 +13,8 @@ define(function(require, exports, module) {
 
     var pageTitle = $('title');
 
+    var inSubscriptionFlag = '/my/';
+
     var testScroll = require('../kit/testScroll');
     var testBottom = testScroll.bottom;
     var testTop = testScroll.top;
@@ -114,7 +116,8 @@ define(function(require, exports, module) {
         var _this = this;
 
         _this.data = {
-            id: parseInt(URL.parse(_this.url).id, 10)
+            id: parseInt(URL.parse(_this.url).id, 10),
+            inSubscription: _this.url.indexOf(inSubscriptionFlag) === 0
         };
 
         _this.doms = {
@@ -185,6 +188,7 @@ define(function(require, exports, module) {
     };
 
     Item.prototype.dealChannelInfo = function(channel){
+        channel.pageUrl = (this.data.inSubscription ? pagePath.myChannel : pagePath.channel)(channel.id);
         this.data.channel = channel;
         this.renderChannelInfo({
             channel: channel
@@ -195,9 +199,7 @@ define(function(require, exports, module) {
         var _this = this;
         resource.list('item', {
             source: _this.data.item.source
-        }, {
-            from: 0
-        }, function(err, items){
+        }, null, function(err, items){
             if(err || items.length < 1){
                 console.error(err || 'Get aside item info fail.');
                 return;
@@ -221,9 +223,10 @@ define(function(require, exports, module) {
     };
     Item.prototype.dealNeighbourInfo = function(neighbours){
         this.data.neighbours = neighbours;
+        var getItemUrl = this.data.inSubscription ? pagePath.myItem : pagePath.item;
         if(neighbours.prev){
             this.doms.leftLink
-                .attr('href', pagePath.item(neighbours.prev.id))
+                .attr('href', getItemUrl(neighbours.prev.id))
                 .attr('title', neighbours.prev.title)
                 .show();
         }else{
@@ -232,7 +235,7 @@ define(function(require, exports, module) {
         }
         if(neighbours.next){
             this.doms.rightLink
-                .attr('href', pagePath.item(neighbours.next.id))
+                .attr('href', getItemUrl(neighbours.next.id))
                 .attr('title', neighbours.next.title)
                 .show();
         }else{
@@ -246,10 +249,10 @@ define(function(require, exports, module) {
         this.doms.title.html(genItemTitle(data));
         this.doms.info.html(genItemInfo(data));
         this.doms.content.html(genItemContent(data));
-        this.doms.topLink.attr('href', pagePath.channel(data.item.source));
     };
 
     Item.prototype.renderChannelInfo = function(data){
+        this.doms.topLink.attr('href', data.channel.pageUrl);
         this.doms.topLink.attr('title', data.channel.title);
         this.doms.info.prepend(genItemChannelTitle(data));
     };

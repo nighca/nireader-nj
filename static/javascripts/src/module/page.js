@@ -37,8 +37,13 @@ define(function(require, exports, module){
     };
 
     page.checkout = function(info){
-        this.clean();
-        this.init();
+        var _this = this;
+
+        _this.clean();
+        
+        setTimeout(function(){
+            _this.init();
+        }, 0);
     };
 
     module.exports = page;

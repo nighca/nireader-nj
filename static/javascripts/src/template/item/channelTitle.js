@@ -3,7 +3,7 @@ define(function(require, exports, module) {
     var tmpl =
         '<span class="">' +
             'From ' +
-            '<a href="/channel/<%=channel.id%>" title="<%=channel.description%>" data-link-async=true >' +
+            '<a href="<%=channel.pageUrl%>" title="<%=channel.description%>" data-link-async=true >' +
             	'<%=channel.title%> ' +
             '</a>' +
         '</span>';

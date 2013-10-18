@@ -35,6 +35,12 @@ define(function(require, exports, module) {
         },
         item: function(id){
             return '/item/' + id;
+        },
+        myChannel: function(id){
+            return '/my/channel/' + id;
+        },
+        myItem: function(id){
+            return '/my/item/' + id;
         }
     };
 

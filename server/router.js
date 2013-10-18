@@ -22,7 +22,9 @@ var routes = [
     ['get', '/welcome', pages.entrance],
     ['get', '/signin', pages.signin],
     ['get', '/channel/:cid', pages.channel],
+    ['get', '/my/channel/:cid', pages.channel],
     ['get', '/item/:iid', pages.item],
+    ['get', '/my/item/:iid', pages.item],
 
     //method, path, handler, needAuth, devOnly
     ['get', '/api/channel', apis.channel.get],
