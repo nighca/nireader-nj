@@ -1626,9 +1626,15 @@ define("nireader/nireader-fe/2.0.0/content/channel-debug", [ "nireader/nireader-
                 }
                 icon.addClass("icon-ok");
                 _this.doms.voteNum.text("[" + ++_this.data.channel.score + "]");
+                // refresh channel info
                 resource.refresh("channel", {
                     id: _this.data.id
                 });
+                // refresh recommend list
+                resource.makeList("channel", null, null, {
+                    order: "score",
+                    descrease: true
+                }, null, true)(1);
                 setTimeout(function() {
                     icon.removeClass("icon-ok").hide();
                 }, 1e3);

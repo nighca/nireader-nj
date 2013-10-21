@@ -240,9 +240,17 @@ define(function(require, exports, module) {
                 }
                 icon.addClass('icon-ok');
                 _this.doms.voteNum.text('[' + (++_this.data.channel.score) + ']');
+
+                // refresh channel info
                 resource.refresh('channel', {
                     id: _this.data.id
                 });
+                // refresh recommend list
+                resource.makeList('channel', null, null, {
+                    order: 'score',
+                    descrease: true
+                }, null, true)(1);
+
                 setTimeout(function(){
                     icon.removeClass('icon-ok').hide();
                 }, 1000);
