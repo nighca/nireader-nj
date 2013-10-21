@@ -102,8 +102,6 @@ define(function(require, exports, module){
         }
         LOG('load from local: ', storage);
     };
-    window.saveToLocal = saveToLocal;
-    window.loadFromLocal = loadFromLocal;
     window.storage = storage;
     window.local = local;
 

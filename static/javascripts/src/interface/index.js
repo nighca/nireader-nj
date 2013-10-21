@@ -42,6 +42,12 @@ define(function(require, exports, module) {
         },
         myItem: function(id){
             return '/my/item/' + id;
+        },
+        recommendChannel: function(id){
+            return '/recommend/channel/' + id;
+        },
+        recommendItem: function(id){
+            return '/recommend/item/' + id;
         }
     };
 

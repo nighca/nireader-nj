@@ -18,6 +18,7 @@ define(function(require, exports, module) {
     var pageTitle = $('title');
 
     var inSubscriptionFlag = '/my/';
+    var inRecommendFlag = '/recommend/';
 
     var Channel = function(opt){
         this.url = opt.url;
@@ -36,8 +37,10 @@ define(function(require, exports, module) {
         userinfo.isLogin(function(isIn){
             if(isIn){
                 _this.getNeighbourInfo();
-            }else{
+            }else if(!_this.data.inSubscription){
                 _this.dealNoUserinfo();
+            }else{
+                customEvent.trigger('goto', _this.url.slice(inSubscriptionFlag.length - 1));
             }
         });
 
@@ -64,7 +67,8 @@ define(function(require, exports, module) {
 
         _this.data = {
             id: parseInt(URL.parse(_this.url).id, 10),
-            inSubscription: _this.url.indexOf(inSubscriptionFlag) === 0
+            inSubscription: _this.url.indexOf(inSubscriptionFlag) === 0,
+            inRecommend: _this.url.indexOf(inRecommendFlag) === 0
         };
 
         _this.doms = {
@@ -123,6 +127,10 @@ define(function(require, exports, module) {
         var errorInfo = '不知道这是哪';
 
         var listName = _this.data.inSubscription ? 'subscription' : 'channel';
+        var sort = _this.data.inRecommend ? {
+            order: 'score',
+            descrease: true
+        } : null;
 
         resource.list(listName, null, null, function(err, channels){
             if(err || channels.length < 1){
@@ -154,13 +162,17 @@ define(function(require, exports, module) {
                 prev: channels[pos-1],
                 next: channels[pos+1]
             });
-        });
+        }, sort);
     };
     Channel.prototype.dealNeighbourInfo = function(neighbours){
         this.doms.topLink
             .attr('href', pagePath.home)
             .attr('title', 'Home');
-        var getChannelUrl = this.data.inSubscription ? pagePath.myChannel : pagePath.channel;
+
+        var getChannelUrl = pagePath.channel;
+        getChannelUrl = this.data.inSubscription ? pagePath.myChannel : getChannelUrl;
+        getChannelUrl = this.data.inRecommend ? pagePath.recommendChannel : getChannelUrl;
+
         if(neighbours.prev){
             this.doms.leftLink
                 .attr('href', getChannelUrl(neighbours.prev.id))
@@ -190,7 +202,7 @@ define(function(require, exports, module) {
     };
 
     Channel.prototype.dealItemList = function(items){
-        var getItemUrl = this.data.inSubscription ? pagePath.myItem : pagePath.item;
+        var getItemUrl = this.data.inSubscription ? pagePath.myItem : pagePath.recommendItem;
         items.map(function(item){
             item.pageUrl = getItemUrl(item.id);
             return item;
@@ -207,7 +219,10 @@ define(function(require, exports, module) {
         _this.doms.info.html(genChannelInfo(data));
         pageTitle.text(data.channel.title);
 
-        _this.doms.info.find('#vote').on('click', function(e){
+        _this.doms.vote = _this.doms.info.find('#vote');
+        _this.doms.voteNum = _this.doms.info.find('#vote-num');
+
+        _this.doms.vote.on('click', function(e){
             e.preventDefault();
 
             var icon = $(this).find('i');
@@ -224,6 +239,10 @@ define(function(require, exports, module) {
                     return;
                 }
                 icon.addClass('icon-ok');
+                _this.doms.voteNum.text('[' + (++_this.data.channel.score) + ']');
+                resource.refresh('channel', {
+                    id: _this.data.id
+                });
                 setTimeout(function(){
                     icon.removeClass('icon-ok').hide();
                 }, 1000);

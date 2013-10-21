@@ -303,7 +303,7 @@ define(function(require, exports, module) {
 
     Home.prototype.dealRecommendList = function(recommends){
         recommends.map(function(recommend){
-            recommend.pageUrl = pages.channel(recommend.id);
+            recommend.pageUrl = pages.recommendChannel(recommend.id);
             return recommend;
         });
         this.data.recommends = recommends;
