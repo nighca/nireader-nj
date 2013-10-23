@@ -15,7 +15,9 @@ var struct = {
     lastFetchDate : 'time',
     category : 'string',
     generator : 'string',
-    webMaster : 'string'
+    webMaster : 'string',
+
+    score: 'number'
 };
 
 db.initTable(tableName, struct, function(err, result){
@@ -38,6 +40,7 @@ function Channel (options) {
     this.category = options.category || null;
     this.generator = options.generator || null;
     this.webMaster = options.webMaster || null;
+    this.score = options.score || 0;
 }
 
 function createChannel(options){

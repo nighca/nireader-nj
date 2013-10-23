@@ -123,7 +123,7 @@ define(function(require, exports, module) {
     var dealFeed = function(){
 
         var url = globalInput.val();
-        showTip('A feed url? parsing... ' + loadingIcon);
+        showTip('好像是个rss地址，等我解析下... ' + loadingIcon);
 
         createChannel(url, function(err, channel){
             if(url !== currVal){
@@ -132,30 +132,30 @@ define(function(require, exports, module) {
 
             cleanAll();
             if(err){
-                showTip('Failed to parse, invalid feed url.');
+                showTip('没解析出来，地址不对。');
                 return;
             }
 
             var exist = !!channel.id;
-            showTip('Press <b>Enter</b> to ' + (exist ? '' : 'add & ') + 'subscribe.');
+            showTip('用<b>Enter</b>' + (exist ? '' : '添加并') + '订阅');
             addResult(channel.title, exist ? pages.channel(channel.id) : channel.link, exist);
 
             enterHandler = function(){
                 saveChannel(channel, function(err, channel){
                     if(err){
-                        showTip('Failed to add channel. Please try again.');
+                        showTip('没添加成功。');
                         return;
                     }
-                    showTip('Channel ' + channel.title + ' added, subscribing... ' + loadingIcon);
+                    showTip(channel.title + '添加好了，正在订阅... ' + loadingIcon);
                     addSubscription(channel.id, function(err, subscription){
                         if(err){
                             showTip(
-                                'Failed to subscribe channel ' + channel.title + '. Please try again.'
+                                '订阅' + channel.title + '没成功。'
                             );
                             return;
                         }
                         cleanResult();
-                        showTip('Channel ' + channel.title + ' subscribed.');
+                        showTip('订阅了' + channel.title + '。');
                         reloadPage();
                     });
                 });
@@ -164,13 +164,13 @@ define(function(require, exports, module) {
     };
 
     var dealLogout = function(){
-        showTip('Press <b>Enter</b> to logout.');
+        showTip('按<b>Enter</b>登出。');
 
         enterHandler = function(){
-            showTip('logout ing... ' + loadingIcon);
+            showTip('正在登出... ' + loadingIcon);
             request.get(apis.auth.out, function(err){
                 if(err){
-                    notice('Wrong! Plz try again.');
+                    notice('出错了。');
                     LOG(err);
                     return;
                 }
@@ -180,10 +180,10 @@ define(function(require, exports, module) {
     };
 
     var dealHome = function(){
-        showTip('Press <b>Enter</b> to go to home (\'/\').');
+        showTip('按<b>Enter</b>去首页 (\'/\')。');
 
         enterHandler = function(){
-            showTip('going to home... ' + loadingIcon);
+            showTip('正在去首页... ' + loadingIcon);
             customEvent.trigger('goto', '/');
             cleanTip();
         };
@@ -258,7 +258,7 @@ define(function(require, exports, module) {
                         val +
                         '</b>' +
                         c.slice(pos + val.length) +
-                        '\t ---- Use <b>Tab</b>';
+                        '\t ---- 用<b>Tab</b>补全';
                     addTip(str);
                 }
             }

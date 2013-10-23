@@ -136,7 +136,7 @@ define(function(require, exports, module) {
             }, apis.subscription.add, function(err, subscription){
                 icon.removeClass('icon-spinner icon-spin');
                 if(err){
-                    notice('订阅失败');
+                    notice('没订阅成');
                     LOG(err);
                 }else{
                     icon
@@ -155,7 +155,7 @@ define(function(require, exports, module) {
             }, apis.subscription.remove, function(err, subscription){
                 icon.removeClass('icon-spinner icon-spin');
                 if(err){
-                    notice('取消订阅失败');
+                    notice('没能取消订阅');
                     LOG(err);
                 }else{
                     icon
@@ -295,12 +295,15 @@ define(function(require, exports, module) {
                 return;
             }
             _this.dealRecommendList(recommends);
+        }, {
+            order: 'score',
+            descrease: true
         })(1);
     };
 
     Home.prototype.dealRecommendList = function(recommends){
         recommends.map(function(recommend){
-            recommend.pageUrl = pages.channel(recommend.id);
+            recommend.pageUrl = pages.recommendChannel(recommend.id);
             return recommend;
         });
         this.data.recommends = recommends;

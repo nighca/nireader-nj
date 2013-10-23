@@ -77,7 +77,7 @@ define(function(require, exports, module) {
             password: password
         }, apis.auth.in, function(err, data){
             if(err){
-                notice('Wrong! Plz try again.');
+                notice('错了。');
                 return;
             }
             goHome();

@@ -1,6 +1,6 @@
 var Channel = require('../../model/channel');
-//var Subscription = require('../../model/subscription');
 var feed = require('../../lib/feed');
+var doQuery = require('../../lib/data').doQuery;
 
 var createChannelFromMeta = function(meta, xmlurl){
     return Channel.create({
@@ -102,4 +102,18 @@ exports.save = function(req, res){
 
 exports.remove = function(req, res){
     res.send(404);
+};
+
+exports.vote = function(req, res){
+    if(!req.body.cid){
+        res.send(500, {err: 'missing params'});
+        return;
+    }
+
+    var sql = 'UPDATE ' + Channel.tableName + ' SET score = IFNULL(score,0) + 1 WHERE id = ' + req.body.cid;
+    doQuery(sql, function(err, result){
+        res.json({
+            err: err
+        });
+    });
 };

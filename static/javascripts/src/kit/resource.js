@@ -35,6 +35,7 @@ define(function(require, exports, module){
         }
 
         var cacheKey = {
+            cache: 'resource',
             type: type,
             opt: opt,
             sort: sort
