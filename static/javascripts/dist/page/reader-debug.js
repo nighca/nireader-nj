@@ -34,12 +34,14 @@ define("nireader/nireader-fe/2.0.0/module/stateManager-debug", [ "nireader/nirea
             manager.checkout();
         };
         $("body").delegate("[data-link-async]", "click", function(e) {
-            e.preventDefault();
             var link = $(this);
             if (link.attr("disabled") || !link.attr("href")) {
                 return false;
             }
-            gotoUrl(link.attr("href"));
+            if (!e.ctrlKey) {
+                e.preventDefault();
+                gotoUrl(link.attr("href"));
+            } else {}
         });
         customEvent.on("goto", gotoUrl);
         window.onpopstate = function(e) {
