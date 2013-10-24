@@ -2,11 +2,15 @@ define(function(require, exports, module){
     var lists = {};
 
     var create = function(name){
+        name += (Math.random() + '').slice(2);
         var list = lists[name] = [];
+        LOG('create eventList: ', name);
         return {
             name: name,
             list: list,
             add: function(dom, event, handler){
+                LOG('add event: ', event, ' to ', this);
+
                 for (var i = list.length - 1; i >= 0; i--) {
                     if(list[i].dom === dom && list[i].event === event && list[i].handler === handler){
                         return;
@@ -26,6 +30,8 @@ define(function(require, exports, module){
                 return list;
             },
             remove: function(dom, event, handler){
+                LOG('remove event: ', event, ' from ', this);
+
                 for (var i = list.length - 1; i >= 0; i--) {
                     if(list[i].dom === dom && list[i].event === event && list[i].handler === handler){
                         try{
@@ -39,6 +45,8 @@ define(function(require, exports, module){
                 }
             },
             clean: function(){
+                LOG('clean eventList: ', this);
+
                 for (var i = list.length - 1, record; i >= 0; i--) {
                     try{
                         record = list[i];
@@ -49,6 +57,7 @@ define(function(require, exports, module){
                 }
 
                 list = lists[name] = [];
+                delete lists[name];
             }
         };
     };

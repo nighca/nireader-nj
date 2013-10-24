@@ -23,28 +23,24 @@ block content
 
         ul.middle-footer-links
             li
-                a(href="https://github.com/nighca/nireader-nj", target="_blank") repository
+                a(href="https://github.com/nighca/nireader-nj", target="_blank") 代码
             li
-                a(href="http://nighca.me", target="_blank") me
+                a(href="http://nighca.me", target="_blank") 我
 
 append scripts
     script.
-        // Set configuration
         seajs.config({
             base: '../javascripts/dist/'
         });
 
-        // For development
-        if (location.href.indexOf('?dev') > 0) {
+        if(location.href.indexOf('?dev') > 0){
             seajs.use('/javascripts/src/page/reader', function(reader){
-                reader.bind();
+                reader.init();
             });
-        }
-        // For production
-        else {
+        }else{
             seajs.use('/javascripts/dist/page/reader', function(){
                 seajs.use('nireader/nireader-fe/2.0.0/page/reader', function(reader){
-                    reader.bind();
+                    reader.init();
                 });
             });
         }

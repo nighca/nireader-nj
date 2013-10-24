@@ -2,9 +2,9 @@ define(function(require, exports, module) {
     var resource = require('../kit/resource');
     var pagePath = require('../interface/index').page;
     var URL = require('../kit/url');
-    var eventList = require('../kit/eventList').create('content/item');
-    var addEvent = eventList.add;
-    var removeEvent = eventList.remove;
+    var eventList = require('../kit/eventList');
+    var notice = require('../kit/notice').notice;
+    var customEvent = require('../kit/customEvent');
 
     var genItemTitle = require('../template/item/title');
     var genItemInfo = require('../template/item/info');
@@ -13,6 +13,9 @@ define(function(require, exports, module) {
 
     var pageTitle = $('title');
 
+    var inSubscriptionFlag = '/my/';
+    var inRecommendFlag = '/recommend/';
+
     var testScroll = require('../kit/testScroll');
     var testBottom = testScroll.bottom;
     var testTop = testScroll.top;
@@ -20,7 +23,9 @@ define(function(require, exports, module) {
     var Item = function(opt){
         this.url = opt.url;
         this.wrapper = opt.wrapper;
-        
+
+        this.eventList = eventList.create('content/item');
+
         this.type = 'item';
     };
 
@@ -43,7 +48,50 @@ define(function(require, exports, module) {
         var middleBlock = this.doms.middleBlock;
         var leftLink = this.doms.leftLink;
         var rightLink = this.doms.rightLink;
+        var upButton = this.doms.upButton;
         var checkoutDelay = 300;
+
+        var addEvent = this.eventList.add,
+            removeEvent = this.eventList.remove;
+
+        this.doms.content.find('a').each(function(i, a){
+            a = $(a);
+            if(!a.attr('data-link-async')){
+                a.attr('target', '_blank');
+            }
+        });
+
+        addEvent(upButton, 'click', function(e){
+            e.preventDefault();
+
+            upButton.animate({
+                'marginTop': '8px'
+            }, 100, function(){
+                middleBlock.animate({
+                    'scrollTop': 0
+                }, 100, function(){
+                    upButton.css({
+                        'marginTop': 0
+                    });
+                });
+            });
+        });
+
+        var _this = this;
+        addEvent(middleBlock, 'scroll', function(e){
+            removeEvent(middleBlock, 'mousewheel', topScroll);
+            removeEvent(middleBlock, 'mousewheel', bottomScroll);
+
+            var mb = middleBlock[0];
+            var offsetTop = 40, offsetBottom = 60;
+            var readPercent = mb.scrollTop / (mb.scrollHeight - mb.clientHeight);
+            var top = readPercent * (mb.clientHeight - offsetTop - offsetBottom - upButton.height()) + offsetTop + 'px';
+            var opacity = readPercent;
+            upButton.text(Math.floor(readPercent * 100) + '%').css({
+                'top': top,
+                'opacity': opacity
+            });
+        });
 
         var topScroll = function(e, delta, deltaX, deltaY){
             if(deltaY > 0){
@@ -56,43 +104,41 @@ define(function(require, exports, module) {
             }
         };
 
-        addEvent(middleBlock, 'mousewheel', function(e, delta, deltaX, deltaY){
-            removeEvent(middleBlock, 'mousewheel', topScroll);
-            removeEvent(middleBlock, 'mousewheel', bottomScroll);
+        var initScroll = true;
 
-            // !!! Bug exists, but i don't know why.
+        setTimeout(function(){
+            addEvent(middleBlock, 'mousewheel', function(e, delta, deltaX, deltaY){
+                //removeEvent(middleBlock, 'mousewheel', topScroll);
+                //removeEvent(middleBlock, 'mousewheel', bottomScroll);
 
-            if(deltaY > 0 && testTop(middleBlock)){
-                data.timer1 = data.timer1 || setTimeout(function(){
-                    addEvent(middleBlock, 'mousewheel', topScroll);
-                    data.timer1 = null;
-                }, checkoutDelay);
-            }
+                if(initScroll){
+                    initScroll = false;
+                    return;
+                }
 
-            if(deltaY < 0 && testBottom(middleBlock)){
-                data.timer2 = data.timer2 || setTimeout(function(){
-                    addEvent(middleBlock, 'mousewheel', bottomScroll);
-                    data.timer2 = null;
-                }, checkoutDelay);
-            }
-
-            /*data.timer = data.timer || setTimeout(function(){
                 if(deltaY > 0 && testTop(middleBlock)){
-                    addEvent(middleBlock, 'mousewheel', topScroll);
+                    data.timer1 = data.timer1 || setTimeout(function(){
+                        addEvent(middleBlock, 'mousewheel', topScroll);
+                        data.timer1 = null;
+                    }, checkoutDelay);
                 }
+
                 if(deltaY < 0 && testBottom(middleBlock)){
-                    addEvent(middleBlock, 'mousewheel', bottomScroll);
+                    data.timer2 = data.timer2 || setTimeout(function(){
+                        addEvent(middleBlock, 'mousewheel', bottomScroll);
+                        data.timer2 = null;
+                    }, checkoutDelay);
                 }
-                data.timer = null;
-            }, checkoutDelay);*/
-        });
+            });
+        }, 200);
     };
 
     Item.prototype.clean = function(){
-        eventList.clean();
+        this.eventList.clean();
         /*this.doms.content.html('');
         this.doms.title.html('');
         this.doms.info.html('');*/
+        this.doms.upButton.remove();
         clearTimeout(this.data.timer);
         clearTimeout(this.data.timer1);
         clearTimeout(this.data.timer2);
@@ -105,7 +151,9 @@ define(function(require, exports, module) {
         var _this = this;
 
         _this.data = {
-            id: parseInt(URL.parse(_this.url).id, 10)
+            id: parseInt(URL.parse(_this.url).id, 10),
+            inSubscription: _this.url.indexOf(inSubscriptionFlag) === 0,
+            inRecommend: _this.url.indexOf(inRecommendFlag) === 0
         };
 
         _this.doms = {
@@ -118,6 +166,11 @@ define(function(require, exports, module) {
             rightLink: _this.wrapper.find('#right-link'),
             topLink: _this.wrapper.find('#top-link')
         };
+
+        var upButton = document.createElement('div');
+        upButton.className = 'up-button';
+        _this.doms.wrapper.append(upButton);
+        _this.doms.upButton = $(upButton);
     };
 
     Item.prototype.getItemInfo = function(callback){
@@ -126,7 +179,13 @@ define(function(require, exports, module) {
             id: _this.data.id
         }, function(err, item){
             if(err){
-                console.error(err || 'No such item');
+                if(err.status == 404){
+                    notice('走错地方了。', function(){
+                        customEvent.trigger('goto', '/');
+                    });
+                }else{
+                    LOG(err);
+                }
                 return;
             }
             _this.dealItemInfo(item);
@@ -170,6 +229,11 @@ define(function(require, exports, module) {
     };
 
     Item.prototype.dealChannelInfo = function(channel){
+        var genUrl = pagePath.channel;
+        genUrl = this.data.inSubscription ? pagePath.myChannel : genUrl;
+        genUrl = this.data.inRecommend ? pagePath.recommendChannel : genUrl;
+        channel.pageUrl = genUrl(channel.id);
+
         this.data.channel = channel;
         this.renderChannelInfo({
             channel: channel
@@ -180,9 +244,7 @@ define(function(require, exports, module) {
         var _this = this;
         resource.list('item', {
             source: _this.data.item.source
-        }, {
-            from: 0
-        }, function(err, items){
+        }, null, function(err, items){
             if(err || items.length < 1){
                 console.error(err || 'Get aside item info fail.');
                 return;
@@ -206,9 +268,13 @@ define(function(require, exports, module) {
     };
     Item.prototype.dealNeighbourInfo = function(neighbours){
         this.data.neighbours = neighbours;
+        var getItemUrl = pagePath.item;
+        getItemUrl = this.data.inSubscription ? pagePath.myItem : getItemUrl;
+        getItemUrl = this.data.inRecommend ? pagePath.recommendItem : getItemUrl;
+
         if(neighbours.prev){
             this.doms.leftLink
-                .attr('href', pagePath.item(neighbours.prev.id))
+                .attr('href', getItemUrl(neighbours.prev.id))
                 .attr('title', neighbours.prev.title)
                 .show();
         }else{
@@ -217,7 +283,7 @@ define(function(require, exports, module) {
         }
         if(neighbours.next){
             this.doms.rightLink
-                .attr('href', pagePath.item(neighbours.next.id))
+                .attr('href', getItemUrl(neighbours.next.id))
                 .attr('title', neighbours.next.title)
                 .show();
         }else{
@@ -231,10 +297,10 @@ define(function(require, exports, module) {
         this.doms.title.html(genItemTitle(data));
         this.doms.info.html(genItemInfo(data));
         this.doms.content.html(genItemContent(data));
-        this.doms.topLink.attr('href', pagePath.channel(data.item.source));
     };
 
     Item.prototype.renderChannelInfo = function(data){
+        this.doms.topLink.attr('href', data.channel.pageUrl);
         this.doms.topLink.attr('title', data.channel.title);
         this.doms.info.prepend(genItemChannelTitle(data));
     };

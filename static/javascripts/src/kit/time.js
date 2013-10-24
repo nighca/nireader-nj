@@ -59,6 +59,9 @@ define(function(require, exports, module) {
     };
 
     var format = function(time, seperator){
+        if(time === null || time === undefined){
+            return '某一天，嗯';
+        }
         var t = new Date(time);
         seperator = seperator === undefined ? '' : seperator;
         

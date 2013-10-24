@@ -3,8 +3,14 @@ define(function(require, exports, module){
 
     module.exports = {
         on: function(event, handler){
-            lists[event] = lists[event] || [];
-            lists[event].push(handler);
+            var list = lists[event] = lists[event] || [];
+
+            // avoid repeated bind
+            if(list.indexOf(handler) >= 0){
+                return;
+            }
+
+            list.push(handler);
         },
         off: function(event, handler){
             var list, pos;
@@ -23,7 +29,7 @@ define(function(require, exports, module){
                     }catch(e){
                         console.log(e.stack);
                     }
-                };
+                }
             }
         }
     };

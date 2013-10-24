@@ -4,7 +4,7 @@ var Item = require('./item');
 
 var tableName = 'channel';
 var struct = {
-    title : 'string',
+    title : 'longstring',
     link : 'longstring',
     source : 'longstring',
     description : 'text',
@@ -15,7 +15,9 @@ var struct = {
     lastFetchDate : 'time',
     category : 'string',
     generator : 'string',
-    webMaster : 'string'
+    webMaster : 'string',
+
+    score: 'number'
 };
 
 db.initTable(tableName, struct, function(err, result){
@@ -38,6 +40,7 @@ function Channel (options) {
     this.category = options.category || null;
     this.generator = options.generator || null;
     this.webMaster = options.webMaster || null;
+    this.score = options.score || 0;
 }
 
 function createChannel(options){
@@ -118,7 +121,10 @@ var useItem = function(item, channel){
     if(!channel.lastFetchDate){
         return true;
     }
-    return item.pubDate > channel.lastFetchDate;
+    //sometimes this judge will take new items as old items, temporarily stopped until it works just fine
+    //console.log(item.pubDate, channel.lastFetchDate);//--------------------------
+    //return item.pubDate > channel.lastFetchDate;
+    return true;
 };
 Channel.prototype.updateFromMeta = function(meta){
     var channel = this;
@@ -141,6 +147,7 @@ Channel.prototype.updateFromMeta = function(meta){
 var saveItemIfNotExist = function(item, callback){
     Item.ifExist(item, function(err, exist){
         if(err || exist){
+            //if(!err) console.log("Exist Item: " + item.title);//---------------------
             callback && callback(err, exist);
             return;
         }

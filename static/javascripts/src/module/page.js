@@ -1,6 +1,7 @@
 define(function(require, exports, module){
     var createContent = require('./createContent');
     var URL = require('../kit/url');
+    var notice = require('../kit/notice');
 
     var page = {
         wrapper: $('#body'),
@@ -28,6 +29,7 @@ define(function(require, exports, module){
     };
 
     page.clean = function(){
+        notice.clean();
         if(this.content){
             this.content.clean();
         }
@@ -35,8 +37,13 @@ define(function(require, exports, module){
     };
 
     page.checkout = function(info){
-        this.clean();
-        this.init();
+        var _this = this;
+
+        _this.clean();
+        
+        setTimeout(function(){
+            _this.init();
+        }, 0);
     };
 
     module.exports = page;

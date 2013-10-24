@@ -1,10 +1,9 @@
 define(function(require, exports, module) {
     var request = require('../kit/request');
     var customEvent = require('../kit/customEvent');
-    var notice = require('../kit/notice');
+    var notice = require('../kit/notice').notice;
     var userinfo = require('../kit/userinfo');
-    var eventList = require('../kit/eventList').create('content/entrance');
-    var addEvent = eventList.add;
+    var eventList = require('../kit/eventList');
     var interfaces = require('../interface/index');
     var apis = interfaces.api;
     var pages = interfaces.page;
@@ -18,6 +17,7 @@ define(function(require, exports, module) {
     var Entrance = function(opt){
         this.url = opt.url;
         //this.wrapper = opt.wrapper;
+        this.eventList = eventList.create('content/entrance');
         
         this.type = 'entrance';
     };
@@ -47,16 +47,16 @@ define(function(require, exports, module) {
         var _this = this;
         var doms = this.doms;
 
-        addEvent(doms.signin, 'click', function(){
+        this.eventList.add(doms.signin, 'click', function(){
             doms.signinBlock.fadeIn();
             return false;
         });
 
-        addEvent(doms.submit, 'click', function(e){
+        this.eventList.add(doms.submit, 'click', function(e){
             _this.signIn();
         });
 
-        addEvent(doms.passwordIN, 'keyup', function(e){
+        this.eventList.add(doms.passwordIN, 'keyup', function(e){
             if(e.which === 13){// Enter
                 _this.signIn();
             }
@@ -77,7 +77,7 @@ define(function(require, exports, module) {
             password: password
         }, apis.auth.in, function(err, data){
             if(err){
-                notice(err);
+                notice('错了。');
                 return;
             }
             goHome();
@@ -85,7 +85,7 @@ define(function(require, exports, module) {
     };
 
     Entrance.prototype.clean = function(){
-        eventList.clean();
+        this.eventList.clean();
         this.doms.wrapper.animate({
             marginTop: -this.doms.wrapper.height() + 'px'
         }, 1000, function(){

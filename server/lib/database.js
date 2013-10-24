@@ -4,6 +4,7 @@ var typeMap = {
     "number" : "int",
     "string" : "nvarchar(40)",
     "longstring" : "nvarchar(100)",
+    "longlongstring" : "nvarchar(500)",
     "text" : "nvarchar(1000)",
     "longtext" : "nvarchar(8000)",
     "time" : "datetime"

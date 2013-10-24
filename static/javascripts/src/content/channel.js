@@ -1,9 +1,13 @@
 define(function(require, exports, module) {
     var resource = require('../kit/resource');
-    var pagePath = require('../interface/index').page;
+    var request = require('../kit/request');
+    var interfaces = require('../interface/index');
+    var pagePath = interfaces.page;
+    var apiPath = interfaces.api;
     var URL = require('../kit/url');
-    var eventList = require('../kit/eventList').create('content/channel');
-    var addEvent = eventList.add;
+    var eventList = require('../kit/eventList');
+    var notice = require('../kit/notice').notice;
+    var customEvent = require('../kit/customEvent');
 
     var userinfo = require('../kit/userinfo');
 
@@ -13,10 +17,14 @@ define(function(require, exports, module) {
 
     var pageTitle = $('title');
 
+    var inSubscriptionFlag = '/my/';
+    var inRecommendFlag = '/recommend/';
+
     var Channel = function(opt){
         this.url = opt.url;
         this.wrapper = opt.wrapper;
-        
+        this.eventList = eventList.create('content/channel');
+
         this.type = 'channel';
     };
 
@@ -29,19 +37,21 @@ define(function(require, exports, module) {
         userinfo.isLogin(function(isIn){
             if(isIn){
                 _this.getNeighbourInfo();
-            }else{
+            }else if(!_this.data.inSubscription){
                 _this.dealNoUserinfo();
+            }else{
+                customEvent.trigger('goto', _this.url.slice(inSubscriptionFlag.length - 1));
             }
         });
-
 
         this.bindEvent();
     };
 
-    Channel.prototype.bindEvent = function(){};
+    Channel.prototype.bindEvent = function(){
+    };
 
     Channel.prototype.clean = function(){
-        eventList.clean();
+        this.eventList.clean();
         /*this.doms.content.html('');
         this.doms.title.html('');
         this.doms.info.html('');*/
@@ -56,7 +66,9 @@ define(function(require, exports, module) {
         var _this = this;
 
         _this.data = {
-            id: parseInt(URL.parse(_this.url).id, 10)
+            id: parseInt(URL.parse(_this.url).id, 10),
+            inSubscription: _this.url.indexOf(inSubscriptionFlag) === 0,
+            inRecommend: _this.url.indexOf(inRecommendFlag) === 0
         };
 
         _this.doms = {
@@ -89,7 +101,13 @@ define(function(require, exports, module) {
             id: _this.data.id
         }, function(err, channel){
             if(err){
-                console.error(err || 'No such channel');
+                if(err.status == 404){
+                    notice('走错地方了', function(){
+                        customEvent.trigger('goto', '/');
+                    });
+                }else{
+                    LOG(err);
+                }
                 return;
             }
             _this.dealChannelInfo(channel);
@@ -105,11 +123,19 @@ define(function(require, exports, module) {
 
     Channel.prototype.getNeighbourInfo = function(){
         var _this = this;
-        resource.list('subscription', null, {
-            from: 0
-        }, function(err, channels){
+
+        var errorInfo = '不知道这是哪';
+
+        var listName = _this.data.inSubscription ? 'subscription' : 'channel';
+        var sort = _this.data.inRecommend ? {
+            order: 'score',
+            descrease: true
+        } : null;
+
+        resource.list(listName, null, null, function(err, channels){
             if(err || channels.length < 1){
-                console.error(err || 'Get aside channel info fail.');
+                notice(errorInfo);
+                LOG(err || errorInfo);
                 return;
             }
 
@@ -121,19 +147,35 @@ define(function(require, exports, module) {
                 }
             }
 
+            if(pos === -1){
+                if(_this.data.inSubscription){
+                    customEvent.trigger('goto', _this.url.slice(inSubscriptionFlag.length - 1));
+                }else{
+                    notice(errorInfo, function(){
+                        customEvent.trigger('goto', '/');
+                    });
+                }
+                return;
+            }
+
             _this.dealNeighbourInfo({
                 prev: channels[pos-1],
                 next: channels[pos+1]
             });
-        });
+        }, sort);
     };
     Channel.prototype.dealNeighbourInfo = function(neighbours){
         this.doms.topLink
             .attr('href', pagePath.home)
             .attr('title', 'Home');
+
+        var getChannelUrl = pagePath.channel;
+        getChannelUrl = this.data.inSubscription ? pagePath.myChannel : getChannelUrl;
+        getChannelUrl = this.data.inRecommend ? pagePath.recommendChannel : getChannelUrl;
+
         if(neighbours.prev){
             this.doms.leftLink
-                .attr('href', pagePath.channel(neighbours.prev.id))
+                .attr('href', getChannelUrl(neighbours.prev.id))
                 .attr('title', neighbours.prev.title)
                 .show();
         }else{
@@ -142,7 +184,7 @@ define(function(require, exports, module) {
         }
         if(neighbours.next){
             this.doms.rightLink
-                .attr('href', pagePath.channel(neighbours.next.id))
+                .attr('href', getChannelUrl(neighbours.next.id))
                 .attr('title', neighbours.next.title)
                 .show();
         }else{
@@ -160,6 +202,11 @@ define(function(require, exports, module) {
     };
 
     Channel.prototype.dealItemList = function(items){
+        var getItemUrl = this.data.inSubscription ? pagePath.myItem : pagePath.recommendItem;
+        items.map(function(item){
+            item.pageUrl = getItemUrl(item.id);
+            return item;
+        });
         this.data.items = items;
         this.renderItemList({
             items: items
@@ -167,9 +214,48 @@ define(function(require, exports, module) {
     };
 
     Channel.prototype.renderChannelInfo = function(data){
-        this.doms.title.html(genChannelTitle(data));
-        this.doms.info.html(genChannelInfo(data));
+        var _this = this;
+        _this.doms.title.html(genChannelTitle(data));
+        _this.doms.info.html(genChannelInfo(data));
         pageTitle.text(data.channel.title);
+
+        _this.doms.vote = _this.doms.info.find('#vote');
+        _this.doms.voteNum = _this.doms.info.find('#vote-num');
+
+        _this.doms.vote.on('click', function(e){
+            e.preventDefault();
+
+            var icon = $(this).find('i');
+            icon.removeClass('icon-thumbs-up-alt').addClass('icon-spinner icon-spin');
+            request.post({
+                cid:_this.data.id
+            }, apiPath.channel.vote, function(err){
+                icon.removeClass('icon-spinner icon-spin');
+                if(err){
+                    icon.addClass('icon-frown');
+                    setTimeout(function(){
+                        icon.removeClass('icon-frown').addClass('icon-thumbs-up-alt');
+                    }, 1000);
+                    return;
+                }
+                icon.addClass('icon-ok');
+                _this.doms.voteNum.text('[' + (++_this.data.channel.score) + ']');
+
+                // refresh channel info
+                resource.refresh('channel', {
+                    id: _this.data.id
+                });
+                // refresh recommend list
+                resource.makeList('channel', null, null, {
+                    order: 'score',
+                    descrease: true
+                }, null, true)(1);
+
+                setTimeout(function(){
+                    icon.removeClass('icon-ok').hide();
+                }, 1000);
+            });
+        });
     };
 
     Channel.prototype.sideBlockLoading = function(){
@@ -201,7 +287,7 @@ define(function(require, exports, module) {
         var _this = this;
         _this.doms.content.html(genItemList(data));
         var timer;
-        addEvent(_this.doms.content.find('.item'), 'mouseenter', function(){
+        this.eventList.add(_this.doms.content.find('.item'), 'mouseenter', function(){
             if(timer){
                 timer = clearTimeout(timer);
             }
@@ -225,7 +311,7 @@ define(function(require, exports, module) {
                 _this.sideBlockLoad(item.content);
             });
         });
-        addEvent(_this.doms.content, 'mouseleave', function(){
+        this.eventList.add(_this.doms.content, 'mouseleave', function(){
             timer = setTimeout(function(){
                 _this.doms.sideBlock.hide();
             }, 200);

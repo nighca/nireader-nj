@@ -1,10 +1,9 @@
 define(function(require, exports, module) {
     var resource = require('../kit/resource');
     var request = require('../kit/request');
-    var notice = require('../kit/notice');
+    var notice = require('../kit/notice').notice;
     var userinfo = require('../kit/userinfo');
-    var eventList = require('../kit/eventList').create('content/home');
-    var addEvent = eventList.add;
+    var eventList = require('../kit/eventList');
     var customEvent = require('../kit/customEvent');
     var interfaces = require('../interface/index');
     var apis = interfaces.api;
@@ -21,7 +20,9 @@ define(function(require, exports, module) {
     var Home = function(opt){
         this.url = opt.url;
         this.wrapper = opt.wrapper;
-        
+
+        this.eventList = eventList.create('content/home');
+
         this.type = 'home';
     };
 
@@ -45,13 +46,13 @@ define(function(require, exports, module) {
 
     Home.prototype.bindEvent = function(){
         var _this = this;
-        addEvent(customEvent, 'userInfoUpdate', function(){
+        this.eventList.add(customEvent, 'userInfoUpdate', function(){
             _this.refreshSubscriptionList();
         });
     };
 
     Home.prototype.clean = function(){
-        eventList.clean();
+        this.eventList.clean();
         /*this.doms.content.html('');
         this.doms.title.html('');
         this.doms.info.html('');*/
@@ -135,8 +136,8 @@ define(function(require, exports, module) {
             }, apis.subscription.add, function(err, subscription){
                 icon.removeClass('icon-spinner icon-spin');
                 if(err){
-                    notice('订阅失败');
-                    console.warn(err);
+                    notice('没订阅成');
+                    LOG(err);
                 }else{
                     icon
                         .addClass('icon-eye-open')
@@ -154,8 +155,8 @@ define(function(require, exports, module) {
             }, apis.subscription.remove, function(err, subscription){
                 icon.removeClass('icon-spinner icon-spin');
                 if(err){
-                    notice('取消订阅失败');
-                    console.warn(err);
+                    notice('没能取消订阅');
+                    LOG(err);
                 }else{
                     icon
                         .addClass('icon-eye-close')
@@ -168,7 +169,7 @@ define(function(require, exports, module) {
 
         var bindSubscribe = function(cid){
             var icon = sideBlock.find('#channel-subscribed');
-            addEvent(icon, 'click', function(e){
+            _this.eventList.add(icon, 'click', function(e){
                 (icon.hasClass('icon-eye-open') ? cancelSubscribe : subscribe)(cid, icon);
             });
         };
@@ -207,12 +208,12 @@ define(function(require, exports, module) {
         };
 
         var bind = function(list){
-            addEvent(list.find('.item'), 'mouseenter', getInfoAndRender);
-            addEvent(list, 'mouseleave', hide);
+            _this.eventList.add(list.find('.item'), 'mouseenter', getInfoAndRender);
+            _this.eventList.add(list, 'mouseleave', hide);
         };
 
-        addEvent(sideBlock, 'mouseenter', stopHide);
-        addEvent(sideBlock, 'mouseleave', hide);
+        _this.eventList.add(sideBlock, 'mouseenter', stopHide);
+        _this.eventList.add(sideBlock, 'mouseleave', hide);
 
         //channel-subscribed
 
@@ -248,8 +249,7 @@ define(function(require, exports, module) {
 
     Home.prototype.getSubscriptionListByPage = function(page){
         var _this = this;
-        resource.makeList('subscription', {
-        }, function(err, subscriptions){
+        resource.makeList('subscription', null, function(err, subscriptions){
             if(err){
                 console.error(err);
                 return;
@@ -261,14 +261,13 @@ define(function(require, exports, module) {
 
     Home.prototype.getAllSubscriptionList = function(refresh){
         var _this = this;
-        resource.makeList('subscription', {
-        }, function(err, subscriptions){
+        resource.makeList('subscription', null, function(err, subscriptions){
             if(err){
                 console.error(err);
                 return;
             }
             _this.dealSubscriptionList(subscriptions);
-        }, null, null, refresh)({});
+        }, null, null, refresh)();
     };
 
     Home.prototype.refreshSubscriptionList = function(){
@@ -278,6 +277,10 @@ define(function(require, exports, module) {
     };
 
     Home.prototype.dealSubscriptionList = function(subscriptions){
+        subscriptions.map(function(subscription){
+            subscription.pageUrl = pages.myChannel(subscription.id);
+            return subscription;
+        });
         this.data.subscriptions = subscriptions;
         this.renderSubscriptionList({
             subscriptions: subscriptions
@@ -286,17 +289,23 @@ define(function(require, exports, module) {
 
     Home.prototype.getRecommendList = function(){
         var _this = this;
-        resource.makeList('channel', {
-        }, function(err, recommends){
+        resource.makeList('channel', null, function(err, recommends){
             if(err){
                 console.error(err);
                 return;
             }
             _this.dealRecommendList(recommends);
+        }, {
+            order: 'score',
+            descrease: true
         })(1);
     };
 
     Home.prototype.dealRecommendList = function(recommends){
+        recommends.map(function(recommend){
+            recommend.pageUrl = pages.recommendChannel(recommend.id);
+            return recommend;
+        });
         this.data.recommends = recommends;
         this.renderRecommendList({
             recommends: recommends

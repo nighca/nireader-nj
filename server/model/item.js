@@ -2,8 +2,8 @@ var db = require('../lib/data');
 
 var tableName = 'item';
 var struct = {
-    title : 'string',
-    link : 'longstring',
+    title : 'longstring',
+    link : 'longlongstring',
     description : 'text',
     author : 'string',
     content : 'longtext',
@@ -81,6 +81,8 @@ var removeItem = function(options, callback){
 
 var ifExist = function(item, callback){
     selectItem({link: item.link}, function(err, items){
+        //console.log('check item with link: ' + item.link);//---------------------------------------
+        //console.log('err: ' + err + ', items num: ', items.length);//---------------------------------------
         if(err){
             callback && callback(err);
             return;
