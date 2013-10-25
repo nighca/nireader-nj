@@ -7,6 +7,9 @@ var struct = {
     name : 'string',
     mail : 'string',
     password : 'longstring',
+    thirdParty : 'longstring',
+    thirdPartyId : 'longstring',
+    avatar : 'longlongstring',
     description : 'text'
 };
 
@@ -17,11 +20,14 @@ db.initTable(tableName, struct, function(err, result){
 });
 
 function User (options) {
-    this.id = options.id || null; 
-    this.name = options.name || "anonymous"; 
-    this.mail = options.mail || null; 
-    this.password = options.password || null; 
-    this.description = options.description || null; 
+    this.id = options.id || null;
+    this.name = options.name || "anonymous";
+    this.mail = options.mail || null;
+    this.password = options.password || null;
+    this.thirdParty = options.thirdParty || null;
+    this.thirdPartyId = options.thirdPartyId || null;
+    this.avatar = options.avatar || null;
+    this.description = options.description || null;
 }
 
 var createUser = function(options){
@@ -58,16 +64,20 @@ var removeUser = function(options, callback){
 };
 
 var ifExist = function(user, callback){
-    selectUser({name: user.name}, function(err, users){
+    var filter = user.thirdParty ?
+        {
+            thirdParty: user.thirdParty,
+            thirdPartyId: user.thirdPartyId
+        } :
+        {
+            name: user.name
+        };
+    selectUser(filter, function(err, users){
         if(err){
             callback && callback(err);
             return;
         }
-        if(users.length>0){
-            callback && callback('already exist');
-            return;
-        }
-        callback && callback(null);
+        callback && callback(null, users.length > 0 ? users[0] : false);
     });
 };
 

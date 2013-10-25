@@ -10,6 +10,12 @@ define(function(require, exports, module){
                 resource: 1000 * 60 * 60, // 1h
                 list: 1000 * 60 // 1min
             }
+        },
+        auth: {
+            qq: {
+                clientId: '100544244',
+                scope: 'get_user_info'
+            }
         }
     };
 });

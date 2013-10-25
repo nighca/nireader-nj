@@ -3,7 +3,8 @@ var pages = {
     entrance: require('./route/page/entrance'),
     channel: require('./route/page/channel'),
     item: require('./route/page/item'),
-    signin: require('./route/page/signin')
+    signin: require('./route/page/signin'),
+    auth: require('./route/page/auth')
 };
 
 var apis = {
@@ -21,6 +22,7 @@ var routes = [
     ['get', '/', pages.home],
     ['get', '/welcome', pages.entrance],
     ['get', '/signin', pages.signin],
+    ['get', '/auth/:type', pages.auth],
     ['get', '/channel/:cid', pages.channel],
     ['get', '/my/channel/:cid', pages.channel],
     ['get', '/recommend/channel/:cid', pages.channel],

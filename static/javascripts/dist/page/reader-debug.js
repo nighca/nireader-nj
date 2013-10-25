@@ -76,6 +76,9 @@ define("nireader/nireader-fe/2.0.0/module/stateManager-debug", [ "nireader/nirea
 });
 
 define("nireader/nireader-fe/2.0.0/kit/url-debug", [], function(require, exports, module) {
+    var withProtocal = function(url) {
+        return url.indexOf("://") > 0;
+    };
     var removeBeforeSlash = function(url) {
         var p = url.indexOf("://");
         if (p < 0) {
@@ -128,10 +131,24 @@ define("nireader/nireader-fe/2.0.0/kit/url-debug", [], function(require, exports
         }
         return false;
     };
+    var complete = function(url) {
+        return withProtocal(url) ? url : location.origin + concatWithCurrentPath(url);
+    };
+    var parseHash = function(hash) {
+        var hashParams = {};
+        var e, a = /\+/g, // Regex for replacing addition symbol with a space
+        r = /([^&;=]+)=?([^&;]*)/g, d = function(s) {
+            return decodeURIComponent(s.replace(a, " "));
+        }, q = hash.substring(1);
+        while (e = r.exec(q)) hashParams[d(e[1])] = d(e[2]);
+        return hashParams;
+    };
     exports.format = formatUrl;
     //exports.getType = getType;
     exports.parse = parseUrl;
     exports.isSameDomain = isSameDomain;
+    exports.complete = complete;
+    exports.parseHash = parseHash;
 });
 
 define("nireader/nireader-fe/2.0.0/kit/customEvent-debug", [], function(require, exports, module) {
@@ -969,6 +986,12 @@ define("nireader/nireader-fe/2.0.0/config-debug", [], function(require, exports,
                 // 1h
                 list: 1e3 * 60
             }
+        },
+        auth: {
+            qq: {
+                clientId: "100544244",
+                scope: "get_user_info"
+            }
         }
     };
 });
@@ -1022,6 +1045,13 @@ define("nireader/nireader-fe/2.0.0/interface/index-debug", [], function(require,
         },
         recommendItem: function(id) {
             return "/recommend/item/" + id;
+        },
+        auth: {
+            qq: {
+                auth: "https://graph.qq.com/oauth2.0/authorize",
+                callback: "/auth/qq",
+                getId: "https://graph.qq.com/oauth2.0/me"
+            }
         }
     };
     module.exports = {
@@ -1256,7 +1286,6 @@ define("nireader/nireader-fe/2.0.0/kit/eventList-debug", [], function(require, e
             name: name,
             list: list,
             add: function(dom, event, handler) {
-                LOG("add event: ", event, " to ", this);
                 for (var i = list.length - 1; i >= 0; i--) {
                     if (list[i].dom === dom && list[i].event === event && list[i].handler === handler) {
                         return;
@@ -1269,18 +1298,19 @@ define("nireader/nireader-fe/2.0.0/kit/eventList-debug", [], function(require, e
                         event: event,
                         handler: handler
                     });
+                    LOG("add event: ", event, " to ", this);
                 } catch (e) {
                     console.log(e.stack);
                 }
                 return list;
             },
             remove: function(dom, event, handler) {
-                LOG("remove event: ", event, " from ", this);
                 for (var i = list.length - 1; i >= 0; i--) {
                     if (list[i].dom === dom && list[i].event === event && list[i].handler === handler) {
                         try {
                             dom.off(event, handler);
                             list.splice(i, 1);
+                            LOG("remove event: ", event, " from ", this);
                         } catch (e) {
                             console.log(e.stack);
                         }
@@ -1338,13 +1368,15 @@ define("nireader/nireader-fe/2.0.0/template/home/channelInfo-debug", [ "nireader
     module.exports = template.compile(tmpl);
 });
 
-define("nireader/nireader-fe/2.0.0/content/entrance-debug", [ "nireader/nireader-fe/2.0.0/kit/request-debug", "nireader/nireader-fe/2.0.0/kit/customEvent-debug", "nireader/nireader-fe/2.0.0/kit/notice-debug", "nireader/nireader-fe/2.0.0/template/common/notice-debug", "nireader/nireader-fe/2.0.0/template/template-debug", "nireader/nireader-fe/2.0.0/kit/time-debug", "nireader/nireader-fe/2.0.0/kit/num-debug", "nireader/nireader-fe/2.0.0/kit/userinfo-debug", "nireader/nireader-fe/2.0.0/kit/cookie-debug", "nireader/nireader-fe/2.0.0/kit/eventList-debug", "nireader/nireader-fe/2.0.0/interface/index-debug" ], function(require, exports, module) {
+define("nireader/nireader-fe/2.0.0/content/entrance-debug", [ "nireader/nireader-fe/2.0.0/kit/request-debug", "nireader/nireader-fe/2.0.0/kit/customEvent-debug", "nireader/nireader-fe/2.0.0/kit/notice-debug", "nireader/nireader-fe/2.0.0/template/common/notice-debug", "nireader/nireader-fe/2.0.0/template/template-debug", "nireader/nireader-fe/2.0.0/kit/time-debug", "nireader/nireader-fe/2.0.0/kit/num-debug", "nireader/nireader-fe/2.0.0/kit/userinfo-debug", "nireader/nireader-fe/2.0.0/kit/cookie-debug", "nireader/nireader-fe/2.0.0/kit/eventList-debug", "nireader/nireader-fe/2.0.0/kit/url-debug", "nireader/nireader-fe/2.0.0/interface/index-debug", "nireader/nireader-fe/2.0.0/config-debug" ], function(require, exports, module) {
     var request = require("nireader/nireader-fe/2.0.0/kit/request-debug");
     var customEvent = require("nireader/nireader-fe/2.0.0/kit/customEvent-debug");
     var notice = require("nireader/nireader-fe/2.0.0/kit/notice-debug").notice;
     var userinfo = require("nireader/nireader-fe/2.0.0/kit/userinfo-debug");
     var eventList = require("nireader/nireader-fe/2.0.0/kit/eventList-debug");
+    var url = require("nireader/nireader-fe/2.0.0/kit/url-debug");
     var interfaces = require("nireader/nireader-fe/2.0.0/interface/index-debug");
+    var authConfig = require("nireader/nireader-fe/2.0.0/config-debug").auth;
     var apis = interfaces.api;
     var pages = interfaces.page;
     var pageTitle = $("title");
@@ -1376,9 +1408,42 @@ define("nireader/nireader-fe/2.0.0/content/entrance-debug", [ "nireader/nireader
     Entrance.prototype.bindEvent = function() {
         var _this = this;
         var doms = this.doms;
-        this.eventList.add(doms.signin, "click", function() {
+        /*this.eventList.add(doms.signin, 'click', function(){
             doms.signinBlock.fadeIn();
             return false;
+        });*/
+        this.eventList.add(doms.qq, "click", function(e) {
+            var config = authConfig.qq;
+            var authUrl = pages.auth.qq.auth;
+            var redirect_uri = encodeURIComponent(url.complete(pages.auth.qq.callback));
+            authUrl += "?response_type=" + "token";
+            authUrl += "&client_id=" + config.clientId;
+            authUrl += "&redirect_uri=" + redirect_uri;
+            authUrl += "&scope=" + config.scope;
+            window.finishAuth = function(params) {
+                //console.log('!!!!!!!!!!!!!!!!', params)
+                var getIdUrl = pages.auth.qq.getId;
+                getIdUrl += "?access_token=" + params.access_token;
+                window.callback = function(result) {
+                    request.post({
+                        username: result.openid,
+                        password: params.access_token,
+                        thirdParty: "qq"
+                    }, apis.auth.in, function(err, data) {
+                        if (err) {
+                            notice(data);
+                            return;
+                        }
+                        goHome();
+                    });
+                    delete window.callback;
+                };
+                var script = document.createElement("script");
+                script.src = getIdUrl;
+                document.body.appendChild(script);
+                delete window.finishAuth;
+            };
+            window.open(authUrl);
         });
         this.eventList.add(doms.submit, "click", function(e) {
             _this.signIn();
@@ -1425,7 +1490,8 @@ define("nireader/nireader-fe/2.0.0/content/entrance-debug", [ "nireader/nireader
             signinBlock: $("#signin-block"),
             nameIn: $("#name-in"),
             passwordIN: $("#password-in"),
-            submit: $("#submit")
+            submit: $("#submit"),
+            qq: $("#qq")
         };
     };
     module.exports = Entrance;

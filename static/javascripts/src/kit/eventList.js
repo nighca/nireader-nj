@@ -9,8 +9,6 @@ define(function(require, exports, module){
             name: name,
             list: list,
             add: function(dom, event, handler){
-                LOG('add event: ', event, ' to ', this);
-
                 for (var i = list.length - 1; i >= 0; i--) {
                     if(list[i].dom === dom && list[i].event === event && list[i].handler === handler){
                         return;
@@ -23,6 +21,7 @@ define(function(require, exports, module){
                         event: event,
                         handler: handler
                     });
+                    LOG('add event: ', event, ' to ', this);
                 }catch(e){
                     console.log(e.stack);
                 }
@@ -30,13 +29,12 @@ define(function(require, exports, module){
                 return list;
             },
             remove: function(dom, event, handler){
-                LOG('remove event: ', event, ' from ', this);
-
                 for (var i = list.length - 1; i >= 0; i--) {
                     if(list[i].dom === dom && list[i].event === event && list[i].handler === handler){
                         try{
                             dom.off(event, handler);
                             list.splice(i, 1);
+                            LOG('remove event: ', event, ' from ', this);
                         }catch(e){
                             console.log(e.stack);
                         }
