@@ -48,6 +48,13 @@ define(function(require, exports, module) {
         },
         recommendItem: function(id){
             return '/recommend/item/' + id;
+        },
+        auth: {
+            qq: {
+                auth: 'https://graph.qq.com/oauth2.0/authorize',
+                callback: '/auth/qq',
+                getId: 'https://graph.qq.com/oauth2.0/me'
+            }
         }
     };
 

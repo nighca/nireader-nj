@@ -1,4 +1,8 @@
 define(function(require, exports, module){
+    var withProtocal = function(url){
+        return url.indexOf("://") > 0;
+    };
+
     var removeBeforeSlash = function(url){
         var p = url.indexOf("://");
         if(p<0){
@@ -60,8 +64,32 @@ define(function(require, exports, module){
         return false;
     };
 
+    var complete = function(url){
+        return (
+            withProtocal(url) ?
+                url :
+                (location.origin + concatWithCurrentPath(url))
+        );
+    };
+
+    var parseHash = function(hash) {
+        var hashParams = {};
+        var e,
+            a = /\+/g,  // Regex for replacing addition symbol with a space
+            r = /([^&;=]+)=?([^&;]*)/g,
+            d = function (s) { return decodeURIComponent(s.replace(a, " ")); },
+            q = hash.substring(1);
+
+        while (e = r.exec(q))
+           hashParams[d(e[1])] = d(e[2]);
+
+        return hashParams;
+    };
+
     exports.format = formatUrl;
     //exports.getType = getType;
     exports.parse = parseUrl;
     exports.isSameDomain = isSameDomain;
+    exports.complete = complete;
+    exports.parseHash = parseHash;
 });

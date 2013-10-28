@@ -72,6 +72,14 @@ define(function(require, exports, module){
         return (delete storage[name]);
     };
 
+    var clear = function(){
+        LOG('clear begin: ', storage);
+        storage = {};
+        hotList = [];
+        local.clear();
+        LOG('clear end: ', storage);
+    };
+
     // persistence with localStorage
     var saveToLocal = function(){
         LOG('save to local begin: ', storage);
@@ -147,6 +155,7 @@ define(function(require, exports, module){
 
     module.exports = {
         set: set,
-        get: get
+        get: get,
+        clear: clear
     };
 });

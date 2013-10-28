@@ -30,20 +30,46 @@
 			text-decoration: none;
 			color: #a8a8a8;
 
+			/*
 			cursor: pointer;
 			.transition-duration();
 
 			&:hover{
 				color: #000;
 			}
+			*/
 		}
 	}
 
 	.signin-block{
-		display: none;
+		//display: none;
 		margin-top: 20px;
 		input{
 			margin-right: 20px;
+		}
+
+		.third-party-line{
+			margin-top: 20px;
+
+			.third-party{
+				cursor: pointer;
+				.transition-duration(.3s);
+
+				-webkit-filter: grayscale(100%) blur(3px) contrast(200%);
+				opacity: 0.4;
+				&:hover{
+					-webkit-filter: grayscale(0%) blur(0px) contrast(200%);
+					opacity: 1.0;
+				}
+			}
+		}
+
+		.status-line{
+			margin-top: 20px;
+
+			font-size: 12px;
+			font-weight: bold;
+			color: #a8a8a8;
 		}
 	}
 }

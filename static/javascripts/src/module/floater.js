@@ -4,6 +4,7 @@ define(function(require, exports, module) {
     var pattern = require('../kit/pattern');
     var request = require('../kit/request');
     var resource = require('../kit/resource');
+    var userinfo = require('../kit/userinfo');
     var notice = require('../kit/notice').notice;
     var URL = require('../kit/url');
     var customEvent = require('../kit/customEvent');
@@ -168,7 +169,7 @@ define(function(require, exports, module) {
 
         enterHandler = function(){
             showTip('正在登出... ' + loadingIcon);
-            request.get(apis.auth.out, function(err){
+            userinfo.logout(function(err){
                 if(err){
                     notice('出错了。');
                     LOG(err);
