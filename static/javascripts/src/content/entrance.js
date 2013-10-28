@@ -10,6 +10,8 @@ define(function(require, exports, module) {
     var apis = interfaces.api;
     var pages = interfaces.page;
 
+    var loadingIcon = require('../template/common/loadingIcon')();
+
     var pageTitle = $('title');
 
     var goHome = function(){
@@ -49,6 +51,10 @@ define(function(require, exports, module) {
         var _this = this;
         var doms = this.doms;
 
+        var showStatus = function(word, loading){
+            doms.status.html(word + (loading ? (' ' + loadingIcon) : ''));
+        };
+
         /*this.eventList.add(doms.signin, 'click', function(){
             doms.signinBlock.fadeIn();
             return false;
@@ -63,11 +69,14 @@ define(function(require, exports, module) {
             authUrl += '&redirect_uri=' + redirect_uri;
             authUrl += '&scope=' + config.scope;
 
+            showStatus('在新页面中授权');
+
             window.finishAuth = function(params){
                 var getIdUrl = pages.auth.qq.getId;
                 getIdUrl += '?access_token=' + params.access_token;
 
                 window.callback = function(result){
+                    showStatus('登录', true);
                     request.post({
                         username: result.openid,
                         password: params.access_token,
@@ -77,6 +86,7 @@ define(function(require, exports, module) {
                             notice(data);
                             return;
                         }
+                        showStatus('登录成功', true);
                         goHome();
                     });
 
@@ -86,6 +96,7 @@ define(function(require, exports, module) {
                 var script = document.createElement('script');
                 script.src = getIdUrl;
                 document.body.appendChild(script);
+                showStatus('获取基本信息', true);
 
                 delete window.finishAuth;
             };
@@ -113,6 +124,12 @@ define(function(require, exports, module) {
             return;
         }
 
+        var status = this.doms.status;
+        var showStatus = function(word, loading){
+            status.html(word + (loading ? (' ' + loadingIcon) : ''));
+        };
+
+        showStatus('登录', true);
         request.post({
             username: username,
             password: password
@@ -121,6 +138,7 @@ define(function(require, exports, module) {
                 notice('错了。');
                 return;
             }
+            showStatus('登录成功', true);
             goHome();
         });
     };
@@ -145,7 +163,8 @@ define(function(require, exports, module) {
             nameIn: $('#name-in'),
             passwordIN: $('#password-in'),
             submit: $('#submit'),
-            qq: $('#qq')
+            qq: $('#qq'),
+            status: $('#status')
         };
     };
 
