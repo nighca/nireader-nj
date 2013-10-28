@@ -20,7 +20,7 @@ define(function(require, exports, module) {
         this.url = opt.url;
         //this.wrapper = opt.wrapper;
         this.eventList = eventList.create('content/entrance');
-        
+
         this.type = 'entrance';
     };
 
@@ -64,7 +64,6 @@ define(function(require, exports, module) {
             authUrl += '&scope=' + config.scope;
 
             window.finishAuth = function(params){
-                //console.log('!!!!!!!!!!!!!!!!', params)
                 var getIdUrl = pages.auth.qq.getId;
                 getIdUrl += '?access_token=' + params.access_token;
 
