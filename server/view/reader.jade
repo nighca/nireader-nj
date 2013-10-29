@@ -1,7 +1,7 @@
 extends global
 
 block stylesheets
-    link(rel='stylesheet', href='/stylesheets/css/reader.css')
+    link(rel='stylesheet', href='#{DOMAINS.CSS}/stylesheets/css/reader.css')
 
 block content
     a#left-link.left-block(data-link-async="true")
@@ -30,7 +30,7 @@ block content
 append scripts
     script.
         seajs.config({
-            base: '../javascripts/dist/'
+            base: '#{DOMAINS.JS}/javascripts/dist/'
         });
 
         if(location.href.indexOf('?dev') > 0){
@@ -38,7 +38,7 @@ append scripts
                 reader.init();
             });
         }else{
-            seajs.use('/javascripts/dist/page/reader', function(){
+            seajs.use('page/reader', function(){
                 seajs.use('nireader/nireader-fe/2.0.1/page/reader', function(reader){
                     reader.init();
                 });

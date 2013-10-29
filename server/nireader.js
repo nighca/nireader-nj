@@ -13,23 +13,29 @@ require('./task');
 var app = express();
 
 app.set('port', process.env.PORT || 3000);
+
+var domains = require('./config/domain.json');
 app.set('views', path.join(__dirname, 'view'));
+var render = require('jade').renderFile;
+app.engine('jade', function(path, options, fn){
+    // add static domain
+    options.DOMAINS = domains;
+    return render(path, options, fn);
+});
 app.set('view engine', 'jade');
-//app.use(express.favicon());
+
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 
-//app.use(express.cookieParser('JustASimpleSecretForCookie'));
-//app.use(express.session({secret: 'JustASimpleSecretForSession'}));
 app.use(express.cookieParser('JustASimpleSecretForCookie'));
 app.use(dealSession());
 app.use(express.cookieSession({
-	key: 'WhoAmI',
-	secret: 'JustASimpleSecretForSession',
-	cookie: {
-		maxAge: 1000 * 60 * 60 * 24 * 7,
-		httpOnly: false
-	}
+    key: 'WhoAmI',
+    secret: 'JustASimpleSecretForSession',
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+        httpOnly: false
+    }
 }));
 
 app.use(express.methodOverride());

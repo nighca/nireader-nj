@@ -3,14 +3,11 @@ html
     head
         title= title
         meta(property='qc:admins', content='4505350012514525626100161736166357')
+        link(rel="shortcut icon", href="#{DOMAINS.IMG}/favicon.ico")
         block libs
-            //- script(src='/javascripts/lib/sea.js')
-            //- script(src='/javascripts/lib/jquery-2.0.2.min.js')
-            //- script(src='/javascripts/lib/type.min.js')
-            //- script(src='/javascripts/lib/template.min.js')
-            script(src='/javascripts/lib/lib.js')
+            script(src='#{DOMAINS.JS}/javascripts/lib/lib.js')
         block stylesheets
-            link(rel='stylesheet', href='/stylesheets/css/global.css')
+            link(rel='stylesheet', href='#{DOMAINS.CSS}/stylesheets/css/global.css')
     body
         if user
             span#user-info(data-uid=user.id)

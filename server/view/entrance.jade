@@ -1,7 +1,7 @@
 extends reader
 
 block stylesheets
-    link(rel='stylesheet', href='/stylesheets/css/entrance.css')
+    link(rel='stylesheet', href='#{DOMAINS.CSS}/stylesheets/css/entrance.css')
 
 block headerContent
     #header.header
@@ -23,6 +23,6 @@ block headerContent
                     i.icon-ok
 
                 p.third-party-line
-                    img#qq.third-party(src='http://nireader.u.qiniudn.com/Connect_qq_logo_4.png')
+                    img#qq.third-party(src='#{DOMAINS.IMG}/Connect_qq_logo_4.png')
 
                 p#status.status-line
