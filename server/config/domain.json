@@ -1,5 +1,12 @@
 {
-    "JS": "http://nireader.u.qiniudn.com",
-    "CSS": "http://nireader.u.qiniudn.com",
-    "IMG": "http://nireader.u.qiniudn.com"
+    "development": {
+        "JS": "",
+        "CSS": "",
+        "IMG": "http://nireader.u.qiniudn.com"
+    },
+    "production": {
+        "JS": "http://nireader.u.qiniudn.com",
+        "CSS": "http://nireader.u.qiniudn.com",
+        "IMG": "http://nireader.u.qiniudn.com"
+    }
 }

@@ -34,7 +34,7 @@ append scripts
         });
 
         if(location.href.indexOf('?dev') > 0){
-            seajs.use('/javascripts/src/page/reader', function(reader){
+            seajs.use('#{DOMAINS.JS}/javascripts/src/page/reader', function(reader){
                 reader.init();
             });
         }else{

@@ -1,0 +1,13 @@
+{
+    "cookie": {
+        "secret": "JustASimpleSecretForCookie"
+    },
+    "cookieSession": {
+        "key": "WhoAmI",
+        "secret": "JustASimpleSecretForSession",
+        "cookie": {
+            "maxAge": 604800000,
+            "httpOnly": false
+        }
+    }
+}
