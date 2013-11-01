@@ -4,8 +4,6 @@ html
         title= title
         meta(property='qc:admins', content='4505350012514525626100161736166357')
         link(rel="shortcut icon", href="#{DOMAINS.IMG}/favicon.ico")
-        block libs
-            script(src='#{DOMAINS.JS}/javascripts/lib/lib.js')
         block stylesheets
             link(rel='stylesheet', href='#{DOMAINS.CSS}/stylesheets/css/global.css')
     body
@@ -21,4 +19,6 @@ html
                     ul#tips.tips
                     ul#results.results
         #notice.notice
+        block libs
+            script(src='#{DOMAINS.JS}/javascripts/lib/lib.js')
         block scripts

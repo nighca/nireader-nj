@@ -339,6 +339,12 @@ define(function(require, exports, module) {
         this.recommendListReady = true;
 
         this.doms.recommendList = this.doms.content.find('#recommend-list');
+
+        var p = 20;
+        this.doms.recommendList.children().each(function(i, li){
+            $(li).css('opacity',(p-i)/p);
+        });
+
         this.sideBlock.bind(this.doms.recommendList);
     };
 

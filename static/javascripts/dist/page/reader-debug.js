@@ -523,6 +523,10 @@ define("nireader/nireader-fe/2.0.1/content/home-debug", [ "nireader/nireader-fe/
         }
         this.recommendListReady = true;
         this.doms.recommendList = this.doms.content.find("#recommend-list");
+        var p = 20;
+        this.doms.recommendList.children().each(function(i, li) {
+            $(li).css("opacity", (p - i) / p);
+        });
         this.sideBlock.bind(this.doms.recommendList);
     };
     module.exports = Home;
