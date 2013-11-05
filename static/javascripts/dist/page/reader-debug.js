@@ -879,6 +879,9 @@ define("nireader/nireader-fe/2.0.1/kit/cache-debug", [ "nireader/nireader-fe/2.0
         cacheStatus("manage cache end.");
         saveToLocal();
     };
+    window.onbeforeunload = function() {
+        saveToLocal();
+    };
     var autoManage = function() {
         setInterval(manage, autoManageInterval);
     };
