@@ -56,8 +56,7 @@ var routes = [
     ['get', '/api/search/channel', apis.search.channel]
 ];
 
-
-var isDEV = !process.env.PRODUCTION;
+var isDEV = process.env.NODE_ENV !== 'production';
 var route, handler;
 var notFound = function(req, res){
     res.send(404);

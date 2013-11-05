@@ -146,6 +146,10 @@ define(function(require, exports, module){
         saveToLocal();
     };
 
+    window.onbeforeunload = function(){
+        saveToLocal();
+    };
+
     var autoManage = function(){
         setInterval(manage, autoManageInterval);
     };

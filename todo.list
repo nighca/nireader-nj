@@ -1,7 +1,0 @@
-cleanChannel, cleanSubsriptions
-
-channel, item ==> ifExist
-
-password ==> MD5?
-
-selectSummary
