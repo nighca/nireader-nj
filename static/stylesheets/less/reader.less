@@ -256,10 +256,29 @@
         margin-bottom: 0.6em;
         //padding: 0px 0.2em;
         li{
-            margin-bottom: 0.4em;
+            margin-bottom: 1px;
             padding: 0px 0.5em;
-            border-left: 2px solid @themeColor;
+            border-left: 2px solid fadeout(@themeColor, 30%);
             //border-left: 1px solid fadeout(@themeColor, 50%);
+        }
+    }
+
+    table{
+        tbody, thead{
+            tr{
+                &:not(:first-child){
+                    border-top: 1px solid #ccc;
+                }
+                td, th{
+                    &:not(:first-child){
+                        //border-left: 1px solid fadeout(#333, 50%);
+                    }
+                }
+            }
+
+            th{
+                font-weight: bold;
+            }
         }
     }
 
