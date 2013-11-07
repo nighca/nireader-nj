@@ -16,6 +16,18 @@
     opacity: @p;
 }
 
+.transition-duration(@duration: .3s){
+    -webkit-transition-duration: @duration;
+    -moz-transition-duration: @duration;
+    -o-transition-duration: @duration;
+    transition-duration: @duration;
+}
+
+.half-transparent{
+    .transition-duration;
+    .transparent(0.5);
+}
+
 .scale(@n){
     -webkit-transform: scale(@n);
     -moz-transform: scale(@n);
@@ -23,19 +35,14 @@
 }
 
 .blur{
+    .transition-duration;
+
     @r: 3px;
     -webkit-filter: blur(@r);
     -moz-filter: blur(@r);
     -o-filter: blur(@r);
     -ms-filter: blur(@r);
     filter: blur(@r);
-}
-
-.transition-duration(@duration: .5s){
-    -webkit-transition-duration: @duration;
-    -moz-transition-duration: @duration;
-    -o-transition-duration: @duration;
-    transition-duration: @duration;
 }
 
 .gradient (@direction: top, @bgn: #fff, @end: #000, @bgn_pos: 0%, @end_pos: 100%) {

@@ -1,6 +1,5 @@
 define(function(require, exports, module) {
     var keypress = require('../kit/keypress');
-
     var pattern = require('../kit/pattern');
     var request = require('../kit/request');
     var resource = require('../kit/resource');
@@ -8,6 +7,7 @@ define(function(require, exports, module) {
     var notice = require('../kit/notice').notice;
     var URL = require('../kit/url');
     var customEvent = require('../kit/customEvent');
+    var effect = require('../kit/effect');
 
     var interfaces = require('../interface/index');
     var apis = interfaces.api;
@@ -34,19 +34,28 @@ define(function(require, exports, module) {
         globalResult.hide();
     };
 
+    var visible;
     var showFloater = function(){
-        bodyContent.addClass('blur');
+        if(visible){
+            return;
+        }
+
+        effect.bodyBlur();
         globalFloater.addClass('show');
         
         initDom();
         initInfo();
+        visible = true;
     };
 
-    //showFloater();
-
     var hideFloater = function(){
-        bodyContent.removeClass('blur');
+        if(!visible){
+            return;
+        }
+
+        effect.bodyUnblur();
         globalFloater.removeClass('show');
+        visible = false;
     };
 
     var toggleFloater = function(){
@@ -298,4 +307,10 @@ define(function(require, exports, module) {
     keypress.register(27, function(e){
         toggleFloater();
     });
+
+    module.exports = {
+        visible: function(){
+            return visible;
+        }
+    };
 });

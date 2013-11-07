@@ -79,6 +79,11 @@ select{
     }
 }
 
+.body{
+    height: 100%;
+    background-color: #fff;
+}
+
 .header{
     position: absolute;
     z-index: 50;
@@ -139,11 +144,9 @@ select{
     height: 100%;
     top: 0;
     left: 0;
-    display: none;
-
-    z-index: 100;
-
-    background-color: rgba(97,97,97,0.2);
+    //display: none;
+    z-index: -1;
+    .transparent(0);
 
     @inputHeight: 24px;
     @inputWidth: 600px;
@@ -154,7 +157,11 @@ select{
     @paddingx: 8px;
 
     &.show{
-        display: block;
+        .transition-duration;
+        //display: block;
+        z-index: 100;
+        .transparent(1);
+        background-color: rgba(97,97,97,0.2);
     }
 
     .global-input, .global-result .tips .tip{

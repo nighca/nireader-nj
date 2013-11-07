@@ -8,6 +8,7 @@ define(function(require, exports, module) {
     var eventList = require('../kit/eventList');
     var notice = require('../kit/notice').notice;
     var customEvent = require('../kit/customEvent');
+    var effect = require('../kit/effect');
 
     var userinfo = require('../kit/userinfo');
 
@@ -60,6 +61,7 @@ define(function(require, exports, module) {
         this.doms.leftLink.attr('href', '');
         this.doms.rightLink.attr('href', '');
         this.doms.topLink.attr('href', '');
+        effect.bodyBlur();
     };
 
     Channel.prototype.prepareInfo = function(){
@@ -286,6 +288,9 @@ define(function(require, exports, module) {
     Channel.prototype.renderItemList = function(data){
         var _this = this;
         _this.doms.content.html(genItemList(data));
+
+        effect.bodyUnblur();
+
         var timer;
         this.eventList.add(_this.doms.content.find('.item'), 'mouseenter', function(){
             if(timer){

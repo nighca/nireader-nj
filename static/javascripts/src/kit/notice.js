@@ -1,22 +1,32 @@
 define(function(require, exports, module){
     var genNotice = require('../template/common/notice');
+    var effect = require('./effect');
     var noticeBlock = $('#notice');
-    var body = $('#body');
-    var header = $('#header');
-    var floater = $('#floater');
+
+    var visible = false;
 
     var showNotice = function(){
-        body.addClass('blur');
-        header.addClass('blur');
-        floater.addClass('blur');
+        if(visible){
+            return;
+        }
+
+        effect.bodyBlur();
+        effect.headerBlur();
+        effect.floaterBlur();
         noticeBlock.show();
+        visible = true;
     };
 
     var hideNotice = function(){
-        body.removeClass('blur');
-        header.removeClass('blur');
-        floater.removeClass('blur');
+        if(!visible){
+            return;
+        }
+
+        effect.bodyUnblur();
+        effect.headerUnblur();
+        effect.floaterUnblur();
         noticeBlock.hide();
+        visible = false;
     };
 
     var clean = function(){
@@ -56,6 +66,9 @@ define(function(require, exports, module){
 
     module.exports = {
         clean: cleanAndHide,
-        notice: renderAndBind
+        notice: renderAndBind,
+        visible: function(){
+            return visible;
+        }
     };
 });

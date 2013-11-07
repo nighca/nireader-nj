@@ -5,6 +5,7 @@ define(function(require, exports, module) {
     var eventList = require('../kit/eventList');
     var notice = require('../kit/notice').notice;
     var customEvent = require('../kit/customEvent');
+    var effect = require('../kit/effect');
 
     var genItemTitle = require('../template/item/title');
     var genItemInfo = require('../template/item/info');
@@ -145,6 +146,7 @@ define(function(require, exports, module) {
         this.doms.leftLink.attr('href', '');
         this.doms.rightLink.attr('href', '');
         this.doms.topLink.attr('href', '');
+        effect.bodyBlur();
     };
 
     Item.prototype.prepareInfo = function(){
@@ -297,6 +299,8 @@ define(function(require, exports, module) {
         this.doms.title.html(genItemTitle(data));
         this.doms.info.html(genItemInfo(data));
         this.doms.content.html(genItemContent(data));
+
+        effect.bodyUnblur();
     };
 
     Item.prototype.renderChannelInfo = function(data){
