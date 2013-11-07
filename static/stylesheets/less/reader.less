@@ -266,12 +266,12 @@
     table{
         tbody, thead{
             tr{
-                &:not(:first-child){
-                    border-top: 1px solid #ccc;
-                }
-                td, th{
-                    &:not(:first-child){
-                        //border-left: 1px solid fadeout(#333, 50%);
+                &:not(:last-child){
+                    th, td{
+                        border-bottom: 1px solid #ddd;
+                    }
+                    th{
+                        border-color: #999;
                     }
                 }
             }
