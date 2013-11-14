@@ -1,6 +1,6 @@
 var tasks = {
-    'Fetch feed': require('./fetchFeed')
-    //'Clean old items': require('./cleanItem')
+    'Fetch feed': require('./fetchFeed'),
+    'Clean old items': require('./cleanItem')
 };
 
 for(var t in tasks){

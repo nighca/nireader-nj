@@ -34,7 +34,7 @@ var fetchFeedOnce = function(callback){
                         callback && callback(error);
                     }
                 });
-            }, 1000 * 10 * i);
+            }, 1000 * 2 * i);
         });
     });
 };
