@@ -60,7 +60,7 @@ define(function(require, exports, module) {
 
     var format = function(time, seperator){
         if(time === null || time === undefined){
-            return '某一天，嗯';
+            return '我所不知道的某一天';
         }
         var t = new Date(time);
         seperator = seperator === undefined ? '' : seperator;
