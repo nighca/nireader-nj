@@ -144,12 +144,14 @@ Channel.prototype.updateFromMeta = function(meta){
     return channel;
 };
 
-var saveItemIfNotExist = function(item, callback){
+var saveOrUpdate = function(item, callback){
     Item.ifExist(item, function(err, exist){
-        if(err || exist){
-            //if(!err) console.log("Exist Item: " + item.title);//---------------------
-            callback && callback(err, exist);
+        if(err){
+            callback && callback(err);
             return;
+        }
+        if(exist){
+            item.id = exist.id;
         }
         item.save(callback);
     });
@@ -182,7 +184,7 @@ Channel.prototype.fetch = function(callback) {
             if(useItem(item, channel)){
                 notFinished++;
                 //console.log("Use Item: " + item.title);//---------------------
-                saveItemIfNotExist(Item.createFromFeed(item, channel.id), function(err){
+                saveOrUpdate(Item.createFromFeed(item, channel.id), function(err){
                     if(err){
                         console.error(err);
                     }
