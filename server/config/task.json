@@ -1,4 +1,10 @@
 {
-    "fetchInterval": 600000,
-    "tryFetchTimes": 5
+    "fetchFeed": {
+        "fetchInterval": 600000,
+        "tryFetchTimes": 5
+    },
+    "cleanItem": {
+        "cleanInterval": 611000,
+        "reserveNum": 10
+    }
 }
