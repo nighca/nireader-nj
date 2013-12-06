@@ -80,6 +80,10 @@ define(function(require, exports, module){
         LOG('clear end: ', storage);
     };
 
+    var getSize = function(){
+        return local.getSize();
+    };
+
     // persistence with localStorage
     var saveToLocal = function(){
         LOG('save to local begin: ', storage);
@@ -160,6 +164,7 @@ define(function(require, exports, module){
     module.exports = {
         set: set,
         get: get,
-        clear: clear
+        clear: clear,
+        getSize: getSize
     };
 });

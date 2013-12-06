@@ -8,6 +8,7 @@ define(function(require, exports, module) {
     var URL = require('../kit/url');
     var customEvent = require('../kit/customEvent');
     var effect = require('../kit/effect');
+    var cache = require('../kit/cache');
 
     var interfaces = require('../interface/index');
     var apis = interfaces.api;
@@ -199,6 +200,18 @@ define(function(require, exports, module) {
         };
     };
 
+    var dealNoCache = function(){
+        showTip('按<b>Enter</b>清除缓存。');
+
+        enterHandler = function(){
+            showTip('正在清除缓存... ' + loadingIcon);
+            var originSize = cache.getSize().MB + 'MB';
+            cache.clear();
+            var currSize = cache.getSize().MB + 'MB';
+            showTip('缓存已清空。（' + originSize + '->' + currSize + '）');
+        };
+    };
+
     var doSearch = function(val){
         if(val){
             var keywords = val.split(' '), realKeywords = [];
@@ -228,7 +241,8 @@ define(function(require, exports, module) {
 
     var cmds = {
         'logout': dealLogout,
-        'home': dealHome
+        'home': dealHome,
+        'nocache': dealNoCache
     };
 
     var checkInput = function(){

@@ -829,6 +829,9 @@ define("nireader/nireader-fe/2.0.1/kit/cache-debug", [ "nireader/nireader-fe/2.0
         local.clear();
         LOG("clear end: ", storage);
     };
+    var getSize = function() {
+        return local.getSize();
+    };
     // persistence with localStorage
     var saveToLocal = function() {
         LOG("save to local begin: ", storage);
@@ -893,7 +896,8 @@ define("nireader/nireader-fe/2.0.1/kit/cache-debug", [ "nireader/nireader-fe/2.0
     module.exports = {
         set: set,
         get: get,
-        clear: clear
+        clear: clear,
+        getSize: getSize
     };
 });
 
@@ -2226,6 +2230,7 @@ define("nireader/nireader-fe/2.0.1/module/floater-debug", [ "nireader/nireader-f
     var URL = require("nireader/nireader-fe/2.0.1/kit/url-debug");
     var customEvent = require("nireader/nireader-fe/2.0.1/kit/customEvent-debug");
     var effect = require("nireader/nireader-fe/2.0.1/kit/effect-debug");
+    var cache = require("nireader/nireader-fe/2.0.1/kit/cache-debug");
     var interfaces = require("nireader/nireader-fe/2.0.1/interface/index-debug");
     var apis = interfaces.api;
     var pages = interfaces.page;
@@ -2383,6 +2388,16 @@ define("nireader/nireader-fe/2.0.1/module/floater-debug", [ "nireader/nireader-f
             cleanTip();
         };
     };
+    var dealNoCache = function() {
+        showTip("按<b>Enter</b>清除缓存。");
+        enterHandler = function() {
+            showTip("正在清除缓存... " + loadingIcon);
+            var originSize = cache.getSize().MB + "MB";
+            cache.clear();
+            var currSize = cache.getSize().MB + "MB";
+            showTip("缓存已清空。（" + originSize + "->" + currSize + "）");
+        };
+    };
     var doSearch = function(val) {
         if (val) {
             var keywords = val.split(" "), realKeywords = [];
@@ -2409,7 +2424,8 @@ define("nireader/nireader-fe/2.0.1/module/floater-debug", [ "nireader/nireader-f
     };
     var cmds = {
         logout: dealLogout,
-        home: dealHome
+        home: dealHome,
+        nocache: dealNoCache
     };
     var checkInput = function() {
         var val = globalInput.val().trim();
