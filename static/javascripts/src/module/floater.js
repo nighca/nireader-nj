@@ -42,6 +42,7 @@ define(function(require, exports, module) {
         }
 
         effect.bodyBlur();
+        effect.headerBlur();
         globalFloater.addClass('show');
         
         initDom();
@@ -55,6 +56,7 @@ define(function(require, exports, module) {
         }
 
         effect.bodyUnblur();
+        effect.headerUnblur();
         globalFloater.removeClass('show');
         visible = false;
     };
@@ -161,7 +163,7 @@ define(function(require, exports, module) {
                     addSubscription(channel.id, function(err, subscription){
                         if(err){
                             showTip(
-                                '订阅' + channel.title + '没成功。'
+                                '订阅' + channel.title + '没成功。（' + err + '）'
                             );
                             return;
                         }

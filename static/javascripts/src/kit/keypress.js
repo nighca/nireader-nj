@@ -37,7 +37,10 @@ define(function(require, exports, module){
             for (var i = 0, l = list.length; i < l; i++) {
                 try{
                     list[i](e);
-                }catch(e){}
+                }catch(e){
+                    LOG(e);
+                    LOG(e.stack);
+                }
             }
         }
     };
