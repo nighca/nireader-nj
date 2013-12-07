@@ -1,4 +1,6 @@
 define(function(require, exports, module) {
+    var floater = require('../module/floater');
+
     var resource = require('../kit/resource');
     var pagePath = require('../interface/index').page;
     var URL = require('../kit/url');
@@ -135,10 +137,10 @@ define(function(require, exports, module) {
         }, 200);
 
         addEvent(keypress, keypress.code.left, function(e){
-            leftLink.click();
+            !floater.visible() && leftLink.click();
         });
         addEvent(keypress, keypress.code.right, function(e){
-            rightLink.click();
+            !floater.visible() && rightLink.click();
         });
     };
 

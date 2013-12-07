@@ -200,6 +200,20 @@ define(function(require, exports, module) {
         };
     };
 
+    var dealCache = function(){
+        showTip('按<b>Enter</b>查看缓存统计。');
+
+        enterHandler = function(){
+            showTip('正在计算... ' + loadingIcon);
+            var size = cache.getSize();
+            setTimeout(function(){
+                addResult(['共', size.num, '条缓存记录'].join(' '));
+                addResult(['占用存储空间', size.MB, 'MB'].join(' '));
+                cleanTip();
+            }, 300);
+        };
+    };
+
     var dealNoCache = function(){
         showTip('按<b>Enter</b>清除缓存。');
 
@@ -208,7 +222,9 @@ define(function(require, exports, module) {
             var originSize = cache.getSize().MB + 'MB';
             cache.clear();
             var currSize = cache.getSize().MB + 'MB';
-            showTip('缓存已清空。（' + originSize + '->' + currSize + '）');
+            setTimeout(function(){
+                showTip('缓存已清空。（' + originSize + '->' + currSize + '）');
+            }, 300);
         };
     };
 
@@ -242,6 +258,7 @@ define(function(require, exports, module) {
     var cmds = {
         'logout': dealLogout,
         'home': dealHome,
+        'cache': dealCache,
         'nocache': dealNoCache
     };
 
@@ -271,25 +288,38 @@ define(function(require, exports, module) {
         }
 
         // CMD hint
-        var pos, str, cmd;
+        var pos, cmd, matches = [];
         if(val){
             for(var c in cmds){
                 if(cmds.hasOwnProperty(c) && (pos = c.indexOf(val)) >= 0){
-                    cmd = c;
+                    matches.push({
+                        cmd: c,
+                        pos: pos
+                    });
+                }
+            }
+            var maxNum = 3,
+                last = (maxNum < matches.length ? maxNum : matches.length) - 1;
+            matches.slice(0, maxNum).sort(function(a, b){
+                return a.pos < b.pos;
+            }).forEach(function(match, i){
+                var c = match.cmd,
+                    p = match.pos,
                     str =
-                        c.slice(0, pos) +
+                        c.slice(0, p) +
                         '<b>' +
                         val +
                         '</b>' +
-                        c.slice(pos + val.length) +
-                        '\t ---- 用<b>Tab</b>补全';
-                    addTip(str);
+                        c.slice(p + val.length);
+                if(i === last){
+                    str += '\t ---- 用<b>Tab</b>补全';
+                    cmd = c;
                 }
-            }
+                addTip(str);
+            });
         }
         tabHandler = cmd && function(e){
             globalInput.val(cmd);
-            //checkInput();
         };
 
         // Search for channels

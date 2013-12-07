@@ -1,5 +1,7 @@
 define(function(require, exports, module) {
+    var floater = require('../module/floater');
     var resource = require('../kit/resource');
+
     var request = require('../kit/request');
     var interfaces = require('../interface/index');
     var pagePath = interfaces.page;
@@ -54,10 +56,10 @@ define(function(require, exports, module) {
         var rightLink = this.doms.rightLink;
 
         this.eventList.add(keypress, keypress.code.left, function(e){
-            leftLink.click();
+            !floater.visible() && leftLink.click();
         });
         this.eventList.add(keypress, keypress.code.right, function(e){
-            rightLink.click();
+            !floater.visible() && rightLink.click();
         });
     };
 
