@@ -1954,6 +1954,7 @@ define("nireader/nireader-fe/2.0.1/module/floater-debug", [ "nireader/nireader-f
             return;
         }
         effect.bodyBlur();
+        effect.headerBlur();
         globalFloater.addClass("show");
         initDom();
         initInfo();
@@ -1964,6 +1965,7 @@ define("nireader/nireader-fe/2.0.1/module/floater-debug", [ "nireader/nireader-f
             return;
         }
         effect.bodyUnblur();
+        effect.headerUnblur();
         globalFloater.removeClass("show");
         visible = false;
     };
@@ -2051,7 +2053,7 @@ define("nireader/nireader-fe/2.0.1/module/floater-debug", [ "nireader/nireader-f
                     showTip(channel.title + "添加好了，正在订阅... " + loadingIcon);
                     addSubscription(channel.id, function(err, subscription) {
                         if (err) {
-                            showTip("订阅" + channel.title + "没成功。");
+                            showTip("订阅" + channel.title + "没成功。（" + err + "）");
                             return;
                         }
                         cleanResult();
@@ -2250,7 +2252,10 @@ define("nireader/nireader-fe/2.0.1/kit/keypress-debug", [], function(require, ex
             for (var i = 0, l = list.length; i < l; i++) {
                 try {
                     list[i](e);
-                } catch (e) {}
+                } catch (e) {
+                    LOG(e);
+                    LOG(e.stack);
+                }
             }
         }
     };
