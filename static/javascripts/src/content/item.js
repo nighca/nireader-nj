@@ -6,6 +6,7 @@ define(function(require, exports, module) {
     var notice = require('../kit/notice').notice;
     var customEvent = require('../kit/customEvent');
     var effect = require('../kit/effect');
+    var keypress = require('../kit/keypress');
 
     var genItemTitle = require('../template/item/title');
     var genItemInfo = require('../template/item/info');
@@ -52,8 +53,8 @@ define(function(require, exports, module) {
         var upButton = this.doms.upButton;
         var checkoutDelay = 300;
 
-        var addEvent = this.eventList.add,
-            removeEvent = this.eventList.remove;
+        var addEvent = this.eventList.add.bind(this.eventList),
+            removeEvent = this.eventList.remove.bind(this.eventList);
 
         this.doms.content.find('a').each(function(i, a){
             a = $(a);
@@ -132,6 +133,13 @@ define(function(require, exports, module) {
                 }
             });
         }, 200);
+
+        addEvent(keypress, keypress.code.left, function(e){
+            leftLink.click();
+        });
+        addEvent(keypress, keypress.code.right, function(e){
+            rightLink.click();
+        });
     };
 
     Item.prototype.clean = function(){

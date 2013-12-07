@@ -9,6 +9,7 @@ define(function(require, exports, module) {
     var notice = require('../kit/notice').notice;
     var customEvent = require('../kit/customEvent');
     var effect = require('../kit/effect');
+    var keypress = require('../kit/keypress');
 
     var userinfo = require('../kit/userinfo');
 
@@ -49,6 +50,15 @@ define(function(require, exports, module) {
     };
 
     Channel.prototype.bindEvent = function(){
+        var leftLink = this.doms.leftLink;
+        var rightLink = this.doms.rightLink;
+
+        this.eventList.add(keypress, keypress.code.left, function(e){
+            leftLink.click();
+        });
+        this.eventList.add(keypress, keypress.code.right, function(e){
+            rightLink.click();
+        });
     };
 
     Channel.prototype.clean = function(){
