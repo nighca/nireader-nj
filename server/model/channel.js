@@ -150,6 +150,7 @@ var saveOrUpdate = function(item, callback){
             callback && callback(err);
             return;
         }
+        //console.log('check', item.title, '|' + item.link + '|', exist ? 'true' : 'false');//----------------------------
         if(exist){
             item.id = exist.id;
         }
@@ -161,7 +162,7 @@ Channel.prototype.fetch = function(callback) {
     var channel = this;
     //console.log("Channel fetch: " + channel.title);//---------------------------------
     if(!channel.source){
-        callback && callback("no source assigned.")
+        callback && callback("no source assigned.");
         return;
     }
     if(!channel.id){

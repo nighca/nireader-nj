@@ -1,7 +1,7 @@
 {
     "fetchFeed": {
         "fetchInterval": 600000,
-        "tryFetchTimes": 5
+        "tryFetchTimes": 1
     },
     "cleanItem": {
         "cleanInterval": 600000,

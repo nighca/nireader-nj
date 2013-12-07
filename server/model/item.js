@@ -18,13 +18,13 @@ db.initTable(tableName, struct, function(err, result){
 });
 
 function Item (options) {
-    this.id = options.id || null; 
-    this.title = options.title || null; 
-    this.link = options.link || null; 
-    this.description = options.description || null; 
-    this.author = options.author || null; 
-    this.content = options.content || null; 
-    this.pubDate = options.pubDate || null; 
+    this.id = options.id || null;
+    this.title = options.title || null;
+    this.link = options.link || null;
+    this.description = options.description || null;
+    this.author = options.author || null;
+    this.content = options.content || null;
+    this.pubDate = options.pubDate || null;
     this.source = options.source || null;
 }
 
@@ -80,8 +80,12 @@ var removeItem = function(options, callback){
 };
 
 var ifExist = function(item, callback){
-    selectItem({link: item.link}, function(err, items){
-        //console.log('check item with link: ' + item.link);//---------------------------------------
+    selectItem({
+        link: item.link,
+        title: item.title,
+        source: item.source
+    }, function(err, items){
+        //console.log('check item with link: |' + item.link + '|');//---------------------------------------
         //console.log('err: ' + err + ', items num: ', items.length);//---------------------------------------
         if(err){
             callback && callback(err);
