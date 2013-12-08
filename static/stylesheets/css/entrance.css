@@ -7,7 +7,8 @@
 .align-center{text-align:center}
 .hidden{display:none}
 .inline-block{display:inline-block;*display:inline;*zoom:1}
-body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td{margin:0;padding:0}
+.breath{background:#fff;animation:myfirst 5s linear 0 infinite normal;-moz-animation:myfirst 5s linear 0 infinite normal;-webkit-animation:myfirst 5s linear 0 infinite normal;-o-animation:myfirst 5s linear 0 infinite normal}
+@keyframes myfirst{0%{background:#fff} 40%{background:#eee} 70%{background:#fff} 100%{background:#fff}}@-moz-keyframes myfirst /* Firefox */{0%{background:#fff} 40%{background:#eee} 70%{background:#fff} 100%{background:#fff}}@-webkit-keyframes myfirst /* Safari and Chrome */{0%{background:#fff} 40%{background:#eee} 70%{background:#fff} 100%{background:#fff}}@-o-keyframes myfirst /* Opera */{0%{background:#fff} 40%{background:#eee} 70%{background:#fff} 100%{background:#fff}}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td{margin:0;padding:0}
 table{border-collapse:collapse;border-spacing:0}
 fieldset,img{border:0}
 address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal}

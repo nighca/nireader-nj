@@ -1,7 +1,8 @@
-define("nireader/nireader-fe/2.0.1/page/reader-debug", [ "../module/stateManager-debug", "../kit/url-debug", "../kit/customEvent-debug", "../module/page-debug", "../module/createContent-debug", "../content/home-debug", "../kit/resource-debug", "../kit/request-debug", "../kit/cache-debug", "../kit/local-debug", "../config-debug", "../interface/index-debug", "../kit/notice-debug", "../template/common/notice-debug", "../template/template-debug", "../kit/time-debug", "../kit/num-debug", "../kit/effect-debug", "../kit/userinfo-debug", "../kit/cookie-debug", "../kit/eventList-debug", "../template/home/title-debug", "../template/home/info-debug", "../template/home/subscriptionList-debug", "../template/home/recommendList-debug", "../template/home/channelInfo-debug", "../content/entrance-debug", "../template/common/loadingIcon-debug", "../content/channel-debug", "../module/floater-debug", "../kit/keypress-debug", "../kit/pattern-debug", "../template/common/result-debug", "../template/common/tip-debug", "../template/channel/title-debug", "../template/channel/info-debug", "../template/channel/itemList-debug", "../content/item-debug", "../template/item/title-debug", "../template/item/info-debug", "../template/item/content-debug", "../template/item/channelTitle-debug", "../kit/testScroll-debug" ], function(require, exports, module) {
+define("nireader/nireader-fe/2.0.1/page/reader-debug", [ "../module/stateManager-debug", "../kit/url-debug", "../kit/customEvent-debug", "../module/page-debug", "../module/createContent-debug", "../content/home-debug", "../kit/resource-debug", "../kit/request-debug", "../kit/cache-debug", "../kit/local-debug", "../config-debug", "../interface/index-debug", "../kit/notice-debug", "../template/common/notice-debug", "../template/template-debug", "../kit/time-debug", "../kit/num-debug", "../kit/effect-debug", "../kit/userinfo-debug", "../kit/cookie-debug", "../kit/eventList-debug", "../template/home/title-debug", "../template/home/info-debug", "../template/home/subscriptionList-debug", "../template/home/recommendList-debug", "../template/home/channelInfo-debug", "../content/entrance-debug", "../template/common/loadingIcon-debug", "../content/channel-debug", "../module/floater-debug", "../kit/keypress-debug", "../kit/pattern-debug", "../template/common/result-debug", "../template/common/tip-debug", "../template/channel/title-debug", "../template/channel/info-debug", "../template/channel/itemList-debug", "../content/item-debug", "../template/item/title-debug", "../template/item/info-debug", "../template/item/content-debug", "../template/item/channelTitle-debug", "../kit/testScroll-debug", "../module/task-debug", "../module/tasks/logger-debug", "../module/tasks/cacheManager-debug", "../module/tasks/breath-debug" ], function(require, exports, module) {
     var stateManager = require("../module/stateManager-debug");
     var page = require("../module/page-debug");
     var floater = require("../module/floater-debug");
+    var task = require("../module/task-debug").add(require("../module/tasks/logger-debug")).add(require("../module/tasks/cacheManager-debug")).add(require("../module/tasks/breath-debug")).run();
     var init = function() {
         stateManager.on("checkout", function(info) {
             page.checkout(info);
@@ -770,7 +771,6 @@ define("nireader/nireader-fe/2.0.1/kit/request-debug", [], function(require, exp
 define("nireader/nireader-fe/2.0.1/kit/cache-debug", [ "nireader/nireader-fe/2.0.1/kit/local-debug", "nireader/nireader-fe/2.0.1/config-debug" ], function(require, exports, module) {
     var local = require("nireader/nireader-fe/2.0.1/kit/local-debug").create("cache");
     var config = require("nireader/nireader-fe/2.0.1/config-debug").cache;
-    var autoManageInterval = config.manageInterval;
     var defaultLifetime = config.lifetime;
     var maxCacheNum = config.maxNum;
     // temporarily use array to record hot list
@@ -882,22 +882,19 @@ define("nireader/nireader-fe/2.0.1/kit/cache-debug", [ "nireader/nireader-fe/2.0
             delete storage[name];
         }
         hotList = hotList.slice(overNum, hotList.length);
-        cacheStatus("manage cache end.");
         saveToLocal();
+        cacheStatus("manage cache end.");
     };
     window.onbeforeunload = function() {
         saveToLocal();
     };
-    var autoManage = function() {
-        setInterval(manage, autoManageInterval);
-    };
     loadFromLocal();
-    autoManage();
     module.exports = {
         set: set,
         get: get,
         clear: clear,
-        getSize: getSize
+        getSize: getSize,
+        manage: manage
     };
 });
 
@@ -2631,4 +2628,92 @@ define("nireader/nireader-fe/2.0.1/kit/testScroll-debug", [], function(require, 
         dom = dom[0] || dom;
         return dom && dom.scrollTop <= 0;
     };
+});
+
+define("nireader/nireader-fe/2.0.1/module/task-debug", [], function(require, exports, module) {
+    function Task(name, exec, duration) {
+        var self = this;
+        self.name = name;
+        self.duration = duration;
+        self.repeat = typeof self.duration === "number";
+        self.exec = function() {
+            try {
+                exec.call(self, self);
+            } catch (e) {
+                LOG(e);
+            }
+        };
+    }
+    Task.prototype.run = function() {
+        if (!this.timer) {
+            this.exec();
+            if (this.repeat) {
+                this.timer = setInterval(this.exec, this.duration);
+            }
+        }
+        return this;
+    };
+    Task.prototype.stop = function() {
+        this.timer = this.timer && clearInterval(this.timer);
+        return this;
+    };
+    Task.list = [];
+    Task.add = function(name, exec, duration) {
+        var task;
+        if (name.constructor && name.constructor === Task) {
+            task = name;
+        } else {
+            task = new Task(name, exec, duration);
+        }
+        this.list.push(task);
+        return this;
+    };
+    Task.runFrom = function(i, duration) {
+        i = typeof i === "number" ? i : 0;
+        duration = typeof duration === "number" ? duration : 0;
+        if (i >= this.list.length) {
+            return this;
+        }
+        try {
+            this.list[i].run();
+        } catch (e) {
+            LOG(e);
+        }
+        var self = this;
+        setTimeout(function() {
+            self.runFrom(++i, duration);
+        }, duration);
+        return this;
+    };
+    Task.run = Task.runFrom;
+    Task.stop = function() {
+        for (var i = 0, l = this.list.length; i < l; i++) {
+            this.list[i].stop();
+        }
+        return this;
+    };
+    module.exports = Task;
+});
+
+define("nireader/nireader-fe/2.0.1/module/tasks/logger-debug", [ "nireader/nireader-fe/2.0.1/module/task-debug", "nireader/nireader-fe/2.0.1/kit/local-debug" ], function(require, exports, module) {
+    var Task = require("nireader/nireader-fe/2.0.1/module/task-debug");
+    var local = require("nireader/nireader-fe/2.0.1/kit/local-debug").create("logger");
+    module.exports = new Task("logger", function(task) {
+        local.set("time", Date.now());
+        LOG("log", local.getAll());
+    }, 1e3 * 60);
+});
+
+define("nireader/nireader-fe/2.0.1/module/tasks/cacheManager-debug", [ "nireader/nireader-fe/2.0.1/module/task-debug", "nireader/nireader-fe/2.0.1/config-debug", "nireader/nireader-fe/2.0.1/kit/cache-debug", "nireader/nireader-fe/2.0.1/kit/local-debug" ], function(require, exports, module) {
+    var Task = require("nireader/nireader-fe/2.0.1/module/task-debug");
+    var autoManageInterval = require("nireader/nireader-fe/2.0.1/config-debug").cache.manageInterval;
+    var cache = require("nireader/nireader-fe/2.0.1/kit/cache-debug");
+    module.exports = new Task("cacheManager", cache.manage.bind(cache), autoManageInterval);
+});
+
+define("nireader/nireader-fe/2.0.1/module/tasks/breath-debug", [ "nireader/nireader-fe/2.0.1/module/task-debug" ], function(require, exports, module) {
+    var Task = require("nireader/nireader-fe/2.0.1/module/task-debug");
+    module.exports = new Task("breath", function(task) {
+        $("#body").addClass("breath");
+    });
 });
