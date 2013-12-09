@@ -28,11 +28,15 @@ define("nireader/nireader-fe/2.0.1/module/stateManager-debug", [ "nireader/nirea
         var manager = this;
         var gotoUrl = function(url) {
             url = formatUrl(url);
-            manager.pushState({
-                url: url,
-                title: "Loading"
-            });
-            manager.checkout();
+            if (history.pushState) {
+                manager.pushState({
+                    url: url,
+                    title: "Loading"
+                });
+                manager.checkout();
+            } else {
+                location.href = url;
+            }
         };
         $("body").delegate("[data-link-async]", "click", function(e) {
             var link = $(this);
@@ -45,9 +49,13 @@ define("nireader/nireader-fe/2.0.1/module/stateManager-debug", [ "nireader/nirea
             } else {}
         });
         customEvent.on("goto", gotoUrl);
-        window.onpopstate = function(e) {
+        var onpopstate = window.onpopstate = function(e) {
             manager.checkout();
         };
+        // do checkout while page loaded (chrome trigger popstate automatically)
+        if (navigator.userAgent.toLowerCase().indexOf("chrome") < 0) {
+            setTimeout(onpopstate, 0);
+        }
     };
     StateManager.prototype.pushState = function(state) {
         history.pushState(state, state.title, state.url);
