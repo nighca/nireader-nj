@@ -55,11 +55,12 @@ define(function(require, exports, module){
     };
 
     var getSize = function(domain){
-        var size = 0;
+        var num = 0, size = 0;
         for(var i = 0, l = localStorage.length, key, val; i < l; i++){
             key = localStorage.key(i);
 
             if(key && isInDomain(key, domain)){
+                num++;
                 val = localStorage[key];
                 size += key.length + val.length;
             }
@@ -69,6 +70,7 @@ define(function(require, exports, module){
         var MB = KB / 1024;
 
         return {
+            num: num,
             length: size,
             B: B,
             KB: KB.toFixed(2),

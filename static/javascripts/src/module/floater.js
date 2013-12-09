@@ -1,6 +1,5 @@
 define(function(require, exports, module) {
     var keypress = require('../kit/keypress');
-
     var pattern = require('../kit/pattern');
     var request = require('../kit/request');
     var resource = require('../kit/resource');
@@ -8,6 +7,8 @@ define(function(require, exports, module) {
     var notice = require('../kit/notice').notice;
     var URL = require('../kit/url');
     var customEvent = require('../kit/customEvent');
+    var effect = require('../kit/effect');
+    var cache = require('../kit/cache');
 
     var interfaces = require('../interface/index');
     var apis = interfaces.api;
@@ -34,19 +35,30 @@ define(function(require, exports, module) {
         globalResult.hide();
     };
 
+    var visible;
     var showFloater = function(){
-        bodyContent.addClass('blur');
+        if(visible){
+            return;
+        }
+
+        effect.bodyBlur();
+        effect.headerBlur();
         globalFloater.addClass('show');
         
         initDom();
         initInfo();
+        visible = true;
     };
 
-    //showFloater();
-
     var hideFloater = function(){
-        bodyContent.removeClass('blur');
+        if(!visible){
+            return;
+        }
+
+        effect.bodyUnblur();
+        effect.headerUnblur();
         globalFloater.removeClass('show');
+        visible = false;
     };
 
     var toggleFloater = function(){
@@ -151,7 +163,7 @@ define(function(require, exports, module) {
                     addSubscription(channel.id, function(err, subscription){
                         if(err){
                             showTip(
-                                '订阅' + channel.title + '没成功。'
+                                '订阅' + channel.title + '没成功。（' + err + '）'
                             );
                             return;
                         }
@@ -190,6 +202,34 @@ define(function(require, exports, module) {
         };
     };
 
+    var dealCache = function(){
+        showTip('按<b>Enter</b>查看缓存统计。');
+
+        enterHandler = function(){
+            showTip('正在计算... ' + loadingIcon);
+            var size = cache.getSize();
+            setTimeout(function(){
+                addResult(['共', size.num, '条缓存记录'].join(' '));
+                addResult(['占用存储空间', size.MB, 'MB'].join(' '));
+                cleanTip();
+            }, 300);
+        };
+    };
+
+    var dealNoCache = function(){
+        showTip('按<b>Enter</b>清除缓存。');
+
+        enterHandler = function(){
+            showTip('正在清除缓存... ' + loadingIcon);
+            var originSize = cache.getSize().MB + 'MB';
+            cache.clear();
+            var currSize = cache.getSize().MB + 'MB';
+            setTimeout(function(){
+                showTip('缓存已清空。（' + originSize + '->' + currSize + '）');
+            }, 300);
+        };
+    };
+
     var doSearch = function(val){
         if(val){
             var keywords = val.split(' '), realKeywords = [];
@@ -219,7 +259,9 @@ define(function(require, exports, module) {
 
     var cmds = {
         'logout': dealLogout,
-        'home': dealHome
+        'home': dealHome,
+        'cache': dealCache,
+        'nocache': dealNoCache
     };
 
     var checkInput = function(){
@@ -248,25 +290,38 @@ define(function(require, exports, module) {
         }
 
         // CMD hint
-        var pos, str, cmd;
+        var pos, cmd, matches = [];
         if(val){
             for(var c in cmds){
                 if(cmds.hasOwnProperty(c) && (pos = c.indexOf(val)) >= 0){
-                    cmd = c;
+                    matches.push({
+                        cmd: c,
+                        pos: pos
+                    });
+                }
+            }
+            var maxNum = 3,
+                last = (maxNum < matches.length ? maxNum : matches.length) - 1;
+            matches.slice(0, maxNum).sort(function(a, b){
+                return a.pos < b.pos;
+            }).forEach(function(match, i){
+                var c = match.cmd,
+                    p = match.pos,
                     str =
-                        c.slice(0, pos) +
+                        c.slice(0, p) +
                         '<b>' +
                         val +
                         '</b>' +
-                        c.slice(pos + val.length) +
-                        '\t ---- 用<b>Tab</b>补全';
-                    addTip(str);
+                        c.slice(p + val.length);
+                if(i === last){
+                    str += '\t ---- 用<b>Tab</b>补全';
+                    cmd = c;
                 }
-            }
+                addTip(str);
+            });
         }
         tabHandler = cmd && function(e){
             globalInput.val(cmd);
-            //checkInput();
         };
 
         // Search for channels
@@ -298,4 +353,10 @@ define(function(require, exports, module) {
     keypress.register(27, function(e){
         toggleFloater();
     });
+
+    module.exports = {
+        visible: function(){
+            return visible;
+        }
+    };
 });

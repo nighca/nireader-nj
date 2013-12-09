@@ -1,8 +1,9 @@
 var tasks = {
-	'Fetch feed': require('./fetchFeed')
+    'Fetch feed': require('./fetchFeed'),
+    'Clean old items': require('./cleanItem')
 };
 
-for(var name in tasks){
-	console.log('Run task ' + name + '...');
-	tasks[name].run();
+for(var t in tasks){
+    console.log('Run task ' + t + '...');
+    tasks[t].run();
 }

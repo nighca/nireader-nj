@@ -1,7 +1,8 @@
-define("nireader/nireader-fe/2.0.1/page/reader-debug", [ "../module/stateManager-debug", "../kit/url-debug", "../kit/customEvent-debug", "../module/page-debug", "../module/createContent-debug", "../content/home-debug", "../kit/resource-debug", "../kit/request-debug", "../kit/cache-debug", "../kit/local-debug", "../config-debug", "../interface/index-debug", "../kit/notice-debug", "../template/common/notice-debug", "../template/template-debug", "../kit/time-debug", "../kit/num-debug", "../kit/userinfo-debug", "../kit/cookie-debug", "../kit/eventList-debug", "../template/home/title-debug", "../template/home/info-debug", "../template/home/subscriptionList-debug", "../template/home/recommendList-debug", "../template/home/channelInfo-debug", "../content/entrance-debug", "../template/common/loadingIcon-debug", "../content/channel-debug", "../template/channel/title-debug", "../template/channel/info-debug", "../template/channel/itemList-debug", "../content/item-debug", "../template/item/title-debug", "../template/item/info-debug", "../template/item/content-debug", "../template/item/channelTitle-debug", "../kit/testScroll-debug", "../module/floater-debug", "../kit/keypress-debug", "../kit/pattern-debug", "../template/common/result-debug", "../template/common/tip-debug" ], function(require, exports, module) {
+define("nireader/nireader-fe/2.0.1/page/reader-debug", [ "../module/stateManager-debug", "../kit/url-debug", "../kit/customEvent-debug", "../module/page-debug", "../module/createContent-debug", "../content/home-debug", "../kit/resource-debug", "../kit/request-debug", "../kit/cache-debug", "../kit/local-debug", "../config-debug", "../interface/index-debug", "../kit/notice-debug", "../template/common/notice-debug", "../template/template-debug", "../kit/time-debug", "../kit/num-debug", "../kit/effect-debug", "../kit/userinfo-debug", "../kit/cookie-debug", "../kit/eventList-debug", "../template/home/title-debug", "../template/home/info-debug", "../template/home/subscriptionList-debug", "../template/home/recommendList-debug", "../template/home/channelInfo-debug", "../content/entrance-debug", "../template/common/loadingIcon-debug", "../content/channel-debug", "../module/floater-debug", "../kit/keypress-debug", "../kit/pattern-debug", "../template/common/result-debug", "../template/common/tip-debug", "../template/channel/title-debug", "../template/channel/info-debug", "../template/channel/itemList-debug", "../content/item-debug", "../template/item/title-debug", "../template/item/info-debug", "../template/item/content-debug", "../template/item/channelTitle-debug", "../kit/testScroll-debug", "../module/task-debug", "../module/tasks/logger-debug", "../module/tasks/cacheManager-debug", "../module/tasks/breath-debug" ], function(require, exports, module) {
     var stateManager = require("../module/stateManager-debug");
     var page = require("../module/page-debug");
     var floater = require("../module/floater-debug");
+    var task = require("../module/task-debug").add(require("../module/tasks/logger-debug")).add(require("../module/tasks/cacheManager-debug")).add(require("../module/tasks/breath-debug")).run();
     var init = function() {
         stateManager.on("checkout", function(info) {
             page.checkout(info);
@@ -185,7 +186,7 @@ define("nireader/nireader-fe/2.0.1/kit/customEvent-debug", [], function(require,
     };
 });
 
-define("nireader/nireader-fe/2.0.1/module/page-debug", [ "nireader/nireader-fe/2.0.1/module/createContent-debug", "nireader/nireader-fe/2.0.1/kit/url-debug", "nireader/nireader-fe/2.0.1/content/home-debug", "nireader/nireader-fe/2.0.1/kit/resource-debug", "nireader/nireader-fe/2.0.1/kit/request-debug", "nireader/nireader-fe/2.0.1/kit/cache-debug", "nireader/nireader-fe/2.0.1/kit/local-debug", "nireader/nireader-fe/2.0.1/config-debug", "nireader/nireader-fe/2.0.1/interface/index-debug", "nireader/nireader-fe/2.0.1/kit/notice-debug", "nireader/nireader-fe/2.0.1/template/common/notice-debug", "nireader/nireader-fe/2.0.1/template/template-debug", "nireader/nireader-fe/2.0.1/kit/time-debug", "nireader/nireader-fe/2.0.1/kit/num-debug", "nireader/nireader-fe/2.0.1/kit/userinfo-debug", "nireader/nireader-fe/2.0.1/kit/cookie-debug", "nireader/nireader-fe/2.0.1/kit/eventList-debug", "nireader/nireader-fe/2.0.1/kit/customEvent-debug", "nireader/nireader-fe/2.0.1/template/home/title-debug", "nireader/nireader-fe/2.0.1/template/home/info-debug", "nireader/nireader-fe/2.0.1/template/home/subscriptionList-debug", "nireader/nireader-fe/2.0.1/template/home/recommendList-debug", "nireader/nireader-fe/2.0.1/template/home/channelInfo-debug", "nireader/nireader-fe/2.0.1/content/entrance-debug", "nireader/nireader-fe/2.0.1/template/common/loadingIcon-debug", "nireader/nireader-fe/2.0.1/content/channel-debug", "nireader/nireader-fe/2.0.1/template/channel/title-debug", "nireader/nireader-fe/2.0.1/template/channel/info-debug", "nireader/nireader-fe/2.0.1/template/channel/itemList-debug", "nireader/nireader-fe/2.0.1/content/item-debug", "nireader/nireader-fe/2.0.1/template/item/title-debug", "nireader/nireader-fe/2.0.1/template/item/info-debug", "nireader/nireader-fe/2.0.1/template/item/content-debug", "nireader/nireader-fe/2.0.1/template/item/channelTitle-debug", "nireader/nireader-fe/2.0.1/kit/testScroll-debug" ], function(require, exports, module) {
+define("nireader/nireader-fe/2.0.1/module/page-debug", [ "nireader/nireader-fe/2.0.1/module/createContent-debug", "nireader/nireader-fe/2.0.1/kit/url-debug", "nireader/nireader-fe/2.0.1/content/home-debug", "nireader/nireader-fe/2.0.1/kit/resource-debug", "nireader/nireader-fe/2.0.1/kit/request-debug", "nireader/nireader-fe/2.0.1/kit/cache-debug", "nireader/nireader-fe/2.0.1/kit/local-debug", "nireader/nireader-fe/2.0.1/config-debug", "nireader/nireader-fe/2.0.1/interface/index-debug", "nireader/nireader-fe/2.0.1/kit/notice-debug", "nireader/nireader-fe/2.0.1/template/common/notice-debug", "nireader/nireader-fe/2.0.1/template/template-debug", "nireader/nireader-fe/2.0.1/kit/time-debug", "nireader/nireader-fe/2.0.1/kit/num-debug", "nireader/nireader-fe/2.0.1/kit/effect-debug", "nireader/nireader-fe/2.0.1/kit/userinfo-debug", "nireader/nireader-fe/2.0.1/kit/cookie-debug", "nireader/nireader-fe/2.0.1/kit/eventList-debug", "nireader/nireader-fe/2.0.1/kit/customEvent-debug", "nireader/nireader-fe/2.0.1/template/home/title-debug", "nireader/nireader-fe/2.0.1/template/home/info-debug", "nireader/nireader-fe/2.0.1/template/home/subscriptionList-debug", "nireader/nireader-fe/2.0.1/template/home/recommendList-debug", "nireader/nireader-fe/2.0.1/template/home/channelInfo-debug", "nireader/nireader-fe/2.0.1/content/entrance-debug", "nireader/nireader-fe/2.0.1/template/common/loadingIcon-debug", "nireader/nireader-fe/2.0.1/content/channel-debug", "nireader/nireader-fe/2.0.1/module/floater-debug", "nireader/nireader-fe/2.0.1/kit/keypress-debug", "nireader/nireader-fe/2.0.1/kit/pattern-debug", "nireader/nireader-fe/2.0.1/template/common/result-debug", "nireader/nireader-fe/2.0.1/template/common/tip-debug", "nireader/nireader-fe/2.0.1/template/channel/title-debug", "nireader/nireader-fe/2.0.1/template/channel/info-debug", "nireader/nireader-fe/2.0.1/template/channel/itemList-debug", "nireader/nireader-fe/2.0.1/content/item-debug", "nireader/nireader-fe/2.0.1/template/item/title-debug", "nireader/nireader-fe/2.0.1/template/item/info-debug", "nireader/nireader-fe/2.0.1/template/item/content-debug", "nireader/nireader-fe/2.0.1/template/item/channelTitle-debug", "nireader/nireader-fe/2.0.1/kit/testScroll-debug" ], function(require, exports, module) {
     var createContent = require("nireader/nireader-fe/2.0.1/module/createContent-debug");
     var URL = require("nireader/nireader-fe/2.0.1/kit/url-debug");
     var notice = require("nireader/nireader-fe/2.0.1/kit/notice-debug");
@@ -227,7 +228,7 @@ define("nireader/nireader-fe/2.0.1/module/page-debug", [ "nireader/nireader-fe/2
     module.exports = page;
 });
 
-define("nireader/nireader-fe/2.0.1/module/createContent-debug", [ "nireader/nireader-fe/2.0.1/kit/url-debug", "nireader/nireader-fe/2.0.1/content/home-debug", "nireader/nireader-fe/2.0.1/kit/resource-debug", "nireader/nireader-fe/2.0.1/kit/request-debug", "nireader/nireader-fe/2.0.1/kit/cache-debug", "nireader/nireader-fe/2.0.1/kit/local-debug", "nireader/nireader-fe/2.0.1/config-debug", "nireader/nireader-fe/2.0.1/interface/index-debug", "nireader/nireader-fe/2.0.1/kit/notice-debug", "nireader/nireader-fe/2.0.1/template/common/notice-debug", "nireader/nireader-fe/2.0.1/template/template-debug", "nireader/nireader-fe/2.0.1/kit/time-debug", "nireader/nireader-fe/2.0.1/kit/num-debug", "nireader/nireader-fe/2.0.1/kit/userinfo-debug", "nireader/nireader-fe/2.0.1/kit/cookie-debug", "nireader/nireader-fe/2.0.1/kit/eventList-debug", "nireader/nireader-fe/2.0.1/kit/customEvent-debug", "nireader/nireader-fe/2.0.1/template/home/title-debug", "nireader/nireader-fe/2.0.1/template/home/info-debug", "nireader/nireader-fe/2.0.1/template/home/subscriptionList-debug", "nireader/nireader-fe/2.0.1/template/home/recommendList-debug", "nireader/nireader-fe/2.0.1/template/home/channelInfo-debug", "nireader/nireader-fe/2.0.1/content/entrance-debug", "nireader/nireader-fe/2.0.1/template/common/loadingIcon-debug", "nireader/nireader-fe/2.0.1/content/channel-debug", "nireader/nireader-fe/2.0.1/template/channel/title-debug", "nireader/nireader-fe/2.0.1/template/channel/info-debug", "nireader/nireader-fe/2.0.1/template/channel/itemList-debug", "nireader/nireader-fe/2.0.1/content/item-debug", "nireader/nireader-fe/2.0.1/template/item/title-debug", "nireader/nireader-fe/2.0.1/template/item/info-debug", "nireader/nireader-fe/2.0.1/template/item/content-debug", "nireader/nireader-fe/2.0.1/template/item/channelTitle-debug", "nireader/nireader-fe/2.0.1/kit/testScroll-debug" ], function(require, exports, module) {
+define("nireader/nireader-fe/2.0.1/module/createContent-debug", [ "nireader/nireader-fe/2.0.1/kit/url-debug", "nireader/nireader-fe/2.0.1/content/home-debug", "nireader/nireader-fe/2.0.1/kit/resource-debug", "nireader/nireader-fe/2.0.1/kit/request-debug", "nireader/nireader-fe/2.0.1/kit/cache-debug", "nireader/nireader-fe/2.0.1/kit/local-debug", "nireader/nireader-fe/2.0.1/config-debug", "nireader/nireader-fe/2.0.1/interface/index-debug", "nireader/nireader-fe/2.0.1/kit/notice-debug", "nireader/nireader-fe/2.0.1/template/common/notice-debug", "nireader/nireader-fe/2.0.1/template/template-debug", "nireader/nireader-fe/2.0.1/kit/time-debug", "nireader/nireader-fe/2.0.1/kit/num-debug", "nireader/nireader-fe/2.0.1/kit/effect-debug", "nireader/nireader-fe/2.0.1/kit/userinfo-debug", "nireader/nireader-fe/2.0.1/kit/cookie-debug", "nireader/nireader-fe/2.0.1/kit/eventList-debug", "nireader/nireader-fe/2.0.1/kit/customEvent-debug", "nireader/nireader-fe/2.0.1/template/home/title-debug", "nireader/nireader-fe/2.0.1/template/home/info-debug", "nireader/nireader-fe/2.0.1/template/home/subscriptionList-debug", "nireader/nireader-fe/2.0.1/template/home/recommendList-debug", "nireader/nireader-fe/2.0.1/template/home/channelInfo-debug", "nireader/nireader-fe/2.0.1/content/entrance-debug", "nireader/nireader-fe/2.0.1/template/common/loadingIcon-debug", "nireader/nireader-fe/2.0.1/content/channel-debug", "nireader/nireader-fe/2.0.1/module/floater-debug", "nireader/nireader-fe/2.0.1/kit/keypress-debug", "nireader/nireader-fe/2.0.1/kit/pattern-debug", "nireader/nireader-fe/2.0.1/template/common/result-debug", "nireader/nireader-fe/2.0.1/template/common/tip-debug", "nireader/nireader-fe/2.0.1/template/channel/title-debug", "nireader/nireader-fe/2.0.1/template/channel/info-debug", "nireader/nireader-fe/2.0.1/template/channel/itemList-debug", "nireader/nireader-fe/2.0.1/content/item-debug", "nireader/nireader-fe/2.0.1/template/item/title-debug", "nireader/nireader-fe/2.0.1/template/item/info-debug", "nireader/nireader-fe/2.0.1/template/item/content-debug", "nireader/nireader-fe/2.0.1/template/item/channelTitle-debug", "nireader/nireader-fe/2.0.1/kit/testScroll-debug" ], function(require, exports, module) {
     var URL = require("nireader/nireader-fe/2.0.1/kit/url-debug");
     var Contents = {
         home: require("nireader/nireader-fe/2.0.1/content/home-debug"),
@@ -243,13 +244,14 @@ define("nireader/nireader-fe/2.0.1/module/createContent-debug", [ "nireader/nire
     module.exports = createContent;
 });
 
-define("nireader/nireader-fe/2.0.1/content/home-debug", [ "nireader/nireader-fe/2.0.1/kit/resource-debug", "nireader/nireader-fe/2.0.1/kit/request-debug", "nireader/nireader-fe/2.0.1/kit/cache-debug", "nireader/nireader-fe/2.0.1/kit/local-debug", "nireader/nireader-fe/2.0.1/config-debug", "nireader/nireader-fe/2.0.1/kit/url-debug", "nireader/nireader-fe/2.0.1/interface/index-debug", "nireader/nireader-fe/2.0.1/kit/notice-debug", "nireader/nireader-fe/2.0.1/template/common/notice-debug", "nireader/nireader-fe/2.0.1/template/template-debug", "nireader/nireader-fe/2.0.1/kit/time-debug", "nireader/nireader-fe/2.0.1/kit/num-debug", "nireader/nireader-fe/2.0.1/kit/userinfo-debug", "nireader/nireader-fe/2.0.1/kit/cookie-debug", "nireader/nireader-fe/2.0.1/kit/eventList-debug", "nireader/nireader-fe/2.0.1/kit/customEvent-debug", "nireader/nireader-fe/2.0.1/template/home/title-debug", "nireader/nireader-fe/2.0.1/template/home/info-debug", "nireader/nireader-fe/2.0.1/template/home/subscriptionList-debug", "nireader/nireader-fe/2.0.1/template/home/recommendList-debug", "nireader/nireader-fe/2.0.1/template/home/channelInfo-debug" ], function(require, exports, module) {
+define("nireader/nireader-fe/2.0.1/content/home-debug", [ "nireader/nireader-fe/2.0.1/kit/resource-debug", "nireader/nireader-fe/2.0.1/kit/request-debug", "nireader/nireader-fe/2.0.1/kit/cache-debug", "nireader/nireader-fe/2.0.1/kit/local-debug", "nireader/nireader-fe/2.0.1/config-debug", "nireader/nireader-fe/2.0.1/kit/url-debug", "nireader/nireader-fe/2.0.1/interface/index-debug", "nireader/nireader-fe/2.0.1/kit/notice-debug", "nireader/nireader-fe/2.0.1/template/common/notice-debug", "nireader/nireader-fe/2.0.1/template/template-debug", "nireader/nireader-fe/2.0.1/kit/time-debug", "nireader/nireader-fe/2.0.1/kit/num-debug", "nireader/nireader-fe/2.0.1/kit/effect-debug", "nireader/nireader-fe/2.0.1/kit/userinfo-debug", "nireader/nireader-fe/2.0.1/kit/cookie-debug", "nireader/nireader-fe/2.0.1/kit/eventList-debug", "nireader/nireader-fe/2.0.1/kit/customEvent-debug", "nireader/nireader-fe/2.0.1/template/home/title-debug", "nireader/nireader-fe/2.0.1/template/home/info-debug", "nireader/nireader-fe/2.0.1/template/home/subscriptionList-debug", "nireader/nireader-fe/2.0.1/template/home/recommendList-debug", "nireader/nireader-fe/2.0.1/template/home/channelInfo-debug" ], function(require, exports, module) {
     var resource = require("nireader/nireader-fe/2.0.1/kit/resource-debug");
     var request = require("nireader/nireader-fe/2.0.1/kit/request-debug");
     var notice = require("nireader/nireader-fe/2.0.1/kit/notice-debug").notice;
     var userinfo = require("nireader/nireader-fe/2.0.1/kit/userinfo-debug");
     var eventList = require("nireader/nireader-fe/2.0.1/kit/eventList-debug");
     var customEvent = require("nireader/nireader-fe/2.0.1/kit/customEvent-debug");
+    var effect = require("nireader/nireader-fe/2.0.1/kit/effect-debug");
     var interfaces = require("nireader/nireader-fe/2.0.1/interface/index-debug");
     var apis = interfaces.api;
     var pages = interfaces.page;
@@ -295,6 +297,7 @@ define("nireader/nireader-fe/2.0.1/content/home-debug", [ "nireader/nireader-fe/
         this.doms.leftLink.attr("href", "").show();
         this.doms.rightLink.attr("href", "").show();
         this.doms.topLink.attr("href", "").show();
+        effect.bodyBlur();
     };
     Home.prototype.prepareInfo = function() {
         var _this = this;
@@ -512,6 +515,7 @@ define("nireader/nireader-fe/2.0.1/content/home-debug", [ "nireader/nireader-fe/
             this.doms.content.html(genSubscriptionList(data));
         }
         this.subscriptionListReady = true;
+        effect.bodyUnblur();
         this.doms.subscriptionList = this.doms.content.find("#subscription-list");
         this.sideBlock.bind(this.doms.subscriptionList);
     };
@@ -767,7 +771,6 @@ define("nireader/nireader-fe/2.0.1/kit/request-debug", [], function(require, exp
 define("nireader/nireader-fe/2.0.1/kit/cache-debug", [ "nireader/nireader-fe/2.0.1/kit/local-debug", "nireader/nireader-fe/2.0.1/config-debug" ], function(require, exports, module) {
     var local = require("nireader/nireader-fe/2.0.1/kit/local-debug").create("cache");
     var config = require("nireader/nireader-fe/2.0.1/config-debug").cache;
-    var autoManageInterval = config.manageInterval;
     var defaultLifetime = config.lifetime;
     var maxCacheNum = config.maxNum;
     // temporarily use array to record hot list
@@ -826,6 +829,9 @@ define("nireader/nireader-fe/2.0.1/kit/cache-debug", [ "nireader/nireader-fe/2.0
         local.clear();
         LOG("clear end: ", storage);
     };
+    var getSize = function() {
+        return local.getSize();
+    };
     // persistence with localStorage
     var saveToLocal = function() {
         LOG("save to local begin: ", storage);
@@ -876,21 +882,19 @@ define("nireader/nireader-fe/2.0.1/kit/cache-debug", [ "nireader/nireader-fe/2.0
             delete storage[name];
         }
         hotList = hotList.slice(overNum, hotList.length);
-        cacheStatus("manage cache end.");
         saveToLocal();
+        cacheStatus("manage cache end.");
     };
     window.onbeforeunload = function() {
         saveToLocal();
     };
-    var autoManage = function() {
-        setInterval(manage, autoManageInterval);
-    };
     loadFromLocal();
-    autoManage();
     module.exports = {
         set: set,
         get: get,
-        clear: clear
+        clear: clear,
+        getSize: getSize,
+        manage: manage
     };
 });
 
@@ -941,10 +945,11 @@ define("nireader/nireader-fe/2.0.1/kit/local-debug", [], function(require, expor
         }
     };
     var getSize = function(domain) {
-        var size = 0;
+        var num = 0, size = 0;
         for (var i = 0, l = localStorage.length, key, val; i < l; i++) {
             key = localStorage.key(i);
             if (key && isInDomain(key, domain)) {
+                num++;
                 val = localStorage[key];
                 size += key.length + val.length;
             }
@@ -953,6 +958,7 @@ define("nireader/nireader-fe/2.0.1/kit/local-debug", [], function(require, expor
         var KB = B / 1024;
         var MB = KB / 1024;
         return {
+            num: num,
             length: size,
             B: B,
             KB: KB.toFixed(2),
@@ -1075,23 +1081,30 @@ define("nireader/nireader-fe/2.0.1/interface/index-debug", [], function(require,
     };
 });
 
-define("nireader/nireader-fe/2.0.1/kit/notice-debug", [ "nireader/nireader-fe/2.0.1/template/common/notice-debug", "nireader/nireader-fe/2.0.1/template/template-debug", "nireader/nireader-fe/2.0.1/kit/time-debug", "nireader/nireader-fe/2.0.1/kit/num-debug" ], function(require, exports, module) {
+define("nireader/nireader-fe/2.0.1/kit/notice-debug", [ "nireader/nireader-fe/2.0.1/template/common/notice-debug", "nireader/nireader-fe/2.0.1/template/template-debug", "nireader/nireader-fe/2.0.1/kit/time-debug", "nireader/nireader-fe/2.0.1/kit/num-debug", "nireader/nireader-fe/2.0.1/kit/effect-debug" ], function(require, exports, module) {
     var genNotice = require("nireader/nireader-fe/2.0.1/template/common/notice-debug");
+    var effect = require("nireader/nireader-fe/2.0.1/kit/effect-debug");
     var noticeBlock = $("#notice");
-    var body = $("#body");
-    var header = $("#header");
-    var floater = $("#floater");
+    var visible = false;
     var showNotice = function() {
-        body.addClass("blur");
-        header.addClass("blur");
-        floater.addClass("blur");
+        if (visible) {
+            return;
+        }
+        effect.bodyBlur();
+        effect.headerBlur();
+        effect.floaterBlur();
         noticeBlock.show();
+        visible = true;
     };
     var hideNotice = function() {
-        body.removeClass("blur");
-        header.removeClass("blur");
-        floater.removeClass("blur");
+        if (!visible) {
+            return;
+        }
+        effect.bodyUnblur();
+        effect.headerUnblur();
+        effect.floaterUnblur();
         noticeBlock.hide();
+        visible = false;
     };
     var clean = function() {
         noticeBlock.html("");
@@ -1124,7 +1137,10 @@ define("nireader/nireader-fe/2.0.1/kit/notice-debug", [ "nireader/nireader-fe/2.
     };
     module.exports = {
         clean: cleanAndHide,
-        notice: renderAndBind
+        notice: renderAndBind,
+        visible: function() {
+            return visible;
+        }
     };
 });
 
@@ -1190,7 +1206,7 @@ define("nireader/nireader-fe/2.0.1/kit/time-debug", [ "nireader/nireader-fe/2.0.
     };
     var format = function(time, seperator) {
         if (time === null || time === undefined) {
-            return "某一天，嗯";
+            return "我所不知道的某一天";
         }
         var t = new Date(time);
         seperator = seperator === undefined ? "" : seperator;
@@ -1229,6 +1245,78 @@ define("nireader/nireader-fe/2.0.1/kit/num-debug", [], function(require, exports
     exports.toLength = toLength;
     exports.format = format;
     exports.random = random;
+});
+
+define("nireader/nireader-fe/2.0.1/kit/effect-debug", [], function(require, exports, module) {
+    var body = $("#body");
+    var header = $("#header");
+    var floater = $("#floater");
+    // counter to simulate multi-layer effect
+    var counter = {};
+    var reduceCounter = function(name) {
+        counter[name] = counter[name] || 0;
+        counter[name] = counter[name] > 0 ? counter[name] - 1 : 0;
+        return counter[name];
+    };
+    var increaseCounter = function(name) {
+        counter[name] = counter[name] || 0;
+        counter[name]++;
+        return counter[name];
+    };
+    var clearCounter = function(name) {
+        counter[name] = 0;
+        return counter[name];
+    };
+    var getCounter = function(name) {
+        return counter[name];
+    };
+    // effects
+    var bodyBlur = function() {
+        increaseCounter("bodyBlur");
+        body.addClass("blur");
+        body.addClass("half-transparent");
+    };
+    var bodyUnblur = function(clear) {
+        if (!(clear ? clearCounter : reduceCounter)("bodyBlur")) {
+            body.removeClass("blur");
+            body.removeClass("half-transparent");
+        }
+    };
+    var headerBlur = function() {
+        increaseCounter("headerBlur");
+        header.addClass("blur");
+    };
+    var headerUnblur = function(clear) {
+        if (!(clear ? clearCounter : reduceCounter)("headerBlur")) {
+            header.removeClass("blur");
+        }
+    };
+    var floaterBlur = function() {
+        increaseCounter("floaterBlur");
+        floater.addClass("blur");
+    };
+    var floaterUnblur = function(clear) {
+        if (!(clear ? clearCounter : reduceCounter)("floaterBlur")) {
+            floater.removeClass("blur");
+        }
+    };
+    var bodyTransparent = function() {
+        increaseCounter("bodyTransparent");
+        body.addClass("half-transparent");
+    };
+    var bodyUntransparent = function(clear) {
+        if (!(clear ? clearCounter : reduceCounter)("bodyTransparent")) {
+            body.removeClass("half-transparent");
+        }
+    };
+    module.exports = {
+        bodyBlur: bodyBlur,
+        bodyUnblur: bodyUnblur,
+        headerBlur: headerBlur,
+        headerUnblur: headerUnblur,
+        floaterBlur: floaterBlur,
+        floaterUnblur: floaterUnblur
+    };
 });
 
 define("nireader/nireader-fe/2.0.1/kit/userinfo-debug", [ "nireader/nireader-fe/2.0.1/kit/cookie-debug", "nireader/nireader-fe/2.0.1/kit/request-debug", "nireader/nireader-fe/2.0.1/kit/cache-debug", "nireader/nireader-fe/2.0.1/kit/local-debug", "nireader/nireader-fe/2.0.1/config-debug", "nireader/nireader-fe/2.0.1/interface/index-debug" ], function(require, exports, module) {
@@ -1395,7 +1483,7 @@ define("nireader/nireader-fe/2.0.1/template/home/channelInfo-debug", [ "nireader
     module.exports = template.compile(tmpl);
 });
 
-define("nireader/nireader-fe/2.0.1/content/entrance-debug", [ "nireader/nireader-fe/2.0.1/kit/request-debug", "nireader/nireader-fe/2.0.1/kit/customEvent-debug", "nireader/nireader-fe/2.0.1/kit/notice-debug", "nireader/nireader-fe/2.0.1/template/common/notice-debug", "nireader/nireader-fe/2.0.1/template/template-debug", "nireader/nireader-fe/2.0.1/kit/time-debug", "nireader/nireader-fe/2.0.1/kit/num-debug", "nireader/nireader-fe/2.0.1/kit/userinfo-debug", "nireader/nireader-fe/2.0.1/kit/cookie-debug", "nireader/nireader-fe/2.0.1/kit/cache-debug", "nireader/nireader-fe/2.0.1/kit/local-debug", "nireader/nireader-fe/2.0.1/config-debug", "nireader/nireader-fe/2.0.1/interface/index-debug", "nireader/nireader-fe/2.0.1/kit/eventList-debug", "nireader/nireader-fe/2.0.1/kit/url-debug", "nireader/nireader-fe/2.0.1/template/common/loadingIcon-debug" ], function(require, exports, module) {
+define("nireader/nireader-fe/2.0.1/content/entrance-debug", [ "nireader/nireader-fe/2.0.1/kit/request-debug", "nireader/nireader-fe/2.0.1/kit/customEvent-debug", "nireader/nireader-fe/2.0.1/kit/notice-debug", "nireader/nireader-fe/2.0.1/template/common/notice-debug", "nireader/nireader-fe/2.0.1/template/template-debug", "nireader/nireader-fe/2.0.1/kit/time-debug", "nireader/nireader-fe/2.0.1/kit/num-debug", "nireader/nireader-fe/2.0.1/kit/effect-debug", "nireader/nireader-fe/2.0.1/kit/userinfo-debug", "nireader/nireader-fe/2.0.1/kit/cookie-debug", "nireader/nireader-fe/2.0.1/kit/cache-debug", "nireader/nireader-fe/2.0.1/kit/local-debug", "nireader/nireader-fe/2.0.1/config-debug", "nireader/nireader-fe/2.0.1/interface/index-debug", "nireader/nireader-fe/2.0.1/kit/eventList-debug", "nireader/nireader-fe/2.0.1/kit/url-debug", "nireader/nireader-fe/2.0.1/template/common/loadingIcon-debug" ], function(require, exports, module) {
     var request = require("nireader/nireader-fe/2.0.1/kit/request-debug");
     var customEvent = require("nireader/nireader-fe/2.0.1/kit/customEvent-debug");
     var notice = require("nireader/nireader-fe/2.0.1/kit/notice-debug").notice;
@@ -1548,7 +1636,8 @@ define("nireader/nireader-fe/2.0.1/template/common/loadingIcon-debug", [ "niread
     };
 });
 
-define("nireader/nireader-fe/2.0.1/content/channel-debug", [ "nireader/nireader-fe/2.0.1/kit/resource-debug", "nireader/nireader-fe/2.0.1/kit/request-debug", "nireader/nireader-fe/2.0.1/kit/cache-debug", "nireader/nireader-fe/2.0.1/kit/local-debug", "nireader/nireader-fe/2.0.1/config-debug", "nireader/nireader-fe/2.0.1/kit/url-debug", "nireader/nireader-fe/2.0.1/interface/index-debug", "nireader/nireader-fe/2.0.1/kit/eventList-debug", "nireader/nireader-fe/2.0.1/kit/notice-debug", "nireader/nireader-fe/2.0.1/template/common/notice-debug", "nireader/nireader-fe/2.0.1/template/template-debug", "nireader/nireader-fe/2.0.1/kit/time-debug", "nireader/nireader-fe/2.0.1/kit/num-debug", "nireader/nireader-fe/2.0.1/kit/customEvent-debug", "nireader/nireader-fe/2.0.1/kit/userinfo-debug", "nireader/nireader-fe/2.0.1/kit/cookie-debug", "nireader/nireader-fe/2.0.1/template/channel/title-debug", "nireader/nireader-fe/2.0.1/template/channel/info-debug", "nireader/nireader-fe/2.0.1/template/channel/itemList-debug" ], function(require, exports, module) {
+define("nireader/nireader-fe/2.0.1/content/channel-debug", [ "nireader/nireader-fe/2.0.1/module/floater-debug", "nireader/nireader-fe/2.0.1/kit/keypress-debug", "nireader/nireader-fe/2.0.1/kit/pattern-debug", "nireader/nireader-fe/2.0.1/kit/request-debug", "nireader/nireader-fe/2.0.1/kit/resource-debug", "nireader/nireader-fe/2.0.1/kit/cache-debug", "nireader/nireader-fe/2.0.1/kit/local-debug", "nireader/nireader-fe/2.0.1/config-debug", "nireader/nireader-fe/2.0.1/kit/url-debug", "nireader/nireader-fe/2.0.1/interface/index-debug", "nireader/nireader-fe/2.0.1/kit/userinfo-debug", "nireader/nireader-fe/2.0.1/kit/cookie-debug", "nireader/nireader-fe/2.0.1/kit/notice-debug", "nireader/nireader-fe/2.0.1/template/common/notice-debug", "nireader/nireader-fe/2.0.1/template/template-debug", "nireader/nireader-fe/2.0.1/kit/time-debug", "nireader/nireader-fe/2.0.1/kit/num-debug", "nireader/nireader-fe/2.0.1/kit/effect-debug", "nireader/nireader-fe/2.0.1/kit/customEvent-debug", "nireader/nireader-fe/2.0.1/template/common/result-debug", "nireader/nireader-fe/2.0.1/template/common/tip-debug", "nireader/nireader-fe/2.0.1/template/common/loadingIcon-debug", "nireader/nireader-fe/2.0.1/kit/eventList-debug", "nireader/nireader-fe/2.0.1/template/channel/title-debug", "nireader/nireader-fe/2.0.1/template/channel/info-debug", "nireader/nireader-fe/2.0.1/template/channel/itemList-debug" ], function(require, exports, module) {
+    var floater = require("nireader/nireader-fe/2.0.1/module/floater-debug");
     var resource = require("nireader/nireader-fe/2.0.1/kit/resource-debug");
     var request = require("nireader/nireader-fe/2.0.1/kit/request-debug");
     var interfaces = require("nireader/nireader-fe/2.0.1/interface/index-debug");
@@ -1558,6 +1647,8 @@ define("nireader/nireader-fe/2.0.1/content/channel-debug", [ "nireader/nireader-
     var eventList = require("nireader/nireader-fe/2.0.1/kit/eventList-debug");
     var notice = require("nireader/nireader-fe/2.0.1/kit/notice-debug").notice;
     var customEvent = require("nireader/nireader-fe/2.0.1/kit/customEvent-debug");
+    var effect = require("nireader/nireader-fe/2.0.1/kit/effect-debug");
+    var keypress = require("nireader/nireader-fe/2.0.1/kit/keypress-debug");
     var userinfo = require("nireader/nireader-fe/2.0.1/kit/userinfo-debug");
     var genChannelTitle = require("nireader/nireader-fe/2.0.1/template/channel/title-debug");
     var genChannelInfo = require("nireader/nireader-fe/2.0.1/template/channel/info-debug");
@@ -1587,7 +1678,16 @@ define("nireader/nireader-fe/2.0.1/content/channel-debug", [ "nireader/nireader-
         });
         this.bindEvent();
     };
-    Channel.prototype.bindEvent = function() {};
+    Channel.prototype.bindEvent = function() {
+        var leftLink = this.doms.leftLink;
+        var rightLink = this.doms.rightLink;
+        this.eventList.add(keypress, keypress.code.left, function(e) {
+            !floater.visible() && leftLink.click();
+        });
+        this.eventList.add(keypress, keypress.code.right, function(e) {
+            !floater.visible() && rightLink.click();
+        });
+    };
     Channel.prototype.clean = function() {
         this.eventList.clean();
         /*this.doms.content.html('');
@@ -1598,6 +1698,7 @@ define("nireader/nireader-fe/2.0.1/content/channel-debug", [ "nireader/nireader-
         this.doms.leftLink.attr("href", "");
         this.doms.rightLink.attr("href", "");
         this.doms.topLink.attr("href", "");
+        effect.bodyBlur();
     };
     Channel.prototype.prepareInfo = function() {
         var _this = this;
@@ -1779,6 +1880,7 @@ define("nireader/nireader-fe/2.0.1/content/channel-debug", [ "nireader/nireader-
     Channel.prototype.renderItemList = function(data) {
         var _this = this;
         _this.doms.content.html(genItemList(data));
+        effect.bodyUnblur();
         var timer;
         this.eventList.add(_this.doms.content.find(".item"), "mouseenter", function() {
             if (timer) {
@@ -1811,6 +1913,398 @@ define("nireader/nireader-fe/2.0.1/content/channel-debug", [ "nireader/nireader-
     module.exports = Channel;
 });
 
+define("nireader/nireader-fe/2.0.1/module/floater-debug", [ "nireader/nireader-fe/2.0.1/kit/keypress-debug", "nireader/nireader-fe/2.0.1/kit/pattern-debug", "nireader/nireader-fe/2.0.1/kit/request-debug", "nireader/nireader-fe/2.0.1/kit/resource-debug", "nireader/nireader-fe/2.0.1/kit/cache-debug", "nireader/nireader-fe/2.0.1/kit/local-debug", "nireader/nireader-fe/2.0.1/config-debug", "nireader/nireader-fe/2.0.1/kit/url-debug", "nireader/nireader-fe/2.0.1/interface/index-debug", "nireader/nireader-fe/2.0.1/kit/userinfo-debug", "nireader/nireader-fe/2.0.1/kit/cookie-debug", "nireader/nireader-fe/2.0.1/kit/notice-debug", "nireader/nireader-fe/2.0.1/template/common/notice-debug", "nireader/nireader-fe/2.0.1/template/template-debug", "nireader/nireader-fe/2.0.1/kit/time-debug", "nireader/nireader-fe/2.0.1/kit/num-debug", "nireader/nireader-fe/2.0.1/kit/effect-debug", "nireader/nireader-fe/2.0.1/kit/customEvent-debug", "nireader/nireader-fe/2.0.1/template/common/result-debug", "nireader/nireader-fe/2.0.1/template/common/tip-debug", "nireader/nireader-fe/2.0.1/template/common/loadingIcon-debug" ], function(require, exports, module) {
+    var keypress = require("nireader/nireader-fe/2.0.1/kit/keypress-debug");
+    var pattern = require("nireader/nireader-fe/2.0.1/kit/pattern-debug");
+    var request = require("nireader/nireader-fe/2.0.1/kit/request-debug");
+    var resource = require("nireader/nireader-fe/2.0.1/kit/resource-debug");
+    var userinfo = require("nireader/nireader-fe/2.0.1/kit/userinfo-debug");
+    var notice = require("nireader/nireader-fe/2.0.1/kit/notice-debug").notice;
+    var URL = require("nireader/nireader-fe/2.0.1/kit/url-debug");
+    var customEvent = require("nireader/nireader-fe/2.0.1/kit/customEvent-debug");
+    var effect = require("nireader/nireader-fe/2.0.1/kit/effect-debug");
+    var cache = require("nireader/nireader-fe/2.0.1/kit/cache-debug");
+    var interfaces = require("nireader/nireader-fe/2.0.1/interface/index-debug");
+    var apis = interfaces.api;
+    var pages = interfaces.page;
+    var genResult = require("nireader/nireader-fe/2.0.1/template/common/result-debug");
+    var genTip = require("nireader/nireader-fe/2.0.1/template/common/tip-debug");
+    var loadingIcon = require("nireader/nireader-fe/2.0.1/template/common/loadingIcon-debug")();
+    var bodyContent = $("#body");
+    var globalFloater = $("#floater");
+    var globalInput = $("#input");
+    var globalTip = $("#tips");
+    var globalResult = $("#results");
+    var currVal;
+    var initInfo = function() {
+        currVal = globalInput.val().trim();
+    };
+    var initDom = function() {
+        globalInput.val("").focus();
+        checkInput();
+        globalTip.hide();
+        globalResult.hide();
+    };
+    var visible;
+    var showFloater = function() {
+        if (visible) {
+            return;
+        }
+        effect.bodyBlur();
+        effect.headerBlur();
+        globalFloater.addClass("show");
+        initDom();
+        initInfo();
+        visible = true;
+    };
+    var hideFloater = function() {
+        if (!visible) {
+            return;
+        }
+        effect.bodyUnblur();
+        effect.headerUnblur();
+        globalFloater.removeClass("show");
+        visible = false;
+    };
+    var toggleFloater = function() {
+        if (globalFloater.hasClass("show")) {
+            hideFloater();
+        } else {
+            showFloater();
+        }
+    };
+    var reloadPage = function() {
+        customEvent.trigger("userInfoUpdate");
+    };
+    var cleanResult = function() {
+        globalResult.html("").hide();
+    };
+    var cleanTip = function() {
+        globalTip.html("").hide();
+    };
+    var cleanAll = function() {
+        cleanTip();
+        cleanResult();
+    };
+    var addTip = function(word) {
+        globalTip.show().prepend(genTip({
+            tip: {
+                word: word
+            }
+        }));
+    };
+    var showTip = function(word) {
+        cleanTip();
+        addTip(word);
+    };
+    var addResult = function(word, link, async) {
+        link = link || "javascript:;";
+        var target = URL.isSameDomain(link) ? "" : "_blank";
+        globalResult.show().append(genResult({
+            result: {
+                word: word,
+                link: link,
+                target: target,
+                async: async
+            }
+        }));
+    };
+    var enterHandler, tabHandler;
+    var createChannel = function(url, callback) {
+        request.post({
+            url: url
+        }, apis.channel.create, callback);
+    };
+    var saveChannel = function(channel, callback) {
+        request.post({
+            channel: channel
+        }, apis.channel.save, callback);
+    };
+    var addSubscription = function(cid, callback) {
+        request.post({
+            subscribee: cid,
+            description: ""
+        }, apis.subscription.add, callback);
+    };
+    var dealFeed = function() {
+        var url = globalInput.val();
+        showTip("好像是个rss地址，等我解析下... " + loadingIcon);
+        createChannel(url, function(err, channel) {
+            if (url !== currVal) {
+                return;
+            }
+            cleanAll();
+            if (err) {
+                showTip("没解析出来，地址不对。");
+                return;
+            }
+            var exist = !!channel.id;
+            showTip("用<b>Enter</b>" + (exist ? "" : "添加并") + "订阅");
+            addResult(channel.title, exist ? pages.channel(channel.id) : channel.link, exist);
+            enterHandler = function() {
+                saveChannel(channel, function(err, channel) {
+                    if (err) {
+                        showTip("没添加成功。");
+                        return;
+                    }
+                    showTip(channel.title + "添加好了，正在订阅... " + loadingIcon);
+                    addSubscription(channel.id, function(err, subscription) {
+                        if (err) {
+                            showTip("订阅" + channel.title + "没成功。（" + err + "）");
+                            return;
+                        }
+                        cleanResult();
+                        showTip("订阅了" + channel.title + "。");
+                        reloadPage();
+                    });
+                });
+            };
+        });
+    };
+    var dealLogout = function() {
+        showTip("按<b>Enter</b>登出。");
+        enterHandler = function() {
+            showTip("正在登出... " + loadingIcon);
+            userinfo.logout(function(err) {
+                if (err) {
+                    notice("出错了。");
+                    LOG(err);
+                    return;
+                }
+                location.href = pages.home;
+            });
+        };
+    };
+    var dealHome = function() {
+        showTip("按<b>Enter</b>去首页 ('/')。");
+        enterHandler = function() {
+            showTip("正在去首页... " + loadingIcon);
+            customEvent.trigger("goto", "/");
+            cleanTip();
+        };
+    };
+    var dealCache = function() {
+        showTip("按<b>Enter</b>查看缓存统计。");
+        enterHandler = function() {
+            showTip("正在计算... " + loadingIcon);
+            var size = cache.getSize();
+            setTimeout(function() {
+                addResult([ "共", size.num, "条缓存记录" ].join(" "));
+                addResult([ "占用存储空间", size.MB, "MB" ].join(" "));
+                cleanTip();
+            }, 300);
+        };
+    };
+    var dealNoCache = function() {
+        showTip("按<b>Enter</b>清除缓存。");
+        enterHandler = function() {
+            showTip("正在清除缓存... " + loadingIcon);
+            var originSize = cache.getSize().MB + "MB";
+            cache.clear();
+            var currSize = cache.getSize().MB + "MB";
+            setTimeout(function() {
+                showTip("缓存已清空。（" + originSize + "->" + currSize + "）");
+            }, 300);
+        };
+    };
+    var doSearch = function(val) {
+        if (val) {
+            var keywords = val.split(" "), realKeywords = [];
+            for (var i = 0, l = keywords.length; i < l; i++) {
+                if (keywords[i]) {
+                    realKeywords.push(keywords[i]);
+                }
+            }
+            if (!realKeywords.length) {
+                return;
+            }
+            //addTip('searching... ' + loadingIcon);
+            resource.search("channel", realKeywords, 1, function(err, channels) {
+                if (val !== currVal) {
+                    return;
+                }
+                if (!err) {
+                    for (var i = 0, l = channels.length; i < l; i++) {
+                        addResult(channels[i].title, pages.channel(channels[i].id), true);
+                    }
+                }
+            });
+        }
+    };
+    var cmds = {
+        logout: dealLogout,
+        home: dealHome,
+        cache: dealCache,
+        nocache: dealNoCache
+    };
+    var checkInput = function() {
+        var val = globalInput.val().trim();
+        // No change
+        if (val == currVal) {
+            return;
+        } else {
+            currVal = val;
+        }
+        // Clean result
+        cleanAll();
+        // CMD
+        if (val && cmds[val]) {
+            cmds[val]();
+            return;
+        }
+        // Feed url
+        if (val && pattern.url.test(val)) {
+            dealFeed();
+            return;
+        }
+        // CMD hint
+        var pos, cmd, matches = [];
+        if (val) {
+            for (var c in cmds) {
+                if (cmds.hasOwnProperty(c) && (pos = c.indexOf(val)) >= 0) {
+                    matches.push({
+                        cmd: c,
+                        pos: pos
+                    });
+                }
+            }
+            var maxNum = 3, last = (maxNum < matches.length ? maxNum : matches.length) - 1;
+            matches.slice(0, maxNum).sort(function(a, b) {
+                return a.pos < b.pos;
+            }).forEach(function(match, i) {
+                var c = match.cmd, p = match.pos, str = c.slice(0, p) + "<b>" + val + "</b>" + c.slice(p + val.length);
+                if (i === last) {
+                    str += "	 ---- 用<b>Tab</b>补全";
+                    cmd = c;
+                }
+                addTip(str);
+            });
+        }
+        tabHandler = cmd && function(e) {
+            globalInput.val(cmd);
+        };
+        // Search for channels
+        doSearch(val);
+    };
+    globalInput.on("keydown", function(e) {
+        // Tab
+        if (e.which === 9) {
+            e.preventDefault();
+            if (tabHandler && !tabHandler(e)) {
+                return;
+            }
+        }
+    });
+    globalInput.on("keyup", function(e) {
+        // Enter
+        if (e.which === 13) {
+            if (enterHandler && !enterHandler(e)) {
+                globalInput.val("");
+                return;
+            }
+        }
+        checkInput();
+    });
+    keypress.register(27, function(e) {
+        toggleFloater();
+    });
+    module.exports = {
+        visible: function() {
+            return visible;
+        }
+    };
+});
+
+define("nireader/nireader-fe/2.0.1/kit/keypress-debug", [], function(require, exports, module) {
+    var eventList = {};
+    var keyCode = {
+        left: 37,
+        up: 38,
+        right: 39,
+        down: 40,
+        enter: 13,
+        backspace: 8
+    };
+    var format = function(which, ctrl, alt) {
+        var str = which + "";
+        str += ctrl ? "+ctrl" : "";
+        str += alt ? "+alt" : "";
+        return str;
+    };
+    var register = function(which, handler, ctrl, alt) {
+        var name = format(which, ctrl, alt);
+        eventList[name] = eventList[name] || [];
+        eventList[name].push(handler);
+    };
+    var unregister = function(which, handler, ctrl, alt) {
+        var name = format(which, ctrl, alt), list, pos;
+        if ((list = eventList[name]) && (pos = list.indexOf(handler)) >= 0) {
+            list.splice(pos, 1);
+        }
+    };
+    var trigger = function(which, ctrl, alt, e) {
+        var name = format(which, ctrl, alt);
+        if (eventList[name]) {
+            var list = eventList[name];
+            for (var i = 0, l = list.length; i < l; i++) {
+                try {
+                    list[i](e);
+                } catch (e) {
+                    LOG(e);
+                    LOG(e.stack);
+                }
+            }
+        }
+    };
+    $("body").on("keyup", function(e) {
+        LOG("keypress", e.which, e.ctrlKey, e.altKey, e);
+        trigger(e.which, e.ctrlKey, e.altKey, e);
+        //e.preventDefault();
+        return false;
+    });
+    var on = function(opt, handler) {
+        if (opt = typeof opt === "number" ? {
+            which: opt
+        } : opt) {
+            return register(opt.which, handler, opt.ctrl, opt.alt);
+        }
+    };
+    var off = function(opt, handler) {
+        if (opt = typeof opt === "number" ? {
+            which: opt
+        } : opt) {
+            return unregister(opt.which, handler, opt.ctrl, opt.alt);
+        }
+    };
+    module.exports = {
+        register: register,
+        unregister: unregister,
+        on: on,
+        off: off,
+        trigger: trigger,
+        code: keyCode
+    };
+});
+
+define("nireader/nireader-fe/2.0.1/kit/pattern-debug", [], function(require, exports, module) {
+    var urlPattern = /[a-z]+\:\/\/[\w]+\.[\w]+/;
+    module.exports = {
+        url: urlPattern
+    };
+});
+
+define("nireader/nireader-fe/2.0.1/template/common/result-debug", [ "nireader/nireader-fe/2.0.1/template/template-debug", "nireader/nireader-fe/2.0.1/kit/time-debug", "nireader/nireader-fe/2.0.1/kit/num-debug" ], function(require, exports, module) {
+    var template = require("nireader/nireader-fe/2.0.1/template/template-debug");
+    var tmpl = '<li class="result">' + '<a href="<%=result.link%>" target="<%=result.target%>" ' + '<%=result.async?"data-link-async=true":""%>>' + "<%==result.word%>" + "</a>" + "</li>";
+    module.exports = template.compile(tmpl);
+});
+
+define("nireader/nireader-fe/2.0.1/template/common/tip-debug", [ "nireader/nireader-fe/2.0.1/template/template-debug", "nireader/nireader-fe/2.0.1/kit/time-debug", "nireader/nireader-fe/2.0.1/kit/num-debug" ], function(require, exports, module) {
+    var template = require("nireader/nireader-fe/2.0.1/template/template-debug");
+    var tmpl = '<li class="tip">' + "<%==tip.word%>" + "</li>";
+    module.exports = template.compile(tmpl);
+});
+
 define("nireader/nireader-fe/2.0.1/template/channel/title-debug", [ "nireader/nireader-fe/2.0.1/template/template-debug", "nireader/nireader-fe/2.0.1/kit/time-debug", "nireader/nireader-fe/2.0.1/kit/num-debug" ], function(require, exports, module) {
     var template = require("nireader/nireader-fe/2.0.1/template/template-debug");
     var tmpl = "<%=channel.title%>";
@@ -1829,13 +2323,16 @@ define("nireader/nireader-fe/2.0.1/template/channel/itemList-debug", [ "nireader
     module.exports = template.compile(tmpl);
 });
 
-define("nireader/nireader-fe/2.0.1/content/item-debug", [ "nireader/nireader-fe/2.0.1/kit/resource-debug", "nireader/nireader-fe/2.0.1/kit/request-debug", "nireader/nireader-fe/2.0.1/kit/cache-debug", "nireader/nireader-fe/2.0.1/kit/local-debug", "nireader/nireader-fe/2.0.1/config-debug", "nireader/nireader-fe/2.0.1/kit/url-debug", "nireader/nireader-fe/2.0.1/interface/index-debug", "nireader/nireader-fe/2.0.1/kit/eventList-debug", "nireader/nireader-fe/2.0.1/kit/notice-debug", "nireader/nireader-fe/2.0.1/template/common/notice-debug", "nireader/nireader-fe/2.0.1/template/template-debug", "nireader/nireader-fe/2.0.1/kit/time-debug", "nireader/nireader-fe/2.0.1/kit/num-debug", "nireader/nireader-fe/2.0.1/kit/customEvent-debug", "nireader/nireader-fe/2.0.1/template/item/title-debug", "nireader/nireader-fe/2.0.1/template/item/info-debug", "nireader/nireader-fe/2.0.1/template/item/content-debug", "nireader/nireader-fe/2.0.1/template/item/channelTitle-debug", "nireader/nireader-fe/2.0.1/kit/testScroll-debug" ], function(require, exports, module) {
+define("nireader/nireader-fe/2.0.1/content/item-debug", [ "nireader/nireader-fe/2.0.1/module/floater-debug", "nireader/nireader-fe/2.0.1/kit/keypress-debug", "nireader/nireader-fe/2.0.1/kit/pattern-debug", "nireader/nireader-fe/2.0.1/kit/request-debug", "nireader/nireader-fe/2.0.1/kit/resource-debug", "nireader/nireader-fe/2.0.1/kit/cache-debug", "nireader/nireader-fe/2.0.1/kit/local-debug", "nireader/nireader-fe/2.0.1/config-debug", "nireader/nireader-fe/2.0.1/kit/url-debug", "nireader/nireader-fe/2.0.1/interface/index-debug", "nireader/nireader-fe/2.0.1/kit/userinfo-debug", "nireader/nireader-fe/2.0.1/kit/cookie-debug", "nireader/nireader-fe/2.0.1/kit/notice-debug", "nireader/nireader-fe/2.0.1/template/common/notice-debug", "nireader/nireader-fe/2.0.1/template/template-debug", "nireader/nireader-fe/2.0.1/kit/time-debug", "nireader/nireader-fe/2.0.1/kit/num-debug", "nireader/nireader-fe/2.0.1/kit/effect-debug", "nireader/nireader-fe/2.0.1/kit/customEvent-debug", "nireader/nireader-fe/2.0.1/template/common/result-debug", "nireader/nireader-fe/2.0.1/template/common/tip-debug", "nireader/nireader-fe/2.0.1/template/common/loadingIcon-debug", "nireader/nireader-fe/2.0.1/kit/eventList-debug", "nireader/nireader-fe/2.0.1/template/item/title-debug", "nireader/nireader-fe/2.0.1/template/item/info-debug", "nireader/nireader-fe/2.0.1/template/item/content-debug", "nireader/nireader-fe/2.0.1/template/item/channelTitle-debug", "nireader/nireader-fe/2.0.1/kit/testScroll-debug" ], function(require, exports, module) {
+    var floater = require("nireader/nireader-fe/2.0.1/module/floater-debug");
     var resource = require("nireader/nireader-fe/2.0.1/kit/resource-debug");
     var pagePath = require("nireader/nireader-fe/2.0.1/interface/index-debug").page;
     var URL = require("nireader/nireader-fe/2.0.1/kit/url-debug");
     var eventList = require("nireader/nireader-fe/2.0.1/kit/eventList-debug");
     var notice = require("nireader/nireader-fe/2.0.1/kit/notice-debug").notice;
     var customEvent = require("nireader/nireader-fe/2.0.1/kit/customEvent-debug");
+    var effect = require("nireader/nireader-fe/2.0.1/kit/effect-debug");
+    var keypress = require("nireader/nireader-fe/2.0.1/kit/keypress-debug");
     var genItemTitle = require("nireader/nireader-fe/2.0.1/template/item/title-debug");
     var genItemInfo = require("nireader/nireader-fe/2.0.1/template/item/info-debug");
     var genItemContent = require("nireader/nireader-fe/2.0.1/template/item/content-debug");
@@ -1870,7 +2367,7 @@ define("nireader/nireader-fe/2.0.1/content/item-debug", [ "nireader/nireader-fe/
         var rightLink = this.doms.rightLink;
         var upButton = this.doms.upButton;
         var checkoutDelay = 300;
-        var addEvent = this.eventList.add, removeEvent = this.eventList.remove;
+        var addEvent = this.eventList.add.bind(this.eventList), removeEvent = this.eventList.remove.bind(this.eventList);
         this.doms.content.find("a").each(function(i, a) {
             a = $(a);
             if (!a.attr("data-link-async")) {
@@ -1938,6 +2435,12 @@ define("nireader/nireader-fe/2.0.1/content/item-debug", [ "nireader/nireader-fe/
                 }
             });
         }, 200);
+        addEvent(keypress, keypress.code.left, function(e) {
+            !floater.visible() && leftLink.click();
+        });
+        addEvent(keypress, keypress.code.right, function(e) {
+            !floater.visible() && rightLink.click();
+        });
     };
     Item.prototype.clean = function() {
         this.eventList.clean();
@@ -1951,6 +2454,7 @@ define("nireader/nireader-fe/2.0.1/content/item-debug", [ "nireader/nireader-fe/
         this.doms.leftLink.attr("href", "");
         this.doms.rightLink.attr("href", "");
         this.doms.topLink.attr("href", "");
+        effect.bodyBlur();
     };
     Item.prototype.prepareInfo = function() {
         var _this = this;
@@ -2079,6 +2583,7 @@ define("nireader/nireader-fe/2.0.1/content/item-debug", [ "nireader/nireader-fe/
         this.doms.title.html(genItemTitle(data));
         this.doms.info.html(genItemInfo(data));
         this.doms.content.html(genItemContent(data));
+        effect.bodyUnblur();
     };
     Item.prototype.renderChannelInfo = function(data) {
         this.doms.topLink.attr("href", data.channel.pageUrl);
@@ -2125,304 +2630,90 @@ define("nireader/nireader-fe/2.0.1/kit/testScroll-debug", [], function(require, 
     };
 });
 
-define("nireader/nireader-fe/2.0.1/module/floater-debug", [ "nireader/nireader-fe/2.0.1/kit/keypress-debug", "nireader/nireader-fe/2.0.1/kit/pattern-debug", "nireader/nireader-fe/2.0.1/kit/request-debug", "nireader/nireader-fe/2.0.1/kit/resource-debug", "nireader/nireader-fe/2.0.1/kit/cache-debug", "nireader/nireader-fe/2.0.1/kit/local-debug", "nireader/nireader-fe/2.0.1/config-debug", "nireader/nireader-fe/2.0.1/kit/url-debug", "nireader/nireader-fe/2.0.1/interface/index-debug", "nireader/nireader-fe/2.0.1/kit/userinfo-debug", "nireader/nireader-fe/2.0.1/kit/cookie-debug", "nireader/nireader-fe/2.0.1/kit/notice-debug", "nireader/nireader-fe/2.0.1/template/common/notice-debug", "nireader/nireader-fe/2.0.1/template/template-debug", "nireader/nireader-fe/2.0.1/kit/time-debug", "nireader/nireader-fe/2.0.1/kit/num-debug", "nireader/nireader-fe/2.0.1/kit/customEvent-debug", "nireader/nireader-fe/2.0.1/template/common/result-debug", "nireader/nireader-fe/2.0.1/template/common/tip-debug", "nireader/nireader-fe/2.0.1/template/common/loadingIcon-debug" ], function(require, exports, module) {
-    var keypress = require("nireader/nireader-fe/2.0.1/kit/keypress-debug");
-    var pattern = require("nireader/nireader-fe/2.0.1/kit/pattern-debug");
-    var request = require("nireader/nireader-fe/2.0.1/kit/request-debug");
-    var resource = require("nireader/nireader-fe/2.0.1/kit/resource-debug");
-    var userinfo = require("nireader/nireader-fe/2.0.1/kit/userinfo-debug");
-    var notice = require("nireader/nireader-fe/2.0.1/kit/notice-debug").notice;
-    var URL = require("nireader/nireader-fe/2.0.1/kit/url-debug");
-    var customEvent = require("nireader/nireader-fe/2.0.1/kit/customEvent-debug");
-    var interfaces = require("nireader/nireader-fe/2.0.1/interface/index-debug");
-    var apis = interfaces.api;
-    var pages = interfaces.page;
-    var genResult = require("nireader/nireader-fe/2.0.1/template/common/result-debug");
-    var genTip = require("nireader/nireader-fe/2.0.1/template/common/tip-debug");
-    var loadingIcon = require("nireader/nireader-fe/2.0.1/template/common/loadingIcon-debug")();
-    var bodyContent = $("#body");
-    var globalFloater = $("#floater");
-    var globalInput = $("#input");
-    var globalTip = $("#tips");
-    var globalResult = $("#results");
-    var currVal;
-    var initInfo = function() {
-        currVal = globalInput.val().trim();
+define("nireader/nireader-fe/2.0.1/module/task-debug", [], function(require, exports, module) {
+    function Task(name, exec, duration) {
+        var self = this;
+        self.name = name;
+        self.duration = duration;
+        self.repeat = typeof self.duration === "number";
+        self.exec = function() {
+            try {
+                exec.call(self, self);
+            } catch (e) {
+                LOG(e);
+            }
+        };
+    }
+    Task.prototype.run = function() {
+        if (!this.timer) {
+            this.exec();
+            if (this.repeat) {
+                this.timer = setInterval(this.exec, this.duration);
+            }
+        }
+        return this;
     };
-    var initDom = function() {
-        globalInput.val("").focus();
-        checkInput();
-        globalTip.hide();
-        globalResult.hide();
+    Task.prototype.stop = function() {
+        this.timer = this.timer && clearInterval(this.timer);
+        return this;
     };
-    var showFloater = function() {
-        bodyContent.addClass("blur");
-        globalFloater.addClass("show");
-        initDom();
-        initInfo();
-    };
-    //showFloater();
-    var hideFloater = function() {
-        bodyContent.removeClass("blur");
-        globalFloater.removeClass("show");
-    };
-    var toggleFloater = function() {
-        if (globalFloater.hasClass("show")) {
-            hideFloater();
+    Task.list = [];
+    Task.add = function(name, exec, duration) {
+        var task;
+        if (name.constructor && name.constructor === Task) {
+            task = name;
         } else {
-            showFloater();
+            task = new Task(name, exec, duration);
         }
+        this.list.push(task);
+        return this;
     };
-    var reloadPage = function() {
-        customEvent.trigger("userInfoUpdate");
-    };
-    var cleanResult = function() {
-        globalResult.html("").hide();
-    };
-    var cleanTip = function() {
-        globalTip.html("").hide();
-    };
-    var cleanAll = function() {
-        cleanTip();
-        cleanResult();
-    };
-    var addTip = function(word) {
-        globalTip.show().prepend(genTip({
-            tip: {
-                word: word
-            }
-        }));
-    };
-    var showTip = function(word) {
-        cleanTip();
-        addTip(word);
-    };
-    var addResult = function(word, link, async) {
-        link = link || "javascript:;";
-        var target = URL.isSameDomain(link) ? "" : "_blank";
-        globalResult.show().append(genResult({
-            result: {
-                word: word,
-                link: link,
-                target: target,
-                async: async
-            }
-        }));
-    };
-    var enterHandler, tabHandler;
-    var createChannel = function(url, callback) {
-        request.post({
-            url: url
-        }, apis.channel.create, callback);
-    };
-    var saveChannel = function(channel, callback) {
-        request.post({
-            channel: channel
-        }, apis.channel.save, callback);
-    };
-    var addSubscription = function(cid, callback) {
-        request.post({
-            subscribee: cid,
-            description: ""
-        }, apis.subscription.add, callback);
-    };
-    var dealFeed = function() {
-        var url = globalInput.val();
-        showTip("好像是个rss地址，等我解析下... " + loadingIcon);
-        createChannel(url, function(err, channel) {
-            if (url !== currVal) {
-                return;
-            }
-            cleanAll();
-            if (err) {
-                showTip("没解析出来，地址不对。");
-                return;
-            }
-            var exist = !!channel.id;
-            showTip("用<b>Enter</b>" + (exist ? "" : "添加并") + "订阅");
-            addResult(channel.title, exist ? pages.channel(channel.id) : channel.link, exist);
-            enterHandler = function() {
-                saveChannel(channel, function(err, channel) {
-                    if (err) {
-                        showTip("没添加成功。");
-                        return;
-                    }
-                    showTip(channel.title + "添加好了，正在订阅... " + loadingIcon);
-                    addSubscription(channel.id, function(err, subscription) {
-                        if (err) {
-                            showTip("订阅" + channel.title + "没成功。");
-                            return;
-                        }
-                        cleanResult();
-                        showTip("订阅了" + channel.title + "。");
-                        reloadPage();
-                    });
-                });
-            };
-        });
-    };
-    var dealLogout = function() {
-        showTip("按<b>Enter</b>登出。");
-        enterHandler = function() {
-            showTip("正在登出... " + loadingIcon);
-            userinfo.logout(function(err) {
-                if (err) {
-                    notice("出错了。");
-                    LOG(err);
-                    return;
-                }
-                location.href = pages.home;
-            });
-        };
-    };
-    var dealHome = function() {
-        showTip("按<b>Enter</b>去首页 ('/')。");
-        enterHandler = function() {
-            showTip("正在去首页... " + loadingIcon);
-            customEvent.trigger("goto", "/");
-            cleanTip();
-        };
-    };
-    var doSearch = function(val) {
-        if (val) {
-            var keywords = val.split(" "), realKeywords = [];
-            for (var i = 0, l = keywords.length; i < l; i++) {
-                if (keywords[i]) {
-                    realKeywords.push(keywords[i]);
-                }
-            }
-            if (!realKeywords.length) {
-                return;
-            }
-            //addTip('searching... ' + loadingIcon);
-            resource.search("channel", realKeywords, 1, function(err, channels) {
-                if (val !== currVal) {
-                    return;
-                }
-                if (!err) {
-                    for (var i = 0, l = channels.length; i < l; i++) {
-                        addResult(channels[i].title, pages.channel(channels[i].id), true);
-                    }
-                }
-            });
+    Task.runFrom = function(i, duration) {
+        i = typeof i === "number" ? i : 0;
+        duration = typeof duration === "number" ? duration : 0;
+        if (i >= this.list.length) {
+            return this;
         }
+        try {
+            this.list[i].run();
+        } catch (e) {
+            LOG(e);
+        }
+        var self = this;
+        setTimeout(function() {
+            self.runFrom(++i, duration);
+        }, duration);
+        return this;
     };
-    var cmds = {
-        logout: dealLogout,
-        home: dealHome
+    Task.run = Task.runFrom;
+    Task.stop = function() {
+        for (var i = 0, l = this.list.length; i < l; i++) {
+            this.list[i].stop();
+        }
+        return this;
     };
-    var checkInput = function() {
-        var val = globalInput.val().trim();
-        // No change
-        if (val == currVal) {
-            return;
-        } else {
-            currVal = val;
-        }
-        // Clean result
-        cleanAll();
-        // CMD
-        if (val && cmds[val]) {
-            cmds[val]();
-            return;
-        }
-        // Feed url
-        if (val && pattern.url.test(val)) {
-            dealFeed();
-            return;
-        }
-        // CMD hint
-        var pos, str, cmd;
-        if (val) {
-            for (var c in cmds) {
-                if (cmds.hasOwnProperty(c) && (pos = c.indexOf(val)) >= 0) {
-                    cmd = c;
-                    str = c.slice(0, pos) + "<b>" + val + "</b>" + c.slice(pos + val.length) + "	 ---- 用<b>Tab</b>补全";
-                    addTip(str);
-                }
-            }
-        }
-        tabHandler = cmd && function(e) {
-            globalInput.val(cmd);
-        };
-        // Search for channels
-        doSearch(val);
-    };
-    globalInput.on("keydown", function(e) {
-        // Tab
-        if (e.which === 9) {
-            e.preventDefault();
-            if (tabHandler && !tabHandler(e)) {
-                return;
-            }
-        }
-    });
-    globalInput.on("keyup", function(e) {
-        // Enter
-        if (e.which === 13) {
-            if (enterHandler && !enterHandler(e)) {
-                globalInput.val("");
-                return;
-            }
-        }
-        checkInput();
-    });
-    keypress.register(27, function(e) {
-        toggleFloater();
-    });
+    module.exports = Task;
 });
 
-define("nireader/nireader-fe/2.0.1/kit/keypress-debug", [], function(require, exports, module) {
-    var eventList = {};
-    var format = function(which, ctrl, alt) {
-        var str = which + "";
-        str += ctrl ? "+ctrl" : "";
-        str += alt ? "+alt" : "";
-        return str;
-    };
-    var register = function(which, handler, ctrl, alt) {
-        var name = format(which, ctrl, alt);
-        eventList[name] = eventList[name] || [];
-        eventList[name].push(handler);
-    };
-    var trigger = function(which, ctrl, alt, e) {
-        var name = format(which, ctrl, alt);
-        if (eventList[name]) {
-            var list = eventList[name];
-            for (var i = 0, l = list.length; i < l; i++) {
-                try {
-                    list[i](e);
-                } catch (e) {}
-            }
-        }
-    };
-    $("body").on("keyup", function(e) {
-        //console.log(e.which, e.ctrlKey, e.altKey, e);//--------------------------------------
-        trigger(e.which, e.ctrlKey, e.altKey, e);
-        e.preventDefault();
-        return false;
+define("nireader/nireader-fe/2.0.1/module/tasks/logger-debug", [ "nireader/nireader-fe/2.0.1/module/task-debug", "nireader/nireader-fe/2.0.1/kit/local-debug" ], function(require, exports, module) {
+    var Task = require("nireader/nireader-fe/2.0.1/module/task-debug");
+    var local = require("nireader/nireader-fe/2.0.1/kit/local-debug").create("logger");
+    module.exports = new Task("logger", function(task) {
+        local.set("time", Date.now());
+        LOG("log", local.getAll());
+    }, 1e3 * 60);
+});
+
+define("nireader/nireader-fe/2.0.1/module/tasks/cacheManager-debug", [ "nireader/nireader-fe/2.0.1/module/task-debug", "nireader/nireader-fe/2.0.1/config-debug", "nireader/nireader-fe/2.0.1/kit/cache-debug", "nireader/nireader-fe/2.0.1/kit/local-debug" ], function(require, exports, module) {
+    var Task = require("nireader/nireader-fe/2.0.1/module/task-debug");
+    var autoManageInterval = require("nireader/nireader-fe/2.0.1/config-debug").cache.manageInterval;
+    var cache = require("nireader/nireader-fe/2.0.1/kit/cache-debug");
+    module.exports = new Task("cacheManager", cache.manage.bind(cache), autoManageInterval);
+});
+
+define("nireader/nireader-fe/2.0.1/module/tasks/breath-debug", [ "nireader/nireader-fe/2.0.1/module/task-debug" ], function(require, exports, module) {
+    var Task = require("nireader/nireader-fe/2.0.1/module/task-debug");
+    module.exports = new Task("breath", function(task) {
+        $("#body").addClass("breath");
     });
-    module.exports = {
-        register: register,
-        trigger: trigger
-    };
-});
-
-define("nireader/nireader-fe/2.0.1/kit/pattern-debug", [], function(require, exports, module) {
-    var urlPattern = /[a-z]+\:\/\/[\w]+\.[\w]+/;
-    module.exports = {
-        url: urlPattern
-    };
-});
-
-define("nireader/nireader-fe/2.0.1/template/common/result-debug", [ "nireader/nireader-fe/2.0.1/template/template-debug", "nireader/nireader-fe/2.0.1/kit/time-debug", "nireader/nireader-fe/2.0.1/kit/num-debug" ], function(require, exports, module) {
-    var template = require("nireader/nireader-fe/2.0.1/template/template-debug");
-    var tmpl = '<li class="result">' + '<a href="<%=result.link%>" target="<%=result.target%>" ' + '<%=result.async?"data-link-async=true":""%>>' + "<%==result.word%>" + "</a>" + "</li>";
-    module.exports = template.compile(tmpl);
-});
-
-define("nireader/nireader-fe/2.0.1/template/common/tip-debug", [ "nireader/nireader-fe/2.0.1/template/template-debug", "nireader/nireader-fe/2.0.1/kit/time-debug", "nireader/nireader-fe/2.0.1/kit/num-debug" ], function(require, exports, module) {
-    var template = require("nireader/nireader-fe/2.0.1/template/template-debug");
-    var tmpl = '<li class="tip">' + "<%==tip.word%>" + "</li>";
-    module.exports = template.compile(tmpl);
 });

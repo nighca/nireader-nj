@@ -144,12 +144,15 @@ Channel.prototype.updateFromMeta = function(meta){
     return channel;
 };
 
-var saveItemIfNotExist = function(item, callback){
+var saveOrUpdate = function(item, callback){
     Item.ifExist(item, function(err, exist){
-        if(err || exist){
-            //if(!err) console.log("Exist Item: " + item.title);//---------------------
-            callback && callback(err, exist);
+        if(err){
+            callback && callback(err);
             return;
+        }
+        //console.log('check', item.title, '|' + item.link + '|', exist ? 'true' : 'false');//----------------------------
+        if(exist){
+            item.id = exist.id;
         }
         item.save(callback);
     });
@@ -159,7 +162,7 @@ Channel.prototype.fetch = function(callback) {
     var channel = this;
     //console.log("Channel fetch: " + channel.title);//---------------------------------
     if(!channel.source){
-        callback && callback("no source assigned.")
+        callback && callback("no source assigned.");
         return;
     }
     if(!channel.id){
@@ -182,7 +185,7 @@ Channel.prototype.fetch = function(callback) {
             if(useItem(item, channel)){
                 notFinished++;
                 //console.log("Use Item: " + item.title);//---------------------
-                saveItemIfNotExist(Item.createFromFeed(item, channel.id), function(err){
+                saveOrUpdate(Item.createFromFeed(item, channel.id), function(err){
                     if(err){
                         console.error(err);
                     }

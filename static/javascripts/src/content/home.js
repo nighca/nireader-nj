@@ -5,6 +5,7 @@ define(function(require, exports, module) {
     var userinfo = require('../kit/userinfo');
     var eventList = require('../kit/eventList');
     var customEvent = require('../kit/customEvent');
+    var effect = require('../kit/effect');
     var interfaces = require('../interface/index');
     var apis = interfaces.api;
     var pages = interfaces.page;
@@ -61,6 +62,7 @@ define(function(require, exports, module) {
         this.doms.leftLink.attr('href', '').show();
         this.doms.rightLink.attr('href', '').show();
         this.doms.topLink.attr('href', '').show();
+        effect.bodyBlur();
     };
 
     Home.prototype.prepareInfo = function(){
@@ -325,6 +327,8 @@ define(function(require, exports, module) {
             this.doms.content.html(genSubscriptionList(data));
         }
         this.subscriptionListReady = true;
+        
+        effect.bodyUnblur();
 
         this.doms.subscriptionList = this.doms.content.find('#subscription-list');
         this.sideBlock.bind(this.doms.subscriptionList);

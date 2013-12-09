@@ -1,1 +1,11 @@
-@font-face{font-family:'TeXGyre';src:url('../font/texgyreadventor-regular-webfont.woff') format('woff');font-weight:normal;font-style:normal}.blur{-webkit-filter:blur(3px);-moz-filter:blur(3px);-o-filter:blur(3px);-ms-filter:blur(3px);filter:blur(3px)}.left{float:left}.right{float:right}.align-left{text-align:left}.align-right{text-align:right}.align-center{text-align:center}.hidden{display:none}.inline-block{display:inline-block;*display:inline;*zoom:1}
+@font-face{font-family:'TeXGyre';src:url('../font/texgyreadventor-regular-webfont.woff') format('woff');font-weight:normal;font-style:normal}.half-transparent{-webkit-transition-duration:.3s;-moz-transition-duration:.3s;-o-transition-duration:.3s;transition-duration:.3s;-moz-opacity:.5;-khtml-opacity:.5;opacity:.5}
+.blur{-webkit-transition-duration:.3s;-moz-transition-duration:.3s;-o-transition-duration:.3s;transition-duration:.3s;-webkit-filter:blur(3px);-moz-filter:blur(3px);-o-filter:blur(3px);-ms-filter:blur(3px);filter:blur(3px)}
+.left{float:left}
+.right{float:right}
+.align-left{text-align:left}
+.align-right{text-align:right}
+.align-center{text-align:center}
+.hidden{display:none}
+.inline-block{display:inline-block;*display:inline;*zoom:1}
+.breath{background:#fff;animation:myfirst 5s linear 0 infinite normal;-moz-animation:myfirst 5s linear 0 infinite normal;-webkit-animation:myfirst 5s linear 0 infinite normal;-o-animation:myfirst 5s linear 0 infinite normal}
+@keyframes myfirst{0%{background:#fff} 40%{background:#eee} 70%{background:#fff} 100%{background:#fff}}@-moz-keyframes myfirst /* Firefox */{0%{background:#fff} 40%{background:#eee} 70%{background:#fff} 100%{background:#fff}}@-webkit-keyframes myfirst /* Safari and Chrome */{0%{background:#fff} 40%{background:#eee} 70%{background:#fff} 100%{background:#fff}}@-o-keyframes myfirst /* Opera */{0%{background:#fff} 40%{background:#eee} 70%{background:#fff} 100%{background:#fff}}

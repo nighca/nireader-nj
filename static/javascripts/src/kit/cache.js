@@ -1,7 +1,6 @@
 define(function(require, exports, module){
     var local = require('./local').create('cache');
     var config = require('../config').cache;
-    var autoManageInterval = config.manageInterval;
     var defaultLifetime = config.lifetime;
     var maxCacheNum = config.maxNum;
 
@@ -80,6 +79,10 @@ define(function(require, exports, module){
         LOG('clear end: ', storage);
     };
 
+    var getSize = function(){
+        return local.getSize();
+    };
+
     // persistence with localStorage
     var saveToLocal = function(){
         LOG('save to local begin: ', storage);
@@ -134,32 +137,29 @@ define(function(require, exports, module){
         for (var i = 0, name; i < overNum; i++) {
             name = hotList[i];
 
-            cacheStatus('cache over num: ', name); 
+            cacheStatus('cache over num: ', name);
 
             delete storage[name];
         }
 
         hotList = hotList.slice(overNum, hotList.length);
 
-        cacheStatus('manage cache end.');
-
         saveToLocal();
+
+        cacheStatus('manage cache end.');
     };
 
     window.onbeforeunload = function(){
         saveToLocal();
     };
 
-    var autoManage = function(){
-        setInterval(manage, autoManageInterval);
-    };
-
     loadFromLocal();
-    autoManage();
 
     module.exports = {
         set: set,
         get: get,
-        clear: clear
+        clear: clear,
+        getSize: getSize,
+        manage: manage
     };
 });

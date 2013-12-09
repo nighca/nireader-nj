@@ -1,10 +1,14 @@
 define(function(require, exports, module) {
+    var floater = require('../module/floater');
+
     var resource = require('../kit/resource');
     var pagePath = require('../interface/index').page;
     var URL = require('../kit/url');
     var eventList = require('../kit/eventList');
     var notice = require('../kit/notice').notice;
     var customEvent = require('../kit/customEvent');
+    var effect = require('../kit/effect');
+    var keypress = require('../kit/keypress');
 
     var genItemTitle = require('../template/item/title');
     var genItemInfo = require('../template/item/info');
@@ -51,8 +55,8 @@ define(function(require, exports, module) {
         var upButton = this.doms.upButton;
         var checkoutDelay = 300;
 
-        var addEvent = this.eventList.add,
-            removeEvent = this.eventList.remove;
+        var addEvent = this.eventList.add.bind(this.eventList),
+            removeEvent = this.eventList.remove.bind(this.eventList);
 
         this.doms.content.find('a').each(function(i, a){
             a = $(a);
@@ -131,6 +135,13 @@ define(function(require, exports, module) {
                 }
             });
         }, 200);
+
+        addEvent(keypress, keypress.code.left, function(e){
+            !floater.visible() && leftLink.click();
+        });
+        addEvent(keypress, keypress.code.right, function(e){
+            !floater.visible() && rightLink.click();
+        });
     };
 
     Item.prototype.clean = function(){
@@ -145,6 +156,7 @@ define(function(require, exports, module) {
         this.doms.leftLink.attr('href', '');
         this.doms.rightLink.attr('href', '');
         this.doms.topLink.attr('href', '');
+        effect.bodyBlur();
     };
 
     Item.prototype.prepareInfo = function(){
@@ -297,6 +309,8 @@ define(function(require, exports, module) {
         this.doms.title.html(genItemTitle(data));
         this.doms.info.html(genItemInfo(data));
         this.doms.content.html(genItemContent(data));
+
+        effect.bodyUnblur();
     };
 
     Item.prototype.renderChannelInfo = function(data){
