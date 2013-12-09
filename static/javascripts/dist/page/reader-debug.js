@@ -88,6 +88,9 @@ define("nireader/nireader-fe/2.1.0/kit/url-debug", [], function(require, exports
     var withProtocal = function(url) {
         return url.indexOf("://") > 0;
     };
+    var getOrigin = function() {
+        return location.origin || [ location.protocol, "//", location.hostname, location.port || "" ].join("");
+    };
     var removeBeforeSlash = function(url) {
         var p = url.indexOf("://");
         if (p < 0) {
@@ -135,13 +138,13 @@ define("nireader/nireader-fe/2.1.0/kit/url-debug", [], function(require, exports
         if (url.indexOf("://") < 0) {
             return true;
         }
-        if (url.indexOf(location.origin) === 0) {
+        if (url.indexOf(getOrigin()) === 0) {
             return true;
         }
         return false;
     };
     var complete = function(url) {
-        return withProtocal(url) ? url : location.origin + concatWithCurrentPath(url);
+        return withProtocal(url) ? url : getOrigin() + concatWithCurrentPath(url);
     };
     var parseHash = function(hash) {
         var hashParams = {};

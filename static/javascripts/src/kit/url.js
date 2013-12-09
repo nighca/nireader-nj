@@ -3,6 +3,11 @@ define(function(require, exports, module){
         return url.indexOf("://") > 0;
     };
 
+    var getOrigin = function(){
+        return location.origin ||
+            [location.protocol, '//', location.hostname, location.port || ''].join('');
+    };
+
     var removeBeforeSlash = function(url){
         var p = url.indexOf("://");
         if(p<0){
@@ -57,7 +62,7 @@ define(function(require, exports, module){
         if(url.indexOf('://') < 0){
             return true;
         }
-        if(url.indexOf(location.origin) === 0){
+        if(url.indexOf(getOrigin()) === 0){
             return true;
         }
 
@@ -68,7 +73,7 @@ define(function(require, exports, module){
         return (
             withProtocal(url) ?
                 url :
-                (location.origin + concatWithCurrentPath(url))
+                (getOrigin() + concatWithCurrentPath(url))
         );
     };
 
