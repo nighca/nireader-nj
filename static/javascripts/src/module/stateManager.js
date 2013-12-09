@@ -6,7 +6,7 @@ define(function(require, exports, module) {
         this.handlers = {};
 
         this.init();
-    }
+    };
 
     StateManager.prototype.init = function(){
         this.bindEvent();
@@ -17,12 +17,17 @@ define(function(require, exports, module) {
 
         var gotoUrl = function(url){
             url = formatUrl(url);
-            manager.pushState({
-                url: url,
-                title: 'Loading'
-            });
-            manager.checkout();
-        }
+
+            if(history.pushState){
+                manager.pushState({
+                    url: url,
+                    title: 'Loading'
+                });
+                manager.checkout();
+            }else{
+                location.href = url;
+            }
+        };
 
         $('body').delegate('[data-link-async]', 'click', function(e){
 
@@ -41,9 +46,14 @@ define(function(require, exports, module) {
 
         customEvent.on('goto', gotoUrl);
 
-        window.onpopstate = function(e){
+        var onpopstate = window.onpopstate = function(e){
             manager.checkout();
         };
+
+        // do checkout while page loaded (chrome trigger popstate automatically)
+        if(navigator.userAgent.toLowerCase().indexOf('chrome') < 0){
+            setTimeout(onpopstate, 0);
+        }
     };
 
     StateManager.prototype.pushState = function(state){
