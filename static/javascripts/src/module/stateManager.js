@@ -45,6 +45,9 @@ define(function(require, exports, module) {
         });
 
         customEvent.on('goto', gotoUrl);
+        customEvent.on('goback', function(e){
+            history.back();
+        });
 
         var onpopstate = window.onpopstate = function(e){
             manager.checkout();

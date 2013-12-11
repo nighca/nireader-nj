@@ -83,39 +83,74 @@
 
 .breath{
     background:#fff;
-    animation:myfirst 5s linear 0s infinite normal;
+    animation:breath 5s ease 0s infinite normal;
     /* Firefox: */
-    -moz-animation:myfirst 5s linear 0s infinite normal;
+    -moz-animation:breath 5s ease 0s infinite normal;
     /* Safari and Chrome: */
-    -webkit-animation:myfirst 5s linear 0s infinite normal;
+    -webkit-animation:breath 5s ease 0s infinite normal;
     /* Opera: */
-    -o-animation:myfirst 5s linear 0s infinite normal;
+    -o-animation:breath 5s ease 0s infinite normal;
 }
 
-@keyframes myfirst{
+@keyframes breath{
     0%   {background:#fff;}
     40%  {background:#eee;}
     70%  {background:#fff;}
     100% {background:#fff;}
 }
 
-@-moz-keyframes myfirst /* Firefox */{
+@-moz-keyframes breath /* Firefox */{
     0%   {background:#fff;}
     40%  {background:#eee;}
     70%  {background:#fff;}
     100% {background:#fff;}
 }
 
-@-webkit-keyframes myfirst /* Safari and Chrome */{
+@-webkit-keyframes breath /* Safari and Chrome */{
     0%   {background:#fff;}
     40%  {background:#eee;}
     70%  {background:#fff;}
     100% {background:#fff;}
 }
 
-@-o-keyframes myfirst /* Opera */{
+@-o-keyframes breath /* Opera */{
     0%   {background:#fff;}
     40%  {background:#eee;}
     70%  {background:#fff;}
     100% {background:#fff;}
 }
+
+.rock{
+    animation:rock 5s ease 0s infinite normal;
+    /* Firefox: */
+    -moz-animation:rock 5s ease 0s infinite normal;
+    /* Safari and Chrome: */
+    -webkit-animation:rock 5s ease 0s infinite normal;
+    /* Opera: */
+    -o-animation:rock 5s ease 0s infinite normal;
+
+    @keyframes rock{
+        0%   {margin-top:-3px;margin-right:0px;}
+        20%  {margin-top:3px;margin-right:0px;}
+        40% {margin-top:-3px;margin-right:0px;}
+    }
+
+    @-moz-keyframes rock /* Firefox */{
+        0%   {margin-top:-3px;margin-right:0px;}
+        20%  {margin-top:3px;margin-right:0px;}
+        40% {margin-top:-3px;margin-right:0px;}
+    }
+
+    @-webkit-keyframes rock /* Safari and Chrome */{
+        0%   {margin-top:-3px;margin-right:0px;}
+        20%  {margin-top:3px;margin-right:0px;}
+        40% {margin-top:-3px;margin-right:0px;}
+    }
+
+    @-o-keyframes rock /* Opera */{
+        0%   {margin-top:-3px;margin-right:0px;}
+        20%  {margin-top:3px;margin-right:0px;}
+        40% {margin-top:-3px;margin-right:0px;}
+    }
+}
+

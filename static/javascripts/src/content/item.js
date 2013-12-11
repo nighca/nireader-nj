@@ -5,7 +5,7 @@ define(function(require, exports, module) {
     var pagePath = require('../interface/index').page;
     var URL = require('../kit/url');
     var eventList = require('../kit/eventList');
-    var notice = require('../kit/notice').notice;
+    var notice = require('../kit/notice');
     var customEvent = require('../kit/customEvent');
     var effect = require('../kit/effect');
     var keypress = require('../kit/keypress');
@@ -192,9 +192,7 @@ define(function(require, exports, module) {
         }, function(err, item){
             if(err){
                 if(err.status == 404){
-                    notice('走错地方了。', function(){
-                        customEvent.trigger('goto', '/');
-                    });
+                    notice.NotFound();
                 }else{
                     LOG(err);
                 }
@@ -268,6 +266,11 @@ define(function(require, exports, module) {
                     pos = i;
                     break;
                 }
+            }
+
+            if(pos === -1){
+                notice.NotFound();
+                return;
             }
 
             _this.dealNeighbourInfo({
