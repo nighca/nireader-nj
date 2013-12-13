@@ -30,7 +30,7 @@ exports.get = function(req, res){
         }
 
         if(users[0]){
-            users[0].password = null;
+            users[0].password = 'iAmNotThePassword';
         }
 
         res.json({
