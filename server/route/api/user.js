@@ -29,6 +29,10 @@ exports.get = function(req, res){
             return;
         }
 
+        if(users[0]){
+            users[0].password = null;
+        }
+
         res.json({
             err: err,
             data: users[0]
