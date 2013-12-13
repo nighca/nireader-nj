@@ -11,8 +11,6 @@ var app = express();
 app.configure(function(){
     app.set('views', path.join(__dirname, 'view'));
     app.set('view engine', 'jade');
-    
-    app.use(express.static(path.join(__dirname, '../static')));
 
     app.use(express.bodyParser());
     app.use(express.cookieParser(cookieSessionConfig.cookie.secret));
@@ -25,6 +23,7 @@ app.configure(function(){
 
 app.configure('development', function(){
     app.set('port', process.env.PORT || 3000);
+    app.use(express.static(path.join(__dirname, '../static')));
 
     app.use(express.logger('dev'));
     app.use(express.errorHandler());
