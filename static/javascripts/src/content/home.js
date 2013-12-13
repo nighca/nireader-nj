@@ -181,7 +181,7 @@ define(function(require, exports, module) {
 
             var $this = $(this);
             var cid = $this.attr('data-id');
-            sideBlock.attr('data-cid', cid)
+            sideBlock.attr('data-cid', cid);
             position($this);
             loading();
 

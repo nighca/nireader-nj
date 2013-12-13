@@ -1,5 +1,6 @@
 define(function(require, exports, module){
     var genNotice = require('../template/common/notice');
+    var customEvent = require('./customEvent');
     var effect = require('./effect');
     var noticeBlock = $('#notice');
 
@@ -69,6 +70,11 @@ define(function(require, exports, module){
         notice: renderAndBind,
         visible: function(){
             return visible;
+        },
+        NotFound: function(){
+            renderAndBind('走错地方了。', function(){
+                customEvent.trigger('goback');
+            });
         }
     };
 });

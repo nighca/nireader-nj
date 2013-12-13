@@ -45,13 +45,13 @@ function Channel (options) {
 
 function createChannel(options){
     return new Channel(options);
-};
+}
 
 function updateChannel(channel, callback){
     db.updateItem(tableName, channel, function(err, result){
         callback && callback(err, channel);
     });
-};
+}
 
 function saveChannel(channel, callback){
     db.insertItem(tableName, channel, function(err, result){
@@ -60,7 +60,7 @@ function saveChannel(channel, callback){
         }
         callback && callback(err, channel);
     });
-};
+}
 
 function selectChannel(options, callback, sort){
     sort = sort || {
@@ -76,7 +76,7 @@ function selectChannel(options, callback, sort){
         }
         callback(err, channels);
     }, sort);
-};
+}
 
 function ifExist(source, callback){
     if(!source){
@@ -91,13 +91,13 @@ function ifExist(source, callback){
         }
         callback && callback(null, channels.length > 0 ? channels[0] : false);
     });
-};
+}
 
 function removeChannel(options, callback){
     db.deleteItem(tableName, options, function(err, result){
         callback && callback(err, channel);
     });
-};
+}
 
 Channel.prototype.save = function(callback) {
     var channel = this;
@@ -145,6 +145,14 @@ Channel.prototype.updateFromMeta = function(meta){
 };
 
 var saveOrUpdate = function(item, callback){
+    // 过滤乱码
+    var garblePattern = /\ufffd/,
+        arroundPattern = /.{0,5}[\ufffd]+.{0,5}/g;
+    if(garblePattern.test(item.title)){
+        callback && callback('title garbled! ' + item.title.match(arroundPattern));
+        return;
+    }
+
     Item.ifExist(item, function(err, exist){
         if(err){
             callback && callback(err);
@@ -152,6 +160,13 @@ var saveOrUpdate = function(item, callback){
         }
         //console.log('check', item.title, '|' + item.link + '|', exist ? 'true' : 'false');//----------------------------
         if(exist){
+            // 过滤乱码
+            if(garblePattern.test(item.content)){
+                callback && callback(
+                    ['content garbled! ', item.title].
+                        concat(item.content.match(arroundPattern)).join('\n'));
+                return;
+            }
             item.id = exist.id;
         }
         item.save(callback);
@@ -178,7 +193,7 @@ Channel.prototype.fetch = function(callback) {
         var items = result.items;
         var item;
 
-        var notFinished = 0;
+        var notFinished = 0, error = null;
         for (var i = 0, l = items.length; i < l; i++) {
             item = items[i];
             //console.log("Get Item: " + item.title);//---------------------
@@ -188,18 +203,19 @@ Channel.prototype.fetch = function(callback) {
                 saveOrUpdate(Item.createFromFeed(item, channel.id), function(err){
                     if(err){
                         console.error(err);
+                        error  = (error || '') + err + '\n';
                     }
                     notFinished--;
                     if(!notFinished){
                         channel.updateFromMeta(result.meta).save();
-                        callback && callback(null, channel);
+                        callback && callback(error, channel);
                     }
                 });
             }
         }
         if(!notFinished){
             channel.updateFromMeta(result.meta).save();
-            callback && callback(null, channel);
+            callback && callback(error, channel);
         }
     });
 };

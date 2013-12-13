@@ -8,7 +8,7 @@ define(function(require, exports, module) {
     var apiPath = interfaces.api;
     var URL = require('../kit/url');
     var eventList = require('../kit/eventList');
-    var notice = require('../kit/notice').notice;
+    var notice = require('../kit/notice');
     var customEvent = require('../kit/customEvent');
     var effect = require('../kit/effect');
     var keypress = require('../kit/keypress');
@@ -116,9 +116,7 @@ define(function(require, exports, module) {
         }, function(err, channel){
             if(err){
                 if(err.status == 404){
-                    notice('走错地方了', function(){
-                        customEvent.trigger('goto', '/');
-                    });
+                    notice.NotFound();
                 }else{
                     LOG(err);
                 }
@@ -138,8 +136,6 @@ define(function(require, exports, module) {
     Channel.prototype.getNeighbourInfo = function(){
         var _this = this;
 
-        var errorInfo = '不知道这是哪';
-
         var listName = _this.data.inSubscription ? 'subscription' : 'channel';
         var sort = _this.data.inRecommend ? {
             order: 'score',
@@ -148,8 +144,8 @@ define(function(require, exports, module) {
 
         resource.list(listName, null, null, function(err, channels){
             if(err || channels.length < 1){
-                notice(errorInfo);
-                LOG(err || errorInfo);
+                notice.notice('无法获取频道列表');
+                LOG(err);
                 return;
             }
 
@@ -165,9 +161,7 @@ define(function(require, exports, module) {
                 if(_this.data.inSubscription){
                     customEvent.trigger('goto', _this.url.slice(inSubscriptionFlag.length - 1));
                 }else{
-                    notice(errorInfo, function(){
-                        customEvent.trigger('goto', '/');
-                    });
+                    notice.NotFound();
                 }
                 return;
             }
