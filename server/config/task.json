@@ -5,6 +5,6 @@
     },
     "cleanItem": {
         "cleanInterval": 600000,
-        "reserveNum": 20
+        "reserveNum": 50
     }
 }
