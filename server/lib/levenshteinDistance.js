@@ -1,5 +1,8 @@
-var longSize = 1000,
-    partLength = 500;
+var config = require("../config/compare.json");
+
+var longSize = config.longSize,
+    partLength = config.partLength,
+    judges = config.judges;
 
 var getLevenshteinDistance = function(cnt1, cnt2){
     if(cnt1 === cnt2){
@@ -25,7 +28,7 @@ var getLevenshteinDistance = function(cnt1, cnt2){
                 cache[i][j] = Math.min(
                     cache[i-1][j] + 1,
                     cache[i][j-1] + 1,
-                    cache[i-1][j-1] + (cnt1[l1-1] === cnt2[l2-1] ? 0 : 1)
+                    cache[i-1][j-1] + (cnt1[i] === cnt2[j] ? 0 : 1)
                 );
             }
         }
@@ -93,7 +96,14 @@ var getRelativeForLongCnt = function(cnt1, cnt2, maxPartLength){
     return Math.max(result1, result2, result3);
 };
 
-var getRel = function(cnt1, cnt2){
+var removeHtmlTag = function(cnt){
+    return cnt.replace(/(\<[^\<]*\>)|(\<\/[^\<]*\>)|(\s)/g, '');
+};
+
+var getRelForArticle = function(cnt1, cnt2){
+    cnt1 = removeHtmlTag(cnt1);
+    cnt2 = removeHtmlTag(cnt2);
+
     var l1 = cnt1.length,
         l2 = cnt2.length;
 
@@ -102,7 +112,10 @@ var getRel = function(cnt1, cnt2){
     return result;
 };
 
+var isSameArticle = function(art1, art2){
+    return getRelForArticle(art1, art2) >= judges.article;
+};
+
 module.exports = {
-    getDist: getLevenshteinDistance,
-    getRel: getRel
+    isSameArticle: isSameArticle
 };

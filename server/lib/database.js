@@ -206,7 +206,7 @@ var makeQuery = function(query, opts, sort, limit, fuzzy){
             }
         }
 
-        var i,  len = names.length;
+        var i, len = names.length;
         for (i = 0; i < len; i++) {
             if(i === 0){
                 query += ' WHERE ';

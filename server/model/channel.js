@@ -158,7 +158,7 @@ var saveOrUpdate = function(item, callback){
             callback && callback(err);
             return;
         }
-        //console.log('check', item.title, '|' + item.link + '|', exist ? 'true' : 'false');//----------------------------
+        console.log('check', item.title, '|' + item.link + '|', exist ? 'true' : 'false');//----------------------------
         if(exist){
             // 过滤乱码
             if(garblePattern.test(item.content)){
@@ -199,7 +199,7 @@ Channel.prototype.fetch = function(callback) {
             //console.log("Get Item: " + item.title);//---------------------
             if(useItem(item, channel)){
                 notFinished++;
-                //console.log("Use Item: " + item.title);//---------------------
+                console.log("Use Item: " + item.title);//---------------------
                 saveOrUpdate(Item.createFromFeed(item, channel.id), function(err){
                     if(err){
                         console.error(err);
