@@ -188,12 +188,12 @@ Channel.prototype.fetch = function(callback) {
         return;
     }
     feed.parseRemote(channel.source, function(err, result){
-        if(err){
-            callback && callback(err);
+        if(err || !result){
+            callback && callback(err || 'Got nothing from remote!');
             return;
         }
 
-        var items = result.items;
+        var items = result.items || [];
         var item;
 
         var notFinished = 0, error = null;
