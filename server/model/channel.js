@@ -128,6 +128,9 @@ var useItem = function(item, channel){
 };
 Channel.prototype.updateFromMeta = function(meta){
     var channel = this;
+
+    if(!meta) return channel;
+
     channel.title = meta.title || channel.title;
     channel.link = meta.link || channel.link;
     channel.source = meta.xmlurl || meta.xmlUrl || channel.source;
