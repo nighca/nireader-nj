@@ -101,6 +101,10 @@ var removeHtmlTag = function(cnt){
 };
 
 var getRelForArticle = function(cnt1, cnt2){
+    if(!cnt1 || !cnt2){
+        return 0;
+    }
+
     cnt1 = removeHtmlTag(cnt1);
     cnt2 = removeHtmlTag(cnt2);
 
