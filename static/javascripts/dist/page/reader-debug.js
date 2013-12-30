@@ -1011,15 +1011,15 @@ define("nireader/nireader-fe/2.1.0/config-debug", [], function(require, exports,
         cache: {
             manageInterval: 1e3 * 60 * 1,
             // 1min
-            lifetime: 1e3 * 60 * 1,
-            // 1min
+            lifetime: 1e3 * 60 * 10,
+            // 10min
             maxNum: 100
         },
         resource: {
             lifetime: {
-                resource: 1e3 * 60 * 60,
-                // 1h
-                list: 1e3 * 60
+                resource: 1e3 * 60 * 60 * 24,
+                // 1day
+                list: 1e3 * 60 * 60
             }
         },
         auth: {
