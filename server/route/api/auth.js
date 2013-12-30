@@ -4,6 +4,15 @@ var format = require('url').format;
 var User = require('../../model/user');
 var config = require('../../config/auth');
 
+var randomStr = function(l) {
+    var x = "123456789poiuytrewqasdfghjklmnbvcxzQWERTYUIPLKJHGFDSAZXCVBNM",
+        tmp = "";
+    for(var i = 0; i < l; i++) {
+        tmp += x.charAt(Math.ceil(Math.random()*100000000) % x.length);
+    }
+    return tmp;
+};
+
 var getThirdPartyInfo = function(thirdParty, params, callback){
     if(!config[thirdParty]){
         callback && callback('不支持该账号类型');
@@ -61,7 +70,7 @@ var dealThirdParty = function(thirdParty, params, callback){
             }else{
                 user = User.create({
                     name: info.nickname,
-                    password: Date.now().toString(),
+                    password: randomStr(64),
                     thirdParty: thirdParty,
                     thirdPartyId: params.openId,
                     avatar: info.figureurl_qq_1
@@ -91,7 +100,7 @@ exports.in = function(req, res){
             return;
         }
 
-        user.password = null;
+        user.password = 'iAmNotThePassword';
         res.json({
             err: null,
             data: user

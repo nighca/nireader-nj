@@ -128,6 +128,9 @@ var useItem = function(item, channel){
 };
 Channel.prototype.updateFromMeta = function(meta){
     var channel = this;
+
+    if(!meta) return channel;
+
     channel.title = meta.title || channel.title;
     channel.link = meta.link || channel.link;
     channel.source = meta.xmlurl || meta.xmlUrl || channel.source;
@@ -158,7 +161,7 @@ var saveOrUpdate = function(item, callback){
             callback && callback(err);
             return;
         }
-        //console.log('check', item.title, '|' + item.link + '|', exist ? 'true' : 'false');//----------------------------
+        console.log('check', item.title, '|' + item.link + '|', exist ? 'true' : 'false');//----------------------------
         if(exist){
             // 过滤乱码
             if(garblePattern.test(item.content)){
@@ -185,12 +188,12 @@ Channel.prototype.fetch = function(callback) {
         return;
     }
     feed.parseRemote(channel.source, function(err, result){
-        if(err){
-            callback && callback(err);
+        if(err || !result){
+            callback && callback(err || 'Got nothing from remote!');
             return;
         }
 
-        var items = result.items;
+        var items = result.items || [];
         var item;
 
         var notFinished = 0, error = null;
@@ -199,7 +202,7 @@ Channel.prototype.fetch = function(callback) {
             //console.log("Get Item: " + item.title);//---------------------
             if(useItem(item, channel)){
                 notFinished++;
-                //console.log("Use Item: " + item.title);//---------------------
+                console.log("Use Item: " + item.title);//---------------------
                 saveOrUpdate(Item.createFromFeed(item, channel.id), function(err){
                     if(err){
                         console.error(err);

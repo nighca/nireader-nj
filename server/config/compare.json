@@ -1,0 +1,7 @@
+{
+    "longSize": 1000,
+    "partLength": 500,
+    "judges": {
+        "article": 0.2
+    }
+}

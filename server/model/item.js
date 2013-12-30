@@ -1,4 +1,5 @@
 var db = require('../lib/data');
+var comparer = require('../lib/levenshteinDistance');
 
 var tableName = 'item';
 var struct = {
@@ -82,16 +83,50 @@ var removeItem = function(options, callback){
 var ifExist = function(item, callback){
     selectItem({
         link: item.link,
-        title: item.title,
         source: item.source
     }, function(err, items){
-        //console.log('check item with link: |' + item.link + '|');//---------------------------------------
-        //console.log('err: ' + err + ', items num: ', items.length);//---------------------------------------
-        if(err){
+        /*if(err){
             callback && callback(err);
             return;
+        }*/
+
+        var candidate = false;
+        if(!err && items.length > 0){
+            for (var i = items.length - 1; i >= 0; i--) {
+                if(comparer.isSameArticle(items[i].content, item.content)){
+                    console.log('l-true', items[i].title, item.title);//-----------------------------
+                    candidate = items[i];
+                    break;
+                }else{
+                    console.log('l-false', items[i].title, item.title);//-----------------------------
+                    console.log(items[i].content, item.content);//--------------------------
+                }
+            }
+            callback && callback(null, candidate);
+        }else{
+            selectItem({
+                title: item.title,
+                source: item.source
+            }, function(err, items){
+                if(err){
+                    callback && callback(err);
+                    return;
+                }
+
+                if(items.length > 0){
+                    for (var i = items.length - 1; i >= 0; i--) {
+                        if(comparer.isSameArticle(items[i].content, item.content)){
+                            console.log('t-true', items[i].title, item.title);//-----------------------------
+                            candidate = items[i];
+                            break;
+                        }else{
+                            console.log('t-false', items[i].title, item.title);//-----------------------------
+                        }
+                    }
+                }
+                callback && callback(null, candidate);
+            });
         }
-        callback && callback(null, items.length > 0 ? items[0] : false);
     });
 };
 

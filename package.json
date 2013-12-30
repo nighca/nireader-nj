@@ -9,7 +9,8 @@
     "express": "3.2.5",
     "jade": "*",
     "feedparser": "*",
-    "mysql": "*"
+    "mysql": "*",
+    "MD5": "*"
   },
   "subdomain": "nireader",
   "engines": {
