@@ -73,7 +73,7 @@ define(function(require, exports, module) {
         this.doms.leftLink.attr('href', '');
         this.doms.rightLink.attr('href', '');
         this.doms.topLink.attr('href', '');
-        effect.bodyBlur();
+        effect.bodyLoading();
     };
 
     Channel.prototype.prepareInfo = function(){
@@ -295,7 +295,7 @@ define(function(require, exports, module) {
         var _this = this;
         _this.doms.content.html(genItemList(data));
 
-        effect.bodyUnblur();
+        effect.bodyUnloading();
 
         var timer;
         this.eventList.add(_this.doms.content.find('.item'), 'mouseenter', function(){

@@ -3,6 +3,9 @@ define(function(require, exports, module){
     var header = $('#header');
     var floater = $('#floater');
 
+    $('body').prepend(require('../template/common/loader')());
+    var loader = $('#loader');
+
     // counter to simulate multi-layer effect
     var counter = {};
 
@@ -32,14 +35,28 @@ define(function(require, exports, module){
     var bodyBlur = function () {
         increaseCounter('bodyBlur');
         body.addClass('blur');
-        body.addClass('half-transparent');
+        bodyTransparent();
     };
 
     var bodyUnblur = function (clear) {
         if(!(clear ? clearCounter : reduceCounter)('bodyBlur')){
             body.removeClass('blur');
-            body.removeClass('half-transparent');
         }
+        bodyUntransparent(clear);
+    };
+
+    var bodyLoading = function () {
+        increaseCounter('bodyLoading');
+        loader.show();
+        bodyBlur();
+    };
+
+    var bodyUnloading = function (clear) {
+        if(!(clear ? clearCounter : reduceCounter)('bodyLoading')){
+            loader.hide();
+        }
+        // 此处有bug！！！
+        bodyUnblur(clear);
     };
 
     var headerBlur = function () {
@@ -78,6 +95,8 @@ define(function(require, exports, module){
     module.exports = {
         bodyBlur: bodyBlur,
         bodyUnblur: bodyUnblur,
+        bodyLoading: bodyLoading,
+        bodyUnloading: bodyUnloading,
         headerBlur: headerBlur,
         headerUnblur: headerUnblur,
         floaterBlur: floaterBlur,

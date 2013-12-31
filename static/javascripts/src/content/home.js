@@ -62,7 +62,7 @@ define(function(require, exports, module) {
         this.doms.leftLink.attr('href', '').show();
         this.doms.rightLink.attr('href', '').show();
         this.doms.topLink.attr('href', '').show();
-        effect.bodyBlur();
+        effect.bodyLoading();
     };
 
     Home.prototype.prepareInfo = function(){
@@ -328,7 +328,7 @@ define(function(require, exports, module) {
         }
         this.subscriptionListReady = true;
         
-        effect.bodyUnblur();
+        effect.bodyUnloading();
 
         this.doms.subscriptionList = this.doms.content.find('#subscription-list');
         this.sideBlock.bind(this.doms.subscriptionList);
