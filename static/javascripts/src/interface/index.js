@@ -17,7 +17,8 @@ define(function(require, exports, module) {
             get: '/api/subscription',
             list: '/api/list/subscription',
             add: '/api/subscription/add',
-            remove: '/api/subscription/remove'
+            remove: '/api/subscription/remove',
+            read: '/api/subscription/read'
         },
         user: {
             get: '/api/user'

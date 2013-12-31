@@ -7,8 +7,9 @@ define(function(require, exports, module) {
                 '订阅：' +
             '</h6>' +
             '<%for(i = 0; i < subscriptions.length; i ++) {%>' +
-                '<li class="item" data-id="<%=subscriptions[i].id%>">' +
-                    '<a data-link-async="true" href="<%=subscriptions[i].pageUrl%>">' +
+                '<li class="item <%=subscriptions[i].news ? "has-new" : ""%>" data-id="<%=subscriptions[i].id%>">' +
+                    '<a data-link-async="true" href="<%=subscriptions[i].pageUrl%>" ' +
+                    'title="<%=subscriptions[i].news ? "有更新" : ""%>">' +
                         '<%=subscriptions[i].title%>' +
                     '</a>' +
                     '<span class="pubdate">' +

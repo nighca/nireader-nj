@@ -136,6 +136,7 @@ exports.subscription = function(req, res){
     var limit = parseLimit(req.query);
     var fields = parseFields(req.query);
 
+    var fetchNews = false;
     var sql = 'SELECT';
     if(fields){
         for (var i = 0, l = fields.length; i < l; i++) {
@@ -144,7 +145,12 @@ exports.subscription = function(req, res){
             }else{
                 sql += ', ';
             }
-            sql += fields[i];
+            if(fields[i] === 'news'){
+                sql += 'count(item.id) as news';
+                fetchNews = true;
+            }else{
+                sql += fields[i];
+            }
         }
     }else{
         sql += ' *';
@@ -155,6 +161,17 @@ exports.subscription = function(req, res){
         ', ' +
         Subscription.tableName;
 
+    if(fetchNews){
+        var itemTable = Item.tableName,
+            subscriptionTable = Subscription.tableName;
+        sql +=
+            ' LEFT JOIN ' + itemTable +
+            ' ON ' +
+            itemTable + '.source=' + subscriptionTable + '.subscribee AND ' +
+            '(ISNULL(' + subscriptionTable + '.lastReadDate) OR ' +
+            itemTable + '.pubDate>' + subscriptionTable + '.lastReadDate)';
+    }
+
     opt = opt || {};
     opt[Channel.tableName + '.id'] = {
         dbFormat: function(){
@@ -163,7 +180,7 @@ exports.subscription = function(req, res){
     };
     opt[Subscription.tableName + '.subscriber'] = uid;
 
-    sql = makeQuery(sql, opt, sort, limit);
+    sql = makeQuery(sql, opt, sort, limit, null, Channel.tableName + '.id');
 
     doQuery(sql, function(err, subscriptions){
         if(err){

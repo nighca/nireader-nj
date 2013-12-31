@@ -390,6 +390,15 @@
                         color: @themeColor;
                     }
                 }
+                &.has-new{
+                    a{
+                        .rock(4s);
+                        color: @themeColor;
+                    }
+                    .pubdate{
+                        color: mix(@themeColor, #a8a8a8);
+                    }
+                }
                 .pubdate{
                     position: absolute;
                     right: 2px;
@@ -426,7 +435,7 @@
     width: 30%;
     max-height: 200px;
     min-height: 100px;
-    //margin-top: -40px;
+    margin-top: -36px;
     padding: 1%;
     display: none;
     //box-shadow: #CCC 0px 0px 4px;
