@@ -23,6 +23,7 @@ function Subscription (options) {
     this.subscriber = options.subscriber || null;
     this.subscribee = options.subscribee || null;
     this.description = options.description || null;
+    this.lastReadDate = options.lastReadDate || null;
 }
 
 var createSubscription = function(options){

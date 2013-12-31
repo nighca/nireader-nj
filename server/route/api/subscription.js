@@ -64,6 +64,42 @@ exports.add = function(req, res){
     });
 };
 
+exports.read = function(req, res){
+    if(!req.body.subscribee){
+        res.send(500, {err: 'missing params'});
+        return;
+    }
+
+    var time;
+    try{
+        time = req.body.time ? new Date(parseInt(req.body.time, 10)) : new Date();
+    }catch(e){
+        res.send(500, {err: 'wrong time!'});
+        return;
+    }
+
+    var subscription = Subscription.create({
+        subscriber: req.session.uid,
+        subscribee: req.body.subscribee
+    });
+
+    Subscription.ifExist(subscription, function(err, subscription){
+        if(err || !subscription){
+            res.json({
+                err: err
+            });
+            return;
+        }
+
+        subscription.lastReadDate = time;
+        subscription.save(function(err){
+            res.json({
+                err: err
+            });
+        });
+    });
+};
+
 exports.remove = function(req, res){
     if(!req.body.subscribee){
         res.send(500, {err: 'missing params'});

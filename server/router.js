@@ -40,6 +40,7 @@ var routes = [
     ['get', '/api/subscription', apis.subscription.get, true],
     ['post', '/api/subscription/add', apis.subscription.add, true],
     ['post', '/api/subscription/remove', apis.subscription.remove, true],
+    ['post', '/api/subscription/read', apis.subscription.read, true],
 
     ['get', '/api/user', apis.user.get, true],
 
