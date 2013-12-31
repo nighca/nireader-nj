@@ -49,7 +49,6 @@ define(function(require, exports, module){
         increaseCounter('bodyLoading');
         loader.show();
         bodyBlur();
-        //bodyTransparent();
     };
 
     var bodyUnloading = function (clear) {
@@ -58,7 +57,6 @@ define(function(require, exports, module){
         }
         // 此处有bug！！！
         bodyUnblur(clear);
-        //bodyUntransparent(clear);
     };
 
     var headerBlur = function () {
@@ -94,7 +92,7 @@ define(function(require, exports, module){
         }
     };
 
-    window.effect = module.exports = {
+    module.exports = {
         bodyBlur: bodyBlur,
         bodyUnblur: bodyUnblur,
         bodyLoading: bodyLoading,

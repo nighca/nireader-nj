@@ -183,13 +183,16 @@
 
 @keyframes rotateplane {
     0% {
-        transform: perspective(120px) rotateX(0deg) rotateY(0deg);
-        -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+        opacity: 0.5;
+        transform: perspective(120px);
+        -webkit-transform: perspective(120px);
     } 50% {
-        transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
-        -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+        opacity: 0;
+        transform: perspective(120px) scale(0.5, 0.5);
+        -webkit-transform: perspective(120px) scale(0.5, 0.5);
     } 100% {
-        transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
-        -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+        opacity: 0.5;
+        transform: perspective(120px) scale(1, 1);
+        -webkit-transform: perspective(120px) scale(1, 1);
     }
 }

@@ -1343,7 +1343,7 @@ define("nireader/nireader-fe/2.1.0/kit/effect-debug", [ "nireader/nireader-fe/2.
             body.removeClass("half-transparent");
         }
     };
-    window.effect = module.exports = {
+    module.exports = {
         bodyBlur: bodyBlur,
         bodyUnblur: bodyUnblur,
         bodyLoading: bodyLoading,
