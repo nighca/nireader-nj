@@ -156,7 +156,7 @@ define(function(require, exports, module) {
         this.doms.leftLink.attr('href', '');
         this.doms.rightLink.attr('href', '');
         this.doms.topLink.attr('href', '');
-        effect.bodyBlur();
+        effect.bodyLoading();
     };
 
     Item.prototype.prepareInfo = function(){
@@ -313,7 +313,7 @@ define(function(require, exports, module) {
         this.doms.info.html(genItemInfo(data));
         this.doms.content.html(genItemContent(data));
 
-        effect.bodyUnblur();
+        effect.bodyUnloading();
     };
 
     Item.prototype.renderChannelInfo = function(data){
