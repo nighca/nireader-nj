@@ -120,37 +120,35 @@
     100% {background:#fff;}
 }
 
-.rock{
-    animation:rock 5s ease 0s infinite normal;
+.rock(@duration: 5s){
+    animation:rock @duration ease 0s infinite normal;
     /* Firefox: */
-    -moz-animation:rock 5s ease 0s infinite normal;
+    -moz-animation:rock @duration ease 0s infinite normal;
     /* Safari and Chrome: */
-    -webkit-animation:rock 5s ease 0s infinite normal;
+    -webkit-animation:rock @duration ease 0s infinite normal;
     /* Opera: */
-    -o-animation:rock 5s ease 0s infinite normal;
+    -o-animation:rock @duration ease 0s infinite normal;
 
     @keyframes rock{
-        0%   {margin-top:-3px;margin-right:0px;}
-        20%  {margin-top:3px;margin-right:0px;}
-        40% {margin-top:-3px;margin-right:0px;}
-    }
-
-    @-moz-keyframes rock /* Firefox */{
-        0%   {margin-top:-3px;margin-right:0px;}
-        20%  {margin-top:3px;margin-right:0px;}
-        40% {margin-top:-3px;margin-right:0px;}
+        0%  {transform:translate(0px)}
+        5%  {transform:translate(2px)}
+        15% {transform:translate(0px)}
+        30% {transform:translate(0px)}
+        45% {transform:translate(-2px)}
+        55% {transform:translate(0px)}
+        85% {transform:translate(0px)}
+        95% {transform:translate(1px)}
     }
 
     @-webkit-keyframes rock /* Safari and Chrome */{
-        0%   {margin-top:-3px;margin-right:0px;}
-        20%  {margin-top:3px;margin-right:0px;}
-        40% {margin-top:-3px;margin-right:0px;}
-    }
-
-    @-o-keyframes rock /* Opera */{
-        0%   {margin-top:-3px;margin-right:0px;}
-        20%  {margin-top:3px;margin-right:0px;}
-        40% {margin-top:-3px;margin-right:0px;}
+        0%  {-webkit-transform:translate(0px)}
+        5%  {-webkit-transform:translate(2px)}
+        15% {-webkit-transform:translate(0px)}
+        30% {-webkit-transform:translate(0px)}
+        45% {-webkit-transform:translate(-2px)}
+        55% {-webkit-transform:translate(0px)}
+        85% {-webkit-transform:translate(0px)}
+        95% {-webkit-transform:translate(1px)}
     }
 }
 

@@ -20,9 +20,9 @@ db.initTable(tableName, struct, function(err, result){
 function Subscription (options) {
     this.id = options.id || null; 
     this.subscribeDate = new Date();
-    this.subscriber = options.subscriber || null; 
-    this.subscribee = options.subscribee || null; 
-    this.description = options.description || null; 
+    this.subscriber = options.subscriber || null;
+    this.subscribee = options.subscribee || null;
+    this.description = options.description || null;
 }
 
 var createSubscription = function(options){

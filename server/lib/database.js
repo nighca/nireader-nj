@@ -21,7 +21,7 @@ var doQuery = function (pool, query, callback) {
             return;
         }
         query = query + ';';
-        //console.log('$: ', query);//-------------------------------
+        console.log('$: ', query);//-------------------------------
         connection.query(query, function(err, results){
             connection.end();
             if(callback){
@@ -183,7 +183,7 @@ var insertItems = function(pool, table, objs, callback){
     }
 };
 
-var makeQuery = function(query, opts, sort, limit, fuzzy){
+var makeQuery = function(query, opts, sort, limit, fuzzy, group){
     if(typeof opts === 'string'){
         query += ' WHERE ' + opts;
     }else if(fuzzy){
@@ -215,6 +215,10 @@ var makeQuery = function(query, opts, sort, limit, fuzzy){
             }
             query += names[i] + '=' + values[i];
         }
+    }
+
+    if(group){
+        query += ' GROUP BY ' + group;
     }
 
     if(sort){
