@@ -94,12 +94,12 @@ var ifExist = function(item, callback){
         if(!err && items.length > 0){
             for (var i = items.length - 1; i >= 0; i--) {
                 if(comparer.isSameArticle(items[i].content, item.content)){
-                    console.log('l-true', items[i].title, item.title);//-----------------------------
+                    //console.log('l-true', items[i].title, item.title);//-----------------------------
                     candidate = items[i];
                     break;
                 }else{
-                    console.log('l-false', items[i].title, item.title);//-----------------------------
-                    console.log(items[i].content, item.content);//--------------------------
+                    //console.log('l-false', items[i].title, item.title);//-----------------------------
+                    //console.log(items[i].content, item.content);//--------------------------
                 }
             }
             callback && callback(null, candidate);
@@ -116,11 +116,11 @@ var ifExist = function(item, callback){
                 if(items.length > 0){
                     for (var i = items.length - 1; i >= 0; i--) {
                         if(comparer.isSameArticle(items[i].content, item.content)){
-                            console.log('t-true', items[i].title, item.title);//-----------------------------
+                            //console.log('t-true', items[i].title, item.title);//-----------------------------
                             candidate = items[i];
                             break;
                         }else{
-                            console.log('t-false', items[i].title, item.title);//-----------------------------
+                            //console.log('t-false', items[i].title, item.title);//-----------------------------
                         }
                     }
                 }

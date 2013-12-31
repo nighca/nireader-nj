@@ -161,7 +161,7 @@ var saveOrUpdate = function(item, callback){
             callback && callback(err);
             return;
         }
-        console.log('check', item.title, '|' + item.link + '|', exist ? 'true' : 'false');//----------------------------
+        //console.log('check', item.title, '|' + item.link + '|', exist ? 'true' : 'false');//----------------------------
         if(exist){
             // 过滤乱码
             if(garblePattern.test(item.content)){
