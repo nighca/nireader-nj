@@ -638,7 +638,7 @@ define("nireader/nireader-fe/2.1.0/kit/resource-debug", [ "nireader/nireader-fe/
     var listFields = {
         item: [ "id", "pubDate", "title", "source" ],
         channel: [ "id", "pubDate", "title" ],
-        subscription: [ "channel.id", "channel.pubDate", "channel.title" ]
+        subscription: [ "channel.id", "channel.pubDate", "channel.title", "news" ]
     };
     var listSort = {
         item: {
@@ -1050,7 +1050,8 @@ define("nireader/nireader-fe/2.1.0/interface/index-debug", [], function(require,
             get: "/api/subscription",
             list: "/api/list/subscription",
             add: "/api/subscription/add",
-            remove: "/api/subscription/remove"
+            remove: "/api/subscription/remove",
+            read: "/api/subscription/read"
         },
         user: {
             get: "/api/user"
@@ -1513,7 +1514,7 @@ define("nireader/nireader-fe/2.1.0/template/home/info-debug", [ "nireader/niread
 
 define("nireader/nireader-fe/2.1.0/template/home/subscriptionList-debug", [ "nireader/nireader-fe/2.1.0/template/template-debug", "nireader/nireader-fe/2.1.0/kit/time-debug", "nireader/nireader-fe/2.1.0/kit/num-debug" ], function(require, exports, module) {
     var template = require("nireader/nireader-fe/2.1.0/template/template-debug");
-    var tmpl = '<ul id="subscription-list" class="item-list">' + "<%if(subscriptions && subscriptions.length > 0){%>" + '<h6 class="sub-title">' + "订阅：" + "</h6>" + "<%for(i = 0; i < subscriptions.length; i ++) {%>" + '<li class="item" data-id="<%=subscriptions[i].id%>">' + '<a data-link-async="true" href="<%=subscriptions[i].pageUrl%>">' + "<%=subscriptions[i].title%>" + "</a>" + '<span class="pubdate">' + '<%="更新于" + formatTime(subscriptions[i].pubDate, " ")%>' + "</span>" + "</li>" + "<%}%>" + "<%}else{%>" + '<h6 class="sub-title">' + "没有订阅，" + "</h6>" + "<%}%>" + "</ul>";
+    var tmpl = '<ul id="subscription-list" class="item-list">' + "<%if(subscriptions && subscriptions.length > 0){%>" + '<h6 class="sub-title">' + "订阅：" + "</h6>" + "<%for(i = 0; i < subscriptions.length; i ++) {%>" + '<li class="item <%=subscriptions[i].news ? "has-new" : ""%>" data-id="<%=subscriptions[i].id%>">' + '<a data-link-async="true" href="<%=subscriptions[i].pageUrl%>" ' + 'title="<%=subscriptions[i].news ? "有更新" : ""%>">' + "<%=subscriptions[i].title%>" + "</a>" + '<span class="pubdate">' + '<%="更新于" + formatTime(subscriptions[i].pubDate, " ")%>' + "</span>" + "</li>" + "<%}%>" + "<%}else{%>" + '<h6 class="sub-title">' + "没有订阅，" + "</h6>" + "<%}%>" + "</ul>";
     module.exports = template.compile(tmpl);
 });
 
@@ -1723,6 +1724,19 @@ define("nireader/nireader-fe/2.1.0/content/channel-debug", [ "nireader/nireader-
             }
         });
         this.bindEvent();
+        this.markRead();
+    };
+    Channel.prototype.markRead = function() {
+        if (this.data.inSubscription) {
+            request.post({
+                subscribee: this.data.id
+            }, apiPath.subscription.read, function(err) {
+                if (!err) {
+                    // 刷新subscription列表以更新news
+                    resource.list("subscription", null, null, null, null, null, true);
+                }
+            });
+        }
     };
     Channel.prototype.bindEvent = function() {
         var leftLink = this.doms.leftLink;

@@ -100,9 +100,10 @@ define(function(require, exports, module){
         item: ['id', 'pubDate', 'title', 'source'],
         channel: ['id', 'pubDate', 'title'],
         subscription: [
-            'channel.id', 
-            'channel.pubDate', 
-            'channel.title'
+            'channel.id',
+            'channel.pubDate',
+            'channel.title',
+            'news'
             //'channel.description',
             //'channel.generator'
         ]
@@ -150,7 +151,7 @@ define(function(require, exports, module){
         }else if(typeof page === 'object'){
             limit = page;
         }else{
-            limit = 
+            limit =
                 numInPage ? {
                     from: numInPage * (page - 1),
                     num: numInPage
@@ -176,7 +177,7 @@ define(function(require, exports, module){
     var makeCertainList = function(type, opt, callback, sort, fields, refresh){
         return function(page){
             return listResource(type, opt, page, callback, sort, fields, refresh);
-        }
+        };
     };
 
     var searchUrl = {

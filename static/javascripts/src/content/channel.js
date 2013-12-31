@@ -49,6 +49,19 @@ define(function(require, exports, module) {
         });
 
         this.bindEvent();
+
+        this.markRead();
+    };
+
+    Channel.prototype.markRead = function(){
+        if(this.data.inSubscription){
+            request.post({subscribee: this.data.id}, apiPath.subscription.read, function(err){
+                if(!err){
+                    // 刷新subscription列表以更新news
+                    resource.list('subscription', null, null, null, null, null, true);
+                }
+            });
+        }
     };
 
     Channel.prototype.bindEvent = function(){
