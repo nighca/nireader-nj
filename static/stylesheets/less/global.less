@@ -165,7 +165,7 @@ select{
     }
 
     .global-input, .global-result .tips .tip{
-        font-family: Monaco, Consolas, 'Andale Mono', 'DejaVu Sans Mono', monospace;
+        .code-font;
     }
 
     .global-input{
@@ -192,7 +192,7 @@ select{
         .results{
             width: @resultWidth;
             padding: @paddingy @paddingx;
-            background-color: fadeout(@themeColor, 20%);
+            background-color: fadeout(@themeColor, 15%);
             color: #f9f9f9;
             .result{
                 display: block;
@@ -205,6 +205,12 @@ select{
                 a{
                     color: inherit;
                     text-decoration: none;
+                }
+
+                .add-on{
+                    float: right;
+                    font-weight: normal;
+                    color: mix(@themeColor, #f9f9f9, 30%);
                 }
             }
         }

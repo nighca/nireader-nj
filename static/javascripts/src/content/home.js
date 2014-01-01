@@ -327,8 +327,10 @@ define(function(require, exports, module) {
             this.doms.content.html(genSubscriptionList(data));
         }
         this.subscriptionListReady = true;
-        
-        effect.bodyUnloading();
+
+        if(!this.data.ready){
+            this.dealReady();
+        }
 
         this.doms.subscriptionList = this.doms.content.find('#subscription-list');
         this.sideBlock.bind(this.doms.subscriptionList);
@@ -350,6 +352,11 @@ define(function(require, exports, module) {
         });
 
         this.sideBlock.bind(this.doms.recommendList);
+    };
+
+    Home.prototype.dealReady = function(){
+        this.data.ready = true;
+        effect.bodyUnloading();
     };
 
     module.exports = Home;
