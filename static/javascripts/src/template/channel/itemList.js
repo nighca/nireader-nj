@@ -6,10 +6,10 @@ define(function(require, exports, module) {
                 '<li class="item" data-id="<%=items[i].id%>">' +
                     '<a data-link-async="true" href="<%=items[i].pageUrl%>">' +
                         '<%=items[i].title%>' +
+                        '<span class="pubdate">' +
+                            '<%=formatTime(items[i].pubDate, " ")%>' +
+                        '</span>' +
                     '</a>' +
-                    '<span class="pubdate">' +
-                        '<%=formatTime(items[i].pubDate, " ")%>' +
-                    '</span>' +
                 '</li>' +
             '<%}%>' +
         '</ul>';

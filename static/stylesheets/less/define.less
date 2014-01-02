@@ -11,6 +11,10 @@
 
 /* my style */
 
+.code-font{
+    font-family: Monaco, Consolas, 'Andale Mono', 'DejaVu Sans Mono', monospace;
+}
+
 .transparent(@p){
     -moz-opacity: @p;
     -khtml-opacity: @p; 
@@ -169,28 +173,28 @@
 
     .transparent(0.7);
 
-    -webkit-animation: rotateplane 1.2s infinite ease-in-out;
-    animation: rotateplane 1.2s infinite ease-in-out;
+    -webkit-animation: rotateplane 1.0s infinite ease-in-out;
+    animation: rotateplane 1.0s infinite ease-in-out;
 }
 
 @-webkit-keyframes rotateplane {
-    0% { -webkit-transform: perspective(120px); opacity: 0.5;}
-    50% { -webkit-transform: perspective(120px) scale(0.5, 0.5); opacity: 0; }
-    100% { -webkit-transform: perspective(120px) scale(1, 1); opacity: 0.5;}
+    0% { -webkit-transform: scale(1, 1); opacity: 0.5;}
+    80% { -webkit-transform: scale(0.5, 0.5); opacity: 0; }
+    100% { -webkit-transform: scale(1, 1); opacity: 0;}
 }
 
 @keyframes rotateplane {
     0% {
         opacity: 0.5;
-        transform: perspective(120px);
-        -webkit-transform: perspective(120px);
+        transform: scale(1, 1);
+        -webkit-transform: scale(1, 1);
     } 50% {
         opacity: 0;
-        transform: perspective(120px) scale(0.5, 0.5);
-        -webkit-transform: perspective(120px) scale(0.5, 0.5);
+        transform: scale(0.5, 0.5);
+        -webkit-transform: scale(0.5, 0.5);
     } 100% {
-        opacity: 0.5;
-        transform: perspective(120px) scale(1, 1);
-        -webkit-transform: perspective(120px) scale(1, 1);
+        opacity: 0;
+        transform: scale(1, 1);
+        -webkit-transform: scale(1, 1);
     }
 }

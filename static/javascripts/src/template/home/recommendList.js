@@ -9,10 +9,10 @@ define(function(require, exports, module) {
                 '<li class="item" data-id="<%=recommends[i].id%>">' +
                     '<a data-link-async="true" href="<%=recommends[i].pageUrl%>">' +
                         '<%=recommends[i].title%>' +
+                        '<span class="pubdate">' +
+                            '<%="更新于" + formatTime(recommends[i].pubDate, " ")%>' +
+                        '</span>' +
                     '</a>' +
-                    '<span class="pubdate">' +
-                        '<%="更新于" + formatTime(recommends[i].pubDate, " ")%>' +
-                    '</span>' +
                 '</li>' +
             '<%}%>' +
         '</ul>';

@@ -21,7 +21,7 @@ var doQuery = function (pool, query, callback) {
             return;
         }
         query = query + ';';
-        console.log('$: ', query);//-------------------------------
+        //console.log('$: ', query);//-------------------------------
         connection.query(query, function(err, results){
             connection.end();
             if(callback){

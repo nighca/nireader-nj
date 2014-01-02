@@ -3,12 +3,13 @@ define(function(require, exports, module) {
     var pattern = require('../kit/pattern');
     var request = require('../kit/request');
     var resource = require('../kit/resource');
-    var userinfo = require('../kit/userinfo');
     var notice = require('../kit/notice').notice;
     var URL = require('../kit/url');
     var customEvent = require('../kit/customEvent');
+    var customLink = require('../kit/customLink');
     var effect = require('../kit/effect');
-    var cache = require('../kit/cache');
+
+    var cmds = require('./cmd');
 
     var interfaces = require('../interface/index');
     var apis = interfaces.api;
@@ -29,7 +30,8 @@ define(function(require, exports, module) {
         currVal = globalInput.val().trim();
     };
     var initDom = function(){
-        globalInput.val('').focus();
+        globalInput.val('');
+        globalInput.focus();
         checkInput();
         globalTip.hide();
         globalResult.hide();
@@ -112,6 +114,15 @@ define(function(require, exports, module) {
         }));
     };
 
+    var tip = {
+        add: addTip,
+        show: showTip,
+        clean: cleanTip
+    },result = {
+        add: addResult,
+        clean: cleanResult
+    };
+
     var enterHandler, tabHandler;
 
     var createChannel = function(url, callback){
@@ -176,60 +187,6 @@ define(function(require, exports, module) {
         });
     };
 
-    var dealLogout = function(){
-        showTip('按<b>Enter</b>登出。');
-
-        enterHandler = function(){
-            showTip('正在登出... ' + loadingIcon);
-            userinfo.logout(function(err){
-                if(err){
-                    notice('出错了。');
-                    LOG(err);
-                    return;
-                }
-                location.href = pages.home;
-            });
-        };
-    };
-
-    var dealHome = function(){
-        showTip('按<b>Enter</b>去首页 (\'/\')。');
-
-        enterHandler = function(){
-            showTip('正在去首页... ' + loadingIcon);
-            customEvent.trigger('goto', '/');
-            cleanTip();
-        };
-    };
-
-    var dealCache = function(){
-        showTip('按<b>Enter</b>查看缓存统计。');
-
-        enterHandler = function(){
-            showTip('正在计算... ' + loadingIcon);
-            var size = cache.getSize();
-            setTimeout(function(){
-                addResult(['共', size.num, '条缓存记录'].join(' '));
-                addResult(['占用存储空间', size.MB, 'MB'].join(' '));
-                cleanTip();
-            }, 300);
-        };
-    };
-
-    var dealNoCache = function(){
-        showTip('按<b>Enter</b>清除缓存。');
-
-        enterHandler = function(){
-            showTip('正在清除缓存... ' + loadingIcon);
-            var originSize = cache.getSize().MB + 'MB';
-            cache.clear();
-            var currSize = cache.getSize().MB + 'MB';
-            setTimeout(function(){
-                showTip('缓存已清空。（' + originSize + '->' + currSize + '）');
-            }, 300);
-        };
-    };
-
     var doSearch = function(val){
         if(val){
             var keywords = val.split(' '), realKeywords = [];
@@ -257,13 +214,6 @@ define(function(require, exports, module) {
         }
     };
 
-    var cmds = {
-        'logout': dealLogout,
-        'home': dealHome,
-        'cache': dealCache,
-        'nocache': dealNoCache
-    };
-
     var checkInput = function(){
         var val = globalInput.val().trim();
 
@@ -277,9 +227,14 @@ define(function(require, exports, module) {
         // Clean result
         cleanAll();
 
+        // Clean handler
+        enterHandler = tabHandler = null;
+
         // CMD
-        if(val && cmds[val]){
-            cmds[val]();
+        var cmd;
+        if(val && (cmd = cmds[val])){
+            cmd.usage && showTip('按<b>Enter</b>' + cmd.usage + '。');
+            enterHandler = cmd.handler(val, tip, result);
             return;
         }
 
@@ -290,10 +245,10 @@ define(function(require, exports, module) {
         }
 
         // CMD hint
-        var pos, cmd, matches = [];
+        var pos, hint, matches = [];
         if(val){
             for(var c in cmds){
-                if(cmds.hasOwnProperty(c) && (pos = c.indexOf(val)) >= 0){
+                if(cmds.hasOwnProperty(c) && (pos = c.indexOf(val)) >= 0 && !cmds[c].nohint){
                     matches.push({
                         cmd: c,
                         pos: pos
@@ -315,13 +270,13 @@ define(function(require, exports, module) {
                         c.slice(p + val.length);
                 if(i === last){
                     str += '\t ---- 用<b>Tab</b>补全';
-                    cmd = c;
+                    hint = c;
                 }
                 addTip(str);
             });
         }
-        tabHandler = cmd && function(e){
-            globalInput.val(cmd);
+        tabHandler = hint && function(e){
+            globalInput.val(hint);
         };
 
         // Search for channels
@@ -352,6 +307,15 @@ define(function(require, exports, module) {
 
     keypress.register(27, function(e){
         toggleFloater();
+    });
+
+    customLink.on('global-input', function(val){
+        currVal = '';
+        globalInput.val(val);
+        globalInput.focus();
+
+        cleanAll();     // in case new val same as currVal > no cleanAll in checkInput
+        checkInput();
     });
 
     module.exports = {
