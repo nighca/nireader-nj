@@ -21,13 +21,15 @@ define(function(require, exports, module) {
         return function(){
             tip.show('正在获取... ' + loadingIcon);
             setTimeout(function(){
-                for(var cmd in cmds) if(cmds.hasOwnProperty(cmd)){
+                for(var cmd in cmds) if(cmds.hasOwnProperty(cmd) && !cmds[cmd].nohint){
+                    var addOn = cmds[cmd].usage ?
+                        '<span class="add-on">[ ' + cmds[cmd].usage + ' ]</span>' :
+                        '';
                     result.add(
                         '<span class="code-font">' +
                         cmd +
-                        '</span><span class="add-on">' +
-                        cmds[cmd].usage +
-                        '</span>',
+                        '</span>' +
+                        addOn,
                         'nireader://global-input.' + cmd
                     );
                 }
@@ -110,6 +112,15 @@ define(function(require, exports, module) {
                 return function(){
                     result.add('>_<...');
                     location.href = "http://nighca.me/nighca/";
+                };
+            }
+        },
+        'wendell': {
+            nohint: true,
+            handler: function(input, tip, result){
+                return function(){
+                    result.add('^_^');
+                    location.href = "http://weibo.com/u/2465510480";
                 };
             }
         }
