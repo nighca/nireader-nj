@@ -245,7 +245,7 @@ define(function(require, exports, module) {
         }
 
         // CMD hint
-        var pos, cmd, matches = [];
+        var pos, hint, matches = [];
         if(val){
             for(var c in cmds){
                 if(cmds.hasOwnProperty(c) && (pos = c.indexOf(val)) >= 0 && !cmds[c].nohint){
@@ -270,13 +270,13 @@ define(function(require, exports, module) {
                         c.slice(p + val.length);
                 if(i === last){
                     str += '\t ---- 用<b>Tab</b>补全';
-                    cmd = c;
+                    hint = c;
                 }
                 addTip(str);
             });
         }
-        tabHandler = cmd && function(e){
-            globalInput.val(cmd);
+        tabHandler = hint && function(e){
+            globalInput.val(hint);
         };
 
         // Search for channels
@@ -310,8 +310,11 @@ define(function(require, exports, module) {
     });
 
     customLink.on('global-input', function(val){
+        currVal = '';
         globalInput.val(val);
         globalInput.focus();
+
+        cleanAll();     // in case new val same as currVal > no cleanAll in checkInput
         checkInput();
     });
 

@@ -186,7 +186,7 @@ select{
         position: absolute;
         top: 100px;
         left: 50%;
-        margin-top: @inputHeight/2 + @paddingy;
+        margin-top: @inputHeight/2 + @paddingy + 3px;
         margin-left: -(@resultWidth/2 + @paddingx);
 
         .results{
@@ -218,7 +218,7 @@ select{
             width: @resultWidth;
             padding: 4px @paddingx;
             background-color: fadeout(@themeColor, 20%);
-            margin: 4px 0 1px;
+            margin: 1px 0 1px;
             color: mix(@themeColor, #f9f9f9, 20%);
             .tip{
                 display: block;

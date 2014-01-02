@@ -2185,7 +2185,7 @@ define("nireader/nireader-fe/2.1.0/module/floater-debug", [ "nireader/nireader-f
             return;
         }
         // CMD hint
-        var pos, cmd, matches = [];
+        var pos, hint, matches = [];
         if (val) {
             for (var c in cmds) {
                 if (cmds.hasOwnProperty(c) && (pos = c.indexOf(val)) >= 0 && !cmds[c].nohint) {
@@ -2202,13 +2202,13 @@ define("nireader/nireader-fe/2.1.0/module/floater-debug", [ "nireader/nireader-f
                 var c = match.cmd, p = match.pos, str = c.slice(0, p) + "<b>" + val + "</b>" + c.slice(p + val.length);
                 if (i === last) {
                     str += "	 ---- 用<b>Tab</b>补全";
-                    cmd = c;
+                    hint = c;
                 }
                 addTip(str);
             });
         }
-        tabHandler = cmd && function(e) {
-            globalInput.val(cmd);
+        tabHandler = hint && function(e) {
+            globalInput.val(hint);
         };
         // Search for channels
         doSearch(val);
@@ -2236,8 +2236,11 @@ define("nireader/nireader-fe/2.1.0/module/floater-debug", [ "nireader/nireader-f
         toggleFloater();
     });
     customLink.on("global-input", function(val) {
+        currVal = "";
         globalInput.val(val);
         globalInput.focus();
+        cleanAll();
+        // in case new val same as currVal > no cleanAll in checkInput
         checkInput();
     });
     module.exports = {
