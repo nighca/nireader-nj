@@ -54,9 +54,6 @@ define(function(require, exports, module) {
 
     Home.prototype.clean = function(){
         this.eventList.clean();
-        /*this.doms.content.html('');
-        this.doms.title.html('');
-        this.doms.info.html('');*/
         this.doms.sideContent.html('');
         this.doms.sideBlock.clearQueue().stop().hide();
         this.doms.leftLink.attr('href', '').show();
@@ -249,18 +246,6 @@ define(function(require, exports, module) {
         this.doms.rightLink.hide();
     };
 
-    Home.prototype.getSubscriptionListByPage = function(page){
-        var _this = this;
-        resource.makeList('subscription', null, function(err, subscriptions){
-            if(err){
-                console.error(err);
-                return;
-            }
-            _this.data.subscriptionListPage = page;
-            _this.dealSubscriptionList(subscriptions);
-        })(page);
-    };
-
     Home.prototype.getAllSubscriptionList = function(refresh){
         var _this = this;
         resource.makeList('subscription', null, function(err, subscriptions){
@@ -274,7 +259,6 @@ define(function(require, exports, module) {
 
     Home.prototype.refreshSubscriptionList = function(){
         this.doms.subscriptionList && this.doms.subscriptionList.remove();
-        //this.getSubscriptionListByPage(this.data.subscriptionListPage);
         this.getAllSubscriptionList(true);
     };
 

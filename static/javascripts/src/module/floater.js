@@ -230,6 +230,9 @@ define(function(require, exports, module) {
         // Clean handler
         enterHandler = tabHandler = null;
 
+        // Search for channels
+        doSearch(val);
+
         // CMD
         var cmd;
         if(val && (cmd = cmds[val])){
@@ -278,9 +281,6 @@ define(function(require, exports, module) {
         tabHandler = hint && function(e){
             globalInput.val(hint);
         };
-
-        // Search for channels
-        doSearch(val);
     };
 
     globalInput.on('keydown', function(e){
