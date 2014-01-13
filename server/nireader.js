@@ -1,8 +1,9 @@
+var express = require('express'),
+    http = require('http'),
+    path = require('path');
+
 var serveWeb = function(){
-    var express = require('express'),
-        http = require('http'),
-        path = require('path'),
-        routes = require('./router').routes,
+    var routes = require('./router').routes,
         domains = require('./config/domain.json'),
         cookieSessionConfig = require('./config/cookieSession.json');
 
@@ -52,8 +53,17 @@ var serveWeb = function(){
 
 };
 
-var doTask = function(){
+var doTask = function(tasker){
     var task = require('./task');
+
+    if(tasker){
+        var app = express();
+
+        app.get('/', function(req, res){
+            res.send(':)');
+        });
+        app.listen(process.env.PORT || 3001);
+    }
 };
 
 switch(process.env.ROLE){
@@ -61,7 +71,7 @@ case 'server':
     serveWeb();
     break;
 case 'tasker':
-    doTask();
+    doTask(true);
     break;
 default:
     serveWeb();
