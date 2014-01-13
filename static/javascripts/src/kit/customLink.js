@@ -1,8 +1,8 @@
 define(function(require, exports, module){
     var handlers = {};
 
-    var protocol = 'nireader';
-        protocolPrefix = protocol + '://';
+    var protocol = 'nireader',
+        protocolPrefix = protocol + '://',
         protocolPrefixLen = protocolPrefix.length;
 
     module.exports = {

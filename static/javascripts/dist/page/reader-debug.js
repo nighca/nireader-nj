@@ -303,9 +303,6 @@ define("nireader/nireader-fe/2.1.0/content/home-debug", [ "nireader/nireader-fe/
     };
     Home.prototype.clean = function() {
         this.eventList.clean();
-        /*this.doms.content.html('');
-        this.doms.title.html('');
-        this.doms.info.html('');*/
         this.doms.sideContent.html("");
         this.doms.sideBlock.clearQueue().stop().hide();
         this.doms.leftLink.attr("href", "").show();
@@ -458,17 +455,6 @@ define("nireader/nireader-fe/2.1.0/content/home-debug", [ "nireader/nireader-fe/
         this.doms.leftLink.hide();
         this.doms.rightLink.hide();
     };
-    Home.prototype.getSubscriptionListByPage = function(page) {
-        var _this = this;
-        resource.makeList("subscription", null, function(err, subscriptions) {
-            if (err) {
-                console.error(err);
-                return;
-            }
-            _this.data.subscriptionListPage = page;
-            _this.dealSubscriptionList(subscriptions);
-        })(page);
-    };
     Home.prototype.getAllSubscriptionList = function(refresh) {
         var _this = this;
         resource.makeList("subscription", null, function(err, subscriptions) {
@@ -481,7 +467,6 @@ define("nireader/nireader-fe/2.1.0/content/home-debug", [ "nireader/nireader-fe/
     };
     Home.prototype.refreshSubscriptionList = function() {
         this.doms.subscriptionList && this.doms.subscriptionList.remove();
-        //this.getSubscriptionListByPage(this.data.subscriptionListPage);
         this.getAllSubscriptionList(true);
     };
     Home.prototype.dealSubscriptionList = function(subscriptions) {
@@ -2172,6 +2157,8 @@ define("nireader/nireader-fe/2.1.0/module/floater-debug", [ "nireader/nireader-f
         cleanAll();
         // Clean handler
         enterHandler = tabHandler = null;
+        // Search for channels
+        doSearch(val);
         // CMD
         var cmd;
         if (val && (cmd = cmds[val])) {
@@ -2210,8 +2197,6 @@ define("nireader/nireader-fe/2.1.0/module/floater-debug", [ "nireader/nireader-f
         tabHandler = hint && function(e) {
             globalInput.val(hint);
         };
-        // Search for channels
-        doSearch(val);
     };
     globalInput.on("keydown", function(e) {
         // Tab
@@ -2330,9 +2315,7 @@ define("nireader/nireader-fe/2.1.0/kit/pattern-debug", [], function(require, exp
 
 define("nireader/nireader-fe/2.1.0/kit/customLink-debug", [], function(require, exports, module) {
     var handlers = {};
-    var protocol = "nireader";
-    protocolPrefix = protocol + "://";
-    protocolPrefixLen = protocolPrefix.length;
+    var protocol = "nireader", protocolPrefix = protocol + "://", protocolPrefixLen = protocolPrefix.length;
     module.exports = {
         on: function(name, handler) {
             var list = handlers[name] = handlers[name] || [];
