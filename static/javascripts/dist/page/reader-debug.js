@@ -1343,8 +1343,8 @@ define("nireader/nireader-fe/2.1.0/kit/effect-debug", [ "nireader/nireader-fe/2.
         }
     };
     module.exports = {
-        bodyBlur: bodyBlur,
-        bodyUnblur: bodyUnblur,
+        bodyBlur: bodyTransparent,
+        bodyUnblur: bodyUntransparent,
         bodyLoading: bodyLoading,
         bodyUnloading: bodyUnloading,
         headerBlur: headerBlur,

@@ -93,8 +93,8 @@ define(function(require, exports, module){
     };
 
     module.exports = {
-        bodyBlur: bodyBlur,
-        bodyUnblur: bodyUnblur,
+        bodyBlur: bodyTransparent,
+        bodyUnblur: bodyUntransparent,
         bodyLoading: bodyLoading,
         bodyUnloading: bodyUnloading,
         headerBlur: headerBlur,
