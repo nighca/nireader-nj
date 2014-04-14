@@ -54,7 +54,9 @@ define(function(require, exports, module) {
         };
 
         // do checkout while page loaded (chrome trigger popstate automatically)
-        if(navigator.userAgent.toLowerCase().indexOf('chrome') < 0){
+        //if(navigator.userAgent.toLowerCase().indexOf('chrome') < 0){
+        // chrome fixed this bug
+        if(true){
             setTimeout(onpopstate, 0);
         }
     };
