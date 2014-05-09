@@ -53,10 +53,14 @@ define("nireader/nireader-fe/2.1.0/module/stateManager-debug", [ "nireader/nirea
             history.back();
         });
         var onpopstate = window.onpopstate = function(e) {
-            manager.checkout();
+            if (window.history.state !== null) {
+                manager.checkout();
+            }
         };
         // do checkout while page loaded (chrome trigger popstate automatically)
-        if (navigator.userAgent.toLowerCase().indexOf("chrome") < 0) {
+        //if(navigator.userAgent.toLowerCase().indexOf('chrome') < 0){
+        // chrome fixed this bug
+        if (true) {
             setTimeout(onpopstate, 0);
         }
     };

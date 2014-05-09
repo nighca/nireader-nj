@@ -50,7 +50,9 @@ define(function(require, exports, module) {
         });
 
         var onpopstate = window.onpopstate = function(e){
-            manager.checkout();
+            if(window.history.state !== null){
+                manager.checkout();
+            }
         };
 
         // do checkout while page loaded (chrome trigger popstate automatically)
