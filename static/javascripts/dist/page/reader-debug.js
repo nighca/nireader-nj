@@ -61,7 +61,9 @@ define("nireader/nireader-fe/2.1.0/module/stateManager-debug", [ "nireader/nirea
         //if(navigator.userAgent.toLowerCase().indexOf('chrome') < 0){
         // chrome fixed this bug
         if (true) {
-            setTimeout(onpopstate, 0);
+            setTimeout(function() {
+                manager.checkout();
+            }, 0);
         }
     };
     StateManager.prototype.pushState = function(state) {

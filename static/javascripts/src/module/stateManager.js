@@ -59,7 +59,9 @@ define(function(require, exports, module) {
         //if(navigator.userAgent.toLowerCase().indexOf('chrome') < 0){
         // chrome fixed this bug
         if(true){
-            setTimeout(onpopstate, 0);
+            setTimeout(function(){
+                manager.checkout();
+            }, 0);
         }
     };
 
